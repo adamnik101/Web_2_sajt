@@ -49,7 +49,7 @@ jQuery(document).ready(function()
 		})
 	}
 
-	if(location.indexOf("index") != -1 || location == "/web-2/"){
+	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/"){
 		displayCountdown();
 		getGames(displayAllSections);
 		owlDisplay();
@@ -71,7 +71,7 @@ jQuery(document).ready(function()
 	$(window).on('resize', function()
 	{
 		setHeader();
-		if(location.indexOf("index") != -1 || location == "/web-2/"){
+		if(location.indexOf("index") != -1 || location == "/Web_2_sajt/"){
 			removePng();
 		}
 		if(location.indexOf("categories") != -1){
