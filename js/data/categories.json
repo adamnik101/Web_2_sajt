@@ -1,0 +1,54 @@
+[
+    {
+        "id":1,
+        "name":"Action"
+    },
+    {
+        "id":2,
+        "name":"Adventure"
+    },
+    {
+        "id":3,
+        "name":"Indie"
+    },
+    {
+        "id":4,
+        "name":"RPG"
+    },
+    {
+        "id":5,
+        "name":"Strategy"
+    },
+    {
+        "id":6,
+        "name":"Shooter"
+    },
+    {
+        "id":7,
+        "name":"First Person"
+    },
+    {
+        "id":8,
+        "name":"Racing"
+    },
+    {
+        "id":9,
+        "name":"Horror"
+    },
+    {
+        "id":10,
+        "name":"Simulation"
+    },
+    {
+        "id":11,
+        "name":"Stealth"
+    },
+    {
+        "id":12,
+        "name":"Casual"
+    },
+    {
+        "id" : 13,
+        "name" : "Sports"
+    }
+]

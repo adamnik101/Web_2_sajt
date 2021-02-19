@@ -1,0 +1,14 @@
+[
+    {
+        "id" : 1,
+        "name" : "New Releases"
+    },
+    {
+        "id" : 2,
+        "name" : "Top Sellers"
+    },
+    {
+        "id" : 3,
+        "name" : "On Sale"
+    }
+]
