@@ -14,7 +14,8 @@ jQuery(document).ready(function()
 	setHeader();
 	initMenu();
 	removePng();
-	function getGames(callback){
+	function getGames(callback)
+	{
 		$.ajax({
 			url: "js/data/allGames.json",
 			type: "GET",
@@ -26,7 +27,8 @@ jQuery(document).ready(function()
 			error: function(xhr,status, error) { console.log(error); }
 		});
 	};
-	function getCategories(callback, divId, storage, path){
+	function getCategories(callback, divId, storage, path)
+	{
 		$.ajax({
 			url : "js/data/" + path +".json",
 			type : "GET",
@@ -39,7 +41,8 @@ jQuery(document).ready(function()
 
 		})
 	};
-	function getUpcoming(callback){
+	function getUpcoming(callback)
+	{
 		$.ajax({
 			url : "js/data/comingSoon.json",
 			type : "GET",
@@ -49,17 +52,20 @@ jQuery(document).ready(function()
 		})
 	}
 
-	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/"){
+	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/")
+	{
 		displayCountdown();
 		getGames(displayAllSections);
 		owlDisplay();
 		getUpcoming(displayComingSoon);
 
 	}
-	else if(location.indexOf("single") != -1){
+	else if(location.indexOf("single") != -1)
+	{
 		getSingle();
 	}
-	else if(location.indexOf("categories") != -1){	
+	else if(location.indexOf("categories") != -1)
+	{
 		getGames(displayStoreFirst);
 		getCategories(displayCheckbox, "categoryChb", categories, "categories");
 		getCategories(displayCheckbox, "mode", modes, "modes");
@@ -184,7 +190,8 @@ jQuery(document).ready(function()
 		fsOverlay.css('pointer-events', "none");
 		menuActive = false;
 	}
-	function displayCountdown(){
+	function displayCountdown()
+	{
 		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
 		
 		var x = setInterval(function() {
@@ -204,7 +211,8 @@ jQuery(document).ready(function()
 			}
 			}, 1000);
 	}
-	function displayGames(data, parent){ // ispisivanje bloka sa igricom
+	function displayGames(data, parent)
+	{ // ispisivanje bloka sa igricom
 		if(parent != "products"){
 			$("#" + parent).addClass("row row-cols-2 row-cols-md-3 row-cols-lg-4 pl-0")
 		}
@@ -220,7 +228,7 @@ jQuery(document).ready(function()
 			let a = document.createElement("a");
 			a.setAttribute("href","#!");
 			a.className = "openSingle";
-			a.setAttribute("id", game.id)
+			a.setAttribute("data-id", game.id)
 			a.style.position = "relative";
 			div.appendChild(a);
 			if(game.price.discount.isDiscounted){
@@ -263,7 +271,8 @@ jQuery(document).ready(function()
 		}
 		
 	}
-	function price(item, discount) {
+	function price(item, discount)
+	{
 		if(!discount.isDiscounted){
 			return `<i class="fas fa-euro-sign"></i>${item.price.value.netPrice}`
 		}
@@ -271,7 +280,8 @@ jQuery(document).ready(function()
 			return `<span class="badge">-${item.price.discount.amount}%</span> <s class="text-muted"><i class="fas fa-euro-sign"></i>${item.price.value.listPrice}</s> <span><i class="fas fa-euro-sign"></i>${item.price.value.netPrice}</span>`
 		}
 	}
-	function owlDisplay(){
+	function owlDisplay()
+	{
 		var owl = $('.owl-carousel');
 		owl.owlCarousel(
 			{
@@ -293,7 +303,8 @@ jQuery(document).ready(function()
 			};
 			progress();
 	}
-	function homepageGames(sectionId, data){ // ispisivanje igrica
+	function homepageGames(sectionId, data)
+	{ // ispisivanje igrica
 
 		if($(window).width() < 768 || $(window).width() >= 992){
 			var maxItemsFirstRow = 4;
@@ -317,12 +328,14 @@ jQuery(document).ready(function()
 			})
 			displayGames(firstRow, sectionId); // ispisivanje prvog reda
 	}
-	function displayAllSections(result){// ispisivanje svih sekcija na pocetnoj stranici + funkcije za dinamicko menjanje teksta ~ ellipsis
+	function displayAllSections(result)
+	{// ispisivanje svih sekcija na pocetnoj stranici + funkcije za dinamicko menjanje teksta ~ ellipsis
 		homepageGames("newReleases", result);
 		homepageGames("hotSales", result);
 		homepageGames("topSellers", result);
 	}
-	function getSingle(){//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
+	function getSingle()
+	{//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
 		$.ajax({
 			url : "js/data/allGames.json",
 			type : "GET",
@@ -346,7 +359,8 @@ jQuery(document).ready(function()
 			error: function(xhr,status, error) { console.log(error); }
 		});
 	}
-	function getLogoPriceSection(logo, alt, price){ //ispisivanje cene na single.html
+	function getLogoPriceSection(logo, alt, price)
+	{ //ispisivanje cene na single.html
 		var logoDisplay = `<div class="col-3">
 						<img src="${logo}" class="img-fluid" alt="${alt}">
 					</div>
@@ -376,7 +390,8 @@ jQuery(document).ready(function()
 					logoDisplay += "</div>"
 				$("#logo-game-container").append(logoDisplay);
 	}
-	function getAbout(about, textInfo){//ispisivanje informacija o igrici na single.html
+	function getAbout(about, textInfo)
+	{//ispisivanje informacija o igrici na single.html
 		var info = "";
 		var text = "";
 		for(let i in about){
@@ -392,7 +407,8 @@ jQuery(document).ready(function()
 		$("#about").append(info);
 		$("#infoText").append(text);
 	}
-	function getScreenshots(gallery, alt){//ispisivanje dodatnih slika igrice na single.html
+	function getScreenshots(gallery, alt)
+	{//ispisivanje dodatnih slika igrice na single.html
 		var screenshots = "";
 		screenshots = '<div class="owl-carousel single">';
 		for (let i in gallery){
@@ -403,7 +419,8 @@ jQuery(document).ready(function()
 		screenshots += `</div`;
 		$("#slika").append(screenshots);
 	}
-	function fillSystemReq(minOrRec, specifications){//ispisivanje sistemskih zahteva na single.html 
+	function fillSystemReq(minOrRec, specifications)
+	{//ispisivanje sistemskih zahteva na single.html
 		for(let i in specifications){
 			//create
 			let li = document.createElement("li");
@@ -423,7 +440,8 @@ jQuery(document).ready(function()
 		}
 
 	}
-	function displaySingle(allGames){
+	function displaySingle(allGames)
+	{
 		for(let item of allGames){
 			if(item.id == localStorage.getItem("id")){
 				document.title = "Game Hut - " + item.name;
@@ -450,7 +468,8 @@ jQuery(document).ready(function()
 				}
 			}
 	}
-	function displayCheckbox(data, div){
+	function displayCheckbox(data, div)
+	{
 		let display = "<div class='p-3'>";
 		for(let item of data){
 			display += `<li class="d-flex align-items-center justify-content-start">
@@ -473,7 +492,8 @@ jQuery(document).ready(function()
 		display += '</div>' 
 		$("#" + div).html(display);
 	}
-	function displayStoreFirst(data){
+	function displayStoreFirst(data)
+	{
 		data = filterPrice(data);
 		data = filterCat(data);
 		data = filterMode(data);
@@ -507,10 +527,12 @@ jQuery(document).ready(function()
 	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
 	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
 
-	function filterPrice(data){
+	function filterPrice(data)
+	{
 		return data.filter(game => Math.floor(game.price.value.netPrice) < priceTo && Math.ceil(game.price.value.netPrice) > priceFrom);
 	}
-	function getRangeValue(output, value) {
+	function getRangeValue(output, value)
+	{
 		return function () {
 			$(output).val($(value).val());
 			if (output == "#from") {
@@ -523,7 +545,8 @@ jQuery(document).ready(function()
 		}
 	}
 	//filtriranje po kategorijama
-	function removeUnchecked(array, value){
+	function removeUnchecked(array, value)
+	{
 		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu
 		if(index != -1){	// ako se nalazi u nizu
 			array.splice(index, 1) // uklanjanje tog elementa
@@ -533,7 +556,8 @@ jQuery(document).ready(function()
 	var checkedCat = [];
 	var checkedMode = [];
 	var checkedOther = [];
-	function filterCat(data){
+	function filterCat(data)
+	{
 		if(checkedCat.length){
 			filtered = data.filter(game => checkedCat.some(checked => game.catId.includes(checked)));
 		}
@@ -542,7 +566,8 @@ jQuery(document).ready(function()
 		}
 		return filtered;
 	}
-	function filterMode(data){
+	function filterMode(data)
+	{
 		if(checkedMode.length){
 			filtered = data.filter(game => checkedMode.some(checked => game.modes.includes(checked)));
 		}
@@ -551,7 +576,8 @@ jQuery(document).ready(function()
 		}
 		return filtered;
 	}
-	function filterOther(data){
+	function filterOther(data)
+	{
 		if(checkedOther.length){
 			filtered = data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)));
 		}
@@ -560,7 +586,8 @@ jQuery(document).ready(function()
 		}
 		return filtered;
 	}
-	$(document).on("change", ":checkbox[name='category']", function() {
+	$(document).on("change", ":checkbox[name='category']", function()
+	{
 		let value = parseInt($(this).val());
 		if($(this).is(":checked")){
 			checkedCat.push(value);
@@ -571,7 +598,8 @@ jQuery(document).ready(function()
 		filtered = filterCat(allGames);
 		displayStoreFirst(filtered)
 	})
-	$(document).on("change", ":checkbox[name='modes']", function() {
+	$(document).on("change", ":checkbox[name='modes']", function()
+	{
 		let value = parseInt($(this).val());
 		if($(this).is(":checked")){
 			checkedMode.push(value);
@@ -582,7 +610,8 @@ jQuery(document).ready(function()
 		filtered = filterMode(allGames);
 		displayStoreFirst(filtered)
 	})
-	$(document).on("change", ":checkbox[name='other']", function() {
+	$(document).on("change", ":checkbox[name='other']", function()
+	{
 		let value = parseInt($(this).val());
 		if($(this).is(":checked")){
 			checkedOther.push(value);
@@ -593,12 +622,14 @@ jQuery(document).ready(function()
 		filtered = filterOther(allGames);
 		displayStoreFirst(filtered)
 	})
-	$(document).on("change", "#sort", function(){
+	$(document).on("change", "#sort", function()
+	{
 		filtered = sortAll(allGames);
 		displayStoreFirst(filtered)
 	})
 
-	function displayComingSoon(data){
+	function displayComingSoon(data)
+	{
 		let content = "<div class='owl-carousel' id='coming-owl'>"; 
 		for(let game of data){
 			let month, day, year;
@@ -655,7 +686,8 @@ jQuery(document).ready(function()
 			}
 			))
 	}
-	function filterResponsive(){
+	function filterResponsive()
+	{
 		if(window.innerWidth < 992){
 			let header = "<button type='button' id='closeFilter'>Close filters</button>";
 			$("#filter-header").html(header);
@@ -683,20 +715,19 @@ jQuery(document).ready(function()
 			$("#filter-wrapper").css({position : "relative", "z-index" : 1, "overflow-y" : "hidden"})
 		}
 	}
-	$(document).on("click", ".openSingle",function(){
-		localStorage.setItem("id",($(this).attr("id")));
+	$(document).on("click", ".openSingle",function()
+	{
+		localStorage.setItem("id",($(this).attr("data-id")));
 		open("single.html", "_self");
 	})
 	var maxItemsStore = 9;
-	
-			
-			
 	$(document).on("click", "#filterCat", rotateHandler("#categoryChb", "#filterCat"));
 	$(document).on("click", "#priceToggle", rotateHandler("#priceRange", "#priceToggle"));
 	$(document).on("click", "#more-filters", rotateHandler("#mode", "#more-filters"));
 	$(document).on("click", "#filter-other", rotateHandler("#otherFilter", "#filter-other"));
 	var degreesCat = 0, degreesPrice = 0, degreesMore = 0, degreesOther = 0;
-	function rotateHandler(button, div){
+	function rotateHandler(button, div)
+	{
 		return function(){
 			$(button).slideToggle();
 			if(div == "#filterCat"){
@@ -719,89 +750,6 @@ jQuery(document).ready(function()
 		}
 	}
 
-
-
-
-
-	// $(document).on("change", ":checkbox", function(){
-	// 	let val = Number($(this).val());
-	// 	if($(this).is(":checked")){
-	// 		if($(this)[0].name == "modes"){
-	// 			checkedMode.push(val);
-	// 		}
-	// 		else if($(this)[0].name == "other"){
-	// 			checkedOther.push(val);
-	// 		}
-	// 		else{
-	// 			checkedCat.push(val);
-	// 		}
-	// 	}
-	// 	else{
-	// 		if($(this)[0].name == "modes"){
-	// 			removeUnchecked(checkedMode, val);
-	// 		}
-	// 		else if($(this)[0].name == "other"){
-	// 			removeUnchecked(checkedOther, val);
-	// 		}
-	// 		else{
-	// 			removeUnchecked(checkedCat, val);
-	// 		}
-	// 	}
-	// 	filterAll();
-	// 	filtered = filterCat(allGames);
-	// 	filtered = filterMode(allGames);
-	// 	filtered = filterOther(allGames);
-	// 	displayStoreFirst(filtered);
-	// 	if(!filtered.length){
-	// 		displayNoResults();
-	// 	}
-	// })
-	// function filterCat(data){
-	// 	if(checkedCat.length){
-	// 		return data.filter(game => checkedCat.some(checked => game.catId.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// 	}
-	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// }
-	// function filterMode(data){
-	// 	if(checkedMode.length){
-	// 		return data.filter(game => checkedMode.some(checked => game.modes.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// 	}
-	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// }
-	// function filterOther(data){
-	// 	if(checkedOther.length){
-	// 		return data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// 	}
-	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
-	// }
-	// function filterAll(){
-	// 	getGames(displayStoreFirst);
-	// }
-	// var priceFrom = 0;
-	// var priceTo = 60;
-	// $("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
-	// $("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
-	//
-	// function getRangeValue(output, value){
-	// 	return function(){
-	// 		// $(output).val($(value).val());
-	// 		// if(output == "#from"){
-	// 		// 	priceFrom = $(value).val();
-	// 		// }
-	// 		// else{
-	// 		// 	priceTo = $(value).val();
-	// 		// }
-	// 		// filtered = allGames.filter(function(game){
-	// 		// 	if(checkedCat.every(value => game.catId.includes(value)) && checkedOther.every(function(value){ if(game.otherId !== null){ return game.otherId.includes(value)}}) && checkedMode.every(value => game.modes.includes(value))){
-	// 		// 		return Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo
-	// 		// }})
-	// 		// displayStoreFirst(filtered)
-	// 		// if(!filtered.length){
-	// 		// 	displayNoResults();
-	// 		// }
-	// 	}
-	// }
-
 	$("#sortDdl").hide();
 	$("#sortBtn").focus(function(){
 		$("#sortDdl").fadeIn()
@@ -809,7 +757,8 @@ jQuery(document).ready(function()
 	$("#sortBtn").focusout(function(){
 		$("#sortDdl").fadeOut()
 	})
-	function sortByNameAZ(data){
+	function sortByNameAZ(data)
+	{
 		return data.sort(function(a,b){
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
@@ -822,7 +771,8 @@ jQuery(document).ready(function()
 			return 0;
 		})
 	}
-	function sortByNameZA(data){
+	function sortByNameZA(data)
+	{
 		return data.sort(function(a,b){
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
@@ -835,7 +785,8 @@ jQuery(document).ready(function()
 			return 0;
 		})
 	}
-	function sortByPriceHighLow(data){
+	function sortByPriceHighLow(data)
+	{
 		return data.sort(function(a,b){
 			var priceA;
 			var priceB;
@@ -851,7 +802,8 @@ jQuery(document).ready(function()
 			return 0;
 		})
 	}
-	function sortByPriceLowHigh(data){
+	function sortByPriceLowHigh(data)
+	{
 		return data.sort(function(a,b){
 			var priceA;
 			var priceB;
@@ -867,7 +819,8 @@ jQuery(document).ready(function()
 			return 0;
 		})
 	}
-	function sortAll(data){
+	function sortAll(data)
+	{
 		let value = $("#sort").val();
 		if(value == 1){
 			return sortByNameAZ(data);
@@ -885,7 +838,8 @@ jQuery(document).ready(function()
 			return data;
 		}
 	}
-	function displayPagination(otherPages, currentPage){
+	function displayPagination(otherPages, currentPage)
+	{
 		let allItems = [];
 		if(otherPages.length > maxItemsStore){
 			var another = otherPages.slice(maxItemsStore);
@@ -927,8 +881,8 @@ jQuery(document).ready(function()
 		})
 		
 	}
-		
-	function displayNoResults(){
+	function displayNoResults()
+	{
 		$("#products").removeClass("row-cols-1 row-cols-sm-2 row-cols-md-3");
 			$("#products").addClass("d-flex align-items-center justify-content-center h-100")
 			var msg = `<div id="noMatch" class="pb-5 pb-md-0">
