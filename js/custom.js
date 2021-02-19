@@ -1,4 +1,4 @@
-jQuery(document).ready(function()
+$(document).ready(function()
 {
 	//region Global variables
 
@@ -962,5 +962,47 @@ jQuery(document).ready(function()
 						</div>`;
 			$("#products").html(msg) 
 	};
+	//endregion
+
+	const fullName = document.getElementById('input_name');
+	const mail = document.getElementById('input_email');
+	//region RegEx
+	const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/;
+	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/;
+	//endregion
+
+	function checkFullName(){
+		if(!fullNameReg.test(fullName.value)){
+			let err = '<span class="err name">Name is not in a good format.</span>';
+			if(!$('#contact').find('.name').length){
+				$(err).insertAfter(fullName);
+				$(fullName).css('border', '2px solid #e21e21');
+			}
+		}
+		else{
+			$('#contact').find('.name').remove();
+			$(fullName).css('border', '2px solid green');
+		}
+	}
+	function checkMail(){
+		if(!mailReg.test(mail.value)){
+			let err = '<span class="err mail">Mail is not in a good format.</span>';
+			if(!$('#contact').find('.mail').length){
+				$(err).insertAfter(mail);
+				$(mail).css('border', '2px solid #e21e21');
+			}
+		}
+		else{
+			$('#contact').find('.mail').remove();
+			$(mail).css('border', '2px solid green');
+		}
+	}
+	//region Check Regular Exp on change
+	fullName.onchange = function(){
+		checkFullName();
+	}
+	mail.onchange = function(){
+		checkMail();
+	}
 	//endregion
 });
