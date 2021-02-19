@@ -1,19 +1,53 @@
 jQuery(document).ready(function()
 {
-	
-	// Global
+	//region Global variables
+		//region Template variables
 	const header = $('.header');
 	const hamburger = $('.hamburger_container');
 	const menu = $('.hamburger_menu');
 	var menuActive = false;
 	const hamburgerClose = $('.hamburger_close');
 	const fsOverlay = $('.fs_menu_overlay');
+	//endregion
+
+		//region My variables
 	const location = window.location.pathname;
 	var allGames, categories, modes, otherFilters;
+	var degreesCat = 0, degreesPrice = 0, degreesMore = 0, degreesOther = 0;
+	var maxItemsStore = 9;
+	//endregion
+	//endregion
 
+	//region Every page init - Header & Menu
 	setHeader();
 	initMenu();
-	removePng();
+	//endregion
+
+	//region Page location
+	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/")
+	{
+		displayCountdown();
+		getGames(displayAllSections);
+		owlDisplay();
+		getUpcoming(displayComingSoon);
+		removePng();
+	}
+	else if(location.indexOf("single") != -1)
+	{
+		getSingle();
+	}
+	else if(location.indexOf("categories") != -1)
+	{
+		getGames(displayStoreFirst);
+		getCategories(displayCheckbox, "categoryChb", categories, "categories");
+		getCategories(displayCheckbox, "mode", modes, "modes");
+		getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+		getUpcoming(displayComingSoon);
+		filterResponsive();
+	}
+	//endregion
+
+	//region Ajax Call jQuery
 	function getGames(callback)
 	{
 		$.ajax({
@@ -50,30 +84,10 @@ jQuery(document).ready(function()
 			success : callback,
 			error : function(xhr, status, err){ console.log(err)}
 		})
-	}
+	};
+	//endregion
 
-	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/")
-	{
-		displayCountdown();
-		getGames(displayAllSections);
-		owlDisplay();
-		getUpcoming(displayComingSoon);
-
-	}
-	else if(location.indexOf("single") != -1)
-	{
-		getSingle();
-	}
-	else if(location.indexOf("categories") != -1)
-	{
-		getGames(displayStoreFirst);
-		getCategories(displayCheckbox, "categoryChb", categories, "categories");
-		getCategories(displayCheckbox, "mode", modes, "modes");
-		getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
-		getUpcoming(displayComingSoon);
-		filterResponsive();
-	}
-	
+	//region Window: resize & Document: scroll
 	$(window).on('resize', function()
 	{
 		setHeader();
@@ -88,129 +102,37 @@ jQuery(document).ready(function()
 	{
 		setHeader();
 	});
-	function setHeader()
-	{
+	//endregion
 
-			if($(window).scrollTop() > 100)
+	//region Functions
+
+	//region Homepage slider
+	function owlDisplay()
+	{
+		var owl = $('.owl-carousel');
+		owl.owlCarousel(
 			{
-				header.css({'top':"-50px"});
+				items:1,
+				loop : true,
+				mouseDrag: false,
+				touchDrag: false,
+				dots: false,
 			}
-			else
-			{
-				header.css({'top':"0"});
-			}
+		);
+		function progress(){
+			$("#progressBar").css("width","0%");
+			$("#progressBar").animate({
+				width:"100%"
+			},10000,"linear",function () {
+				progress();
+				owl.trigger('next.owl.carousel');
+			})
+		};
+		progress();
+	};
+	//endregion
 
-		if(window.innerWidth > 991 && menuActive)
-		{
-			closeMenu();
-		}
-	}
-	function removePng()
-	{
-		if(window.innerWidth < 992){
-			$(".deal_ofthe_week_img img").hide();
-			$(".deal_ofthe_week").height("auto")
-		}
-		else{
-			$(".deal_ofthe_week_img img").show();
-		}
-	}
-	function initMenu()
-	{
-		if(hamburger.length)
-		{
-			hamburger.on('click', function()
-			{
-				if(!menuActive)
-				{
-					openMenu();
-				}
-			});
-		}
-
-		if(fsOverlay.length)
-		{
-			fsOverlay.on('click', function()
-			{
-				if(menuActive)
-				{
-					closeMenu();
-				}
-			});
-		}
-
-		if(hamburgerClose.length)
-		{
-			hamburgerClose.on('click', function()
-			{
-				if(menuActive)
-				{
-					closeMenu();
-				}
-			});
-		}
-
-		if($('.menu_item').length)
-		{
-			var items = document.getElementsByClassName('menu_item');
-			var i;
-
-			for(i = 0; i < items.length; i++)
-			{
-				if(items[i].classList.contains("has-children"))
-				{
-					items[i].onclick = function()
-					{
-						this.classList.toggle("active");
-						var panel = this.children[1];
-						if(panel.style.maxHeight)
-						{
-							panel.style.maxHeight = null;
-						}
-						else
-						{
-							panel.style.maxHeight = panel.scrollHeight + "px";
-						}
-					}
-				}	
-			}
-		}
-	}
-	function openMenu()
-	{
-		menu.addClass('active');
-		menu.css("box-shadow", "rgb(0 0 0 / 50%) 0px 0px 0px 10000px");
-		fsOverlay.css('pointer-events', "auto");
-		menuActive = true;
-	}
-	function closeMenu()
-	{
-		menu.removeClass('active');
-		menu.css("box-shadow", "none");
-		fsOverlay.css('pointer-events', "none");
-		menuActive = false;
-	}
-	function displayCountdown()
-	{
-		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
-		
-		var x = setInterval(function() {
-			var now = new Date().getTime(); //trenutno vreme
-			var razlika = countDownDate - now; 
-			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
-			var hours = Math.floor((razlika % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			var minutes = Math.floor((razlika % (1000 * 60 * 60)) / (1000 * 60));
-			var seconds = Math.floor((razlika % (1000 * 60)) / 1000);
-			$("#day").html(days);
-			$("#hour").html(hours);
-			$("#minute").html(minutes);
-			$("#second").html(seconds)
-			if (razlika < 0) {
-				clearInterval(x);
-				$(".deal_ofthe_week_col").html("New deals coming soon!");
-			}
-			}, 1000);
-	}
+	//region Display game item - homepage - store
 	function displayGames(data, parent)
 	{ // ispisivanje bloka sa igricom
 		if(parent != "products"){
@@ -269,40 +191,143 @@ jQuery(document).ready(function()
 				$("#" + parent).append(div)
 			}
 		}
-		
-	}
-	function price(item, discount)
+
+	};
+	//endregion
+
+	//region Header
+	function setHeader()
 	{
-		if(!discount.isDiscounted){
-			return `<i class="fas fa-euro-sign"></i>${item.price.value.netPrice}`
+
+			if($(window).scrollTop() > 100)
+			{
+				header.css({'top':"-50px"});
+			}
+			else
+			{
+				header.css({'top':"0"});
+			}
+
+		if(window.innerWidth > 991 && menuActive)
+		{
+			closeMenu();
+		}
+	};
+	//endregion
+
+	//region Menu
+	function initMenu()
+	{
+		if(hamburger.length)
+		{
+			hamburger.on('click', function()
+			{
+				if(!menuActive)
+				{
+					openMenu();
+				}
+			});
+		}
+
+		if(fsOverlay.length)
+		{
+			fsOverlay.on('click', function()
+			{
+				if(menuActive)
+				{
+					closeMenu();
+				}
+			});
+		}
+
+		if(hamburgerClose.length)
+		{
+			hamburgerClose.on('click', function()
+			{
+				if(menuActive)
+				{
+					closeMenu();
+				}
+			});
+		}
+
+		if($('.menu_item').length)
+		{
+			var items = document.getElementsByClassName('menu_item');
+			var i;
+
+			for(i = 0; i < items.length; i++)
+			{
+				if(items[i].classList.contains("has-children"))
+				{
+					items[i].onclick = function()
+					{
+						this.classList.toggle("active");
+						var panel = this.children[1];
+						if(panel.style.maxHeight)
+						{
+							panel.style.maxHeight = null;
+						}
+						else
+						{
+							panel.style.maxHeight = panel.scrollHeight + "px";
+						}
+					}
+				}
+			}
+		}
+	};
+	function openMenu()
+	{
+		menu.addClass('active');
+		menu.css("box-shadow", "rgb(0 0 0 / 50%) 0px 0px 0px 10000px");
+		fsOverlay.css('pointer-events', "auto");
+		menuActive = true;
+	};
+	function closeMenu()
+	{
+		menu.removeClass('active');
+		menu.css("box-shadow", "none");
+		fsOverlay.css('pointer-events', "none");
+		menuActive = false;
+	};
+	//endregion
+
+	//region Remove png on smaller resolution - homepage
+	function removePng()
+	{
+		if(window.innerWidth < 992){
+			$(".deal_ofthe_week_img img").hide();
+			$(".deal_ofthe_week").height("auto")
 		}
 		else{
-			return `<span class="badge">-${item.price.discount.amount}%</span> <s class="text-muted"><i class="fas fa-euro-sign"></i>${item.price.value.listPrice}</s> <span><i class="fas fa-euro-sign"></i>${item.price.value.netPrice}</span>`
+			$(".deal_ofthe_week_img img").show();
 		}
-	}
-	function owlDisplay()
+	};
+	//endregion
+
+	//region Homepage display sections
+	function displayCountdown()
 	{
-		var owl = $('.owl-carousel');
-		owl.owlCarousel(
-			{
-				items:1,
-				loop : true,
-				mouseDrag: false,
-				touchDrag: false,
-				dots: false,
-				}
-			);
-			function progress(){
-				$("#progressBar").css("width","0%");
-				$("#progressBar").animate({
-					width:"100%"
-				},10000,"linear",function () {
-					progress();
-					owl.trigger('next.owl.carousel');
-				})
-			};
-			progress();
-	}
+		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
+
+		var x = setInterval(function() {
+			var now = new Date().getTime(); //trenutno vreme
+			var razlika = countDownDate - now;
+			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
+			var hours = Math.floor((razlika % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var minutes = Math.floor((razlika % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((razlika % (1000 * 60)) / 1000);
+			$("#day").html(days);
+			$("#hour").html(hours);
+			$("#minute").html(minutes);
+			$("#second").html(seconds)
+			if (razlika < 0) {
+				clearInterval(x);
+				$(".deal_ofthe_week_col").html("New deals coming soon!");
+			}
+		}, 1000);
+	};
 	function homepageGames(sectionId, data)
 	{ // ispisivanje igrica
 
@@ -312,162 +337,43 @@ jQuery(document).ready(function()
 		else{
 			var maxItemsFirstRow = 3;
 		}
-			let counter = [];
-			let firstRow = data.filter(function(game, index){ // izvlacenje prvih 4 igrica
-				if(counter.length < maxItemsFirstRow){
-					if(sectionId == "newReleases"){
-						return game.newRelease.value && counter.push(index);
-					}
-					else if(sectionId == "hotSales"){
-						return game.price.discount.isDiscounted && counter.push(index);
-					}
-					else if(sectionId == "topSellers"){
-						return game.otherId.includes(2) && counter.push(index);
-					}
+		let counter = [];
+		let firstRow = data.filter(function(game, index){ // izvlacenje prvih 4 igrica
+			if(counter.length < maxItemsFirstRow){
+				if(sectionId == "newReleases"){
+					return game.newRelease.value && counter.push(index);
 				}
-			})
-			displayGames(firstRow, sectionId); // ispisivanje prvog reda
-	}
+				else if(sectionId == "hotSales"){
+					return game.price.discount.isDiscounted && counter.push(index);
+				}
+				else if(sectionId == "topSellers"){
+					return game.otherId.includes(2) && counter.push(index);
+				}
+			}
+		})
+		displayGames(firstRow, sectionId); // ispisivanje prvog reda
+	};
 	function displayAllSections(result)
 	{// ispisivanje svih sekcija na pocetnoj stranici + funkcije za dinamicko menjanje teksta ~ ellipsis
 		homepageGames("newReleases", result);
 		homepageGames("hotSales", result);
 		homepageGames("topSellers", result);
-	}
-	function getSingle()
-	{//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
-		$.ajax({
-			url : "js/data/allGames.json",
-			type : "GET",
-			dataType : "json",
-			success : function(result){
-				displaySingle(result);
-				var owl_single = $(".single");
-					owl_single.owlCarousel(
-						{
-							items:1,
-							loop : true,
-							autoplay: true,
-							mouseDrag: true,
-							touchDrag: true,
-							dots: true,
-							nav: false,
-							autoplayHoverPause: true
-						}
-						);
-			},
-			error: function(xhr,status, error) { console.log(error); }
-		});
-	}
-	function getLogoPriceSection(logo, alt, price)
-	{ //ispisivanje cene na single.html
-		var logoDisplay = `<div class="col-3">
-						<img src="${logo}" class="img-fluid" alt="${alt}">
-					</div>
-					<div class="col-9 d-flex flex-column align-items-end">`;
-					if(!price.discount.isDiscounted){
-						logoDisplay += `<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
-												<span id="current" class="pt-3">
-													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
-												</span>	
-										</div>`
-					}
-					else{
-						logoDisplay +=`<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
-											<p class="d-flex justify-content-around align-items-center pt-3">
-												<span class="badge badge-danger">-${price.discount.amount}%</span>
-												<s class="pl-2 pr-2">
-													<i class="fas fa-euro-sign "></i>${price.value.listPrice}
-												</s> 
-												<span id="current">
-													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
-												</span>
-											</p>	
-										</div>`
-					}
-					logoDisplay += "</div>"
-				$("#logo-game-container").append(logoDisplay);
-	}
-	function getAbout(about, textInfo)
-	{//ispisivanje informacija o igrici na single.html
-		var info = "";
-		var text = "";
-		for(let i in about){
-			info += `<li>
-						<h6>${about[i].name}</h6>
-						<p>${about[i].value}</p>
-					</li>`
-		}
-		for(let i in textInfo){
-			text += `<h6>${textInfo[i][0]}</h6>
-						<p>${textInfo[i][1]}</p>`
-		}
-		$("#about").append(info);
-		$("#infoText").append(text);
-	}
-	function getScreenshots(gallery, alt)
-	{//ispisivanje dodatnih slika igrice na single.html
-		var screenshots = "";
-		screenshots = '<div class="owl-carousel single">';
-		for (let i in gallery){
-			screenshots += `<div class="item">
-			<img src="${gallery[i]}" class="img-fluid" alt="${alt}">
-		</div>`
-		}
-		screenshots += `</div`;
-		$("#slika").append(screenshots);
-	}
-	function fillSystemReq(minOrRec, specifications)
-	{//ispisivanje sistemskih zahteva na single.html
-		for(let i in specifications){
-			//create
-			let li = document.createElement("li");
-			let h6 = document.createElement("h6");
-			h6.className = "text-muted";
-			let h6Content = document.createTextNode(specifications[i].name);
-			let p = document.createElement("p");
-			let pContent = document.createTextNode(specifications[i].value);
+	};
+	//endregion
 
-			//appending
-			li.appendChild(h6);
-			h6.appendChild(h6Content);
-			li.appendChild(p);
-			p.appendChild(pContent);
-
-			$("#" + minOrRec).append(li);
-		}
-
-	}
-	function displaySingle(allGames)
+	//region Get price for game
+	function price(item, discount)
 	{
-		for(let item of allGames){
-			if(item.id == localStorage.getItem("id")){
-				document.title = "Game Hut - " + item.name;
-				$("#name").append(item.name);
-				$("#gameName").append(item.name);
-				getLogoPriceSection(item.image.logo, item.name, item.price);
-				getAbout(item.info.about, item.info.text)
-				fillSystemReq("minimum", item.specifications.minimum);
-				fillSystemReq("recommended", item.specifications.recommended);
-				getScreenshots(item.image.gallery, item.name);
-				var owl_single = $(".single");
-					owl_single.owlCarousel(
-						{
-							items:1,
-							loop : true,
-							autoplay: true,
-							mouseDrag: true,
-							touchDrag: true,
-							dots: true,
-							nav: false,
-							autoplayHoverPause: true
-						}
-					)
-				}
-			}
-	}
+		if(!discount.isDiscounted){
+			return `<i class="fas fa-euro-sign"></i>${item.price.value.netPrice}`
+		}
+		else{
+			return `<span class="badge">-${item.price.discount.amount}%</span> <s class="text-muted"><i class="fas fa-euro-sign"></i>${item.price.value.listPrice}</s> <span><i class="fas fa-euro-sign"></i>${item.price.value.netPrice}</span>`
+		}
+	};
+	//endregion
+
+	//region Display store & checkboxes
 	function displayCheckbox(data, div)
 	{
 		let display = "<div class='p-3'>";
@@ -475,23 +381,23 @@ jQuery(document).ready(function()
 			display += `<li class="d-flex align-items-center justify-content-start">
 							<label for="${item.name.split(" ").join("")}" class="customChb w-100"> ${item.name}
 								<input type="checkbox" id="${item.name.split(" ").join("")}" value="${item.id}" name=`
-								if(div == "mode"){
-									display += "modes"
-								}
-								else if(div == "categoryChb"){
-									display += "category"
-								}
-								else{
-									display += "other"
-								}
-								display += `>
+			if(div == "mode"){
+				display += "modes"
+			}
+			else if(div == "categoryChb"){
+				display += "category"
+			}
+			else{
+				display += "other"
+			}
+			display += `>
 								<span class="checkmark"></span>
 							</label>					
 						</li>`
 		};
-		display += '</div>' 
+		display += '</div>'
 		$("#" + div).html(display);
-	}
+	};
 	function displayStoreFirst(data)
 	{
 		data = filterPrice(data);
@@ -519,118 +425,13 @@ jQuery(document).ready(function()
 		if(!data.length){
 			displayNoResults();
 		}
-	}
-	//filtriranje po ceni
-	var priceTo = 60;
-	var priceFrom = 0;
+	};
+	//endregion
 
-	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
-	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
-
-	function filterPrice(data)
-	{
-		return data.filter(game => Math.floor(game.price.value.netPrice) < priceTo && Math.ceil(game.price.value.netPrice) > priceFrom);
-	}
-	function getRangeValue(output, value)
-	{
-		return function () {
-			$(output).val($(value).val());
-			if (output == "#from") {
-				priceFrom = $(value).val();
-			} else {
-				priceTo = $(value).val();
-			}
-			filtered = filterPrice(allGames);
-			displayStoreFirst(filtered)
-		}
-	}
-	//filtriranje po kategorijama
-	function removeUnchecked(array, value)
-	{
-		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu
-		if(index != -1){	// ako se nalazi u nizu
-			array.splice(index, 1) // uklanjanje tog elementa
-		}
-	}
-	var filtered;
-	var checkedCat = [];
-	var checkedMode = [];
-	var checkedOther = [];
-	function filterCat(data)
-	{
-		if(checkedCat.length){
-			filtered = data.filter(game => checkedCat.some(checked => game.catId.includes(checked)));
-		}
-		else{
-			filtered = data;
-		}
-		return filtered;
-	}
-	function filterMode(data)
-	{
-		if(checkedMode.length){
-			filtered = data.filter(game => checkedMode.some(checked => game.modes.includes(checked)));
-		}
-		else{
-			filtered = data;
-		}
-		return filtered;
-	}
-	function filterOther(data)
-	{
-		if(checkedOther.length){
-			filtered = data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)));
-		}
-		else{
-			filtered = data;
-		}
-		return filtered;
-	}
-	$(document).on("change", ":checkbox[name='category']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedCat.push(value);
-		}
-		else{
-			removeUnchecked(checkedCat, value);
-		}
-		filtered = filterCat(allGames);
-		displayStoreFirst(filtered)
-	})
-	$(document).on("change", ":checkbox[name='modes']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedMode.push(value);
-		}
-		else{
-			removeUnchecked(checkedMode, value);
-		}
-		filtered = filterMode(allGames);
-		displayStoreFirst(filtered)
-	})
-	$(document).on("change", ":checkbox[name='other']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedOther.push(value);
-		}
-		else{
-			removeUnchecked(checkedOther, value);
-		}
-		filtered = filterOther(allGames);
-		displayStoreFirst(filtered)
-	})
-	$(document).on("change", "#sort", function()
-	{
-		filtered = sortAll(allGames);
-		displayStoreFirst(filtered)
-	})
-
+	//region Coming Soon section
 	function displayComingSoon(data)
 	{
-		let content = "<div class='owl-carousel' id='coming-owl'>"; 
+		let content = "<div class='owl-carousel' id='coming-owl'>";
 		for(let game of data){
 			let month, day, year;
 			let date = game.releaseDate;
@@ -684,8 +485,11 @@ jQuery(document).ready(function()
 					992: { items : 3}
 				}
 			}
-			))
-	}
+		))
+	};
+	//endregion
+
+	//region Responsive filter section - store
 	function filterResponsive()
 	{
 		if(window.innerWidth < 992){
@@ -714,18 +518,264 @@ jQuery(document).ready(function()
 			$("#filter-wrapper").css("background-color", "transparent")
 			$("#filter-wrapper").css({position : "relative", "z-index" : 1, "overflow-y" : "hidden"})
 		}
-	}
+	};
+	//endregion
+	//endregion
+
+	//region Single page product
+	function getSingle()
+	{//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
+		$.ajax({
+			url : "js/data/allGames.json",
+			type : "GET",
+			dataType : "json",
+			success : function(result){
+				displaySingle(result);
+				var owl_single = $(".single");
+					owl_single.owlCarousel(
+						{
+							items:1,
+							loop : true,
+							autoplay: true,
+							mouseDrag: true,
+							touchDrag: true,
+							dots: true,
+							nav: false,
+							autoplayHoverPause: true
+						}
+						);
+			},
+			error: function(xhr,status, error) { console.log(error); }
+		});
+	};
+	function displaySingle(allGames)
+	{
+		for(let item of allGames){
+			if(item.id == localStorage.getItem("id")){
+				document.title = "Game Hut - " + item.name;
+				$("#name").append(item.name);
+				$("#gameName").append(item.name);
+				getLogoPriceSection(item.image.logo, item.name, item.price);
+				getAbout(item.info.about, item.info.text)
+				fillSystemReq("minimum", item.specifications.minimum);
+				fillSystemReq("recommended", item.specifications.recommended);
+				getScreenshots(item.image.gallery, item.name);
+				var owl_single = $(".single");
+				owl_single.owlCarousel(
+					{
+						items:1,
+						loop : true,
+						autoplay: true,
+						mouseDrag: true,
+						touchDrag: true,
+						dots: true,
+						nav: false,
+						autoplayHoverPause: true
+					}
+				)
+			}
+		}
+	};
+	function getLogoPriceSection(logo, alt, price)
+	{ //ispisivanje cene na single.html
+		var logoDisplay = `<div class="col-3">
+						<img src="${logo}" class="img-fluid" alt="${alt}">
+					</div>
+					<div class="col-9 d-flex flex-column align-items-end">`;
+					if(!price.discount.isDiscounted){
+						logoDisplay += `<div class="d-flex flex-column align-items-end">
+											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
+												<span id="current" class="pt-3">
+													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
+												</span>	
+										</div>`
+					}
+					else{
+						logoDisplay +=`<div class="d-flex flex-column align-items-end">
+											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
+											<p class="d-flex justify-content-around align-items-center pt-3">
+												<span class="badge badge-danger">-${price.discount.amount}%</span>
+												<s class="pl-2 pr-2">
+													<i class="fas fa-euro-sign "></i>${price.value.listPrice}
+												</s> 
+												<span id="current">
+													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
+												</span>
+											</p>	
+										</div>`
+					}
+					logoDisplay += "</div>"
+				$("#logo-game-container").append(logoDisplay);
+	};
+	function getAbout(about, textInfo)
+	{//ispisivanje informacija o igrici na single.html
+		var info = "";
+		var text = "";
+		for(let i in about){
+			info += `<li>
+						<h6>${about[i].name}</h6>
+						<p>${about[i].value}</p>
+					</li>`
+		}
+		for(let i in textInfo){
+			text += `<h6>${textInfo[i][0]}</h6>
+						<p>${textInfo[i][1]}</p>`
+		}
+		$("#about").append(info);
+		$("#infoText").append(text);
+	};
+	function getScreenshots(gallery, alt)
+	{//ispisivanje dodatnih slika igrice na single.html
+		var screenshots = "";
+		screenshots = '<div class="owl-carousel single">';
+		for (let i in gallery){
+			screenshots += `<div class="item">
+			<img src="${gallery[i]}" class="img-fluid" alt="${alt}">
+		</div>`
+		}
+		screenshots += `</div`;
+		$("#slika").append(screenshots);
+	};
+	function fillSystemReq(minOrRec, specifications)
+	{//ispisivanje sistemskih zahteva na single.html
+		for(let i in specifications){
+			//create
+			let li = document.createElement("li");
+			let h6 = document.createElement("h6");
+			h6.className = "text-muted";
+			let h6Content = document.createTextNode(specifications[i].name);
+			let p = document.createElement("p");
+			let pContent = document.createTextNode(specifications[i].value);
+
+			//appending
+			li.appendChild(h6);
+			h6.appendChild(h6Content);
+			li.appendChild(p);
+			p.appendChild(pContent);
+
+			$("#" + minOrRec).append(li);
+		}
+
+	};
+	//endregion
+
+	//region Filtering functions - Price - Categories - Mode - Other
+	var priceTo = 60;
+	var priceFrom = 0;
+	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
+	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
+
+	function filterPrice(data)
+	{
+		return data.filter(game => Math.floor(game.price.value.netPrice) < priceTo && Math.ceil(game.price.value.netPrice) > priceFrom);
+	};
+	function getRangeValue(output, value)
+	{
+		return function () {
+			$(output).val($(value).val());
+			if (output == "#from") {
+				priceFrom = $(value).val();
+			} else {
+				priceTo = $(value).val();
+			}
+			filtered = filterPrice(allGames);
+			displayStoreFirst(filtered)
+		}
+	};
+	//filtriranje po kategorijama
+	function removeUnchecked(array, value)
+	{
+		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu
+		if(index != -1){	// ako se nalazi u nizu
+			array.splice(index, 1) // uklanjanje tog elementa
+		}
+	};
+	var filtered;
+	var checkedCat = [];
+	var checkedMode = [];
+	var checkedOther = [];
+	function filterCat(data)
+	{
+		if(checkedCat.length){
+			filtered = data.filter(game => checkedCat.some(checked => game.catId.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	};
+	function filterMode(data)
+	{
+		if(checkedMode.length){
+			filtered = data.filter(game => checkedMode.some(checked => game.modes.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	};
+	function filterOther(data)
+	{
+		if(checkedOther.length){
+			filtered = data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	};
+	$(document).on("change", ":checkbox[name='category']", function()
+	{
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedCat.push(value);
+		}
+		else{
+			removeUnchecked(checkedCat, value);
+		}
+		filtered = filterCat(allGames);
+		displayStoreFirst(filtered)
+	});
+	$(document).on("change", ":checkbox[name='modes']", function()
+	{
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedMode.push(value);
+		}
+		else{
+			removeUnchecked(checkedMode, value);
+		}
+		filtered = filterMode(allGames);
+		displayStoreFirst(filtered)
+	});
+	$(document).on("change", ":checkbox[name='other']", function()
+	{
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedOther.push(value);
+		}
+		else{
+			removeUnchecked(checkedOther, value);
+		}
+		filtered = filterOther(allGames);
+		displayStoreFirst(filtered)
+	});
+	//endregion
+
+	//region Open single page
 	$(document).on("click", ".openSingle",function()
 	{
 		localStorage.setItem("id",($(this).attr("data-id")));
 		open("single.html", "_self");
-	})
-	var maxItemsStore = 9;
+	});
+	//endregion
+
+	//region Rotate Font Awesome icon
 	$(document).on("click", "#filterCat", rotateHandler("#categoryChb", "#filterCat"));
 	$(document).on("click", "#priceToggle", rotateHandler("#priceRange", "#priceToggle"));
 	$(document).on("click", "#more-filters", rotateHandler("#mode", "#more-filters"));
 	$(document).on("click", "#filter-other", rotateHandler("#otherFilter", "#filter-other"));
-	var degreesCat = 0, degreesPrice = 0, degreesMore = 0, degreesOther = 0;
+
 	function rotateHandler(button, div)
 	{
 		return function(){
@@ -748,15 +798,15 @@ jQuery(document).ready(function()
 			}
 			
 		}
-	}
+	};
+	//endregion
 
-	$("#sortDdl").hide();
-	$("#sortBtn").focus(function(){
-		$("#sortDdl").fadeIn()
-	})
-	$("#sortBtn").focusout(function(){
-		$("#sortDdl").fadeOut()
-	})
+	//region Sorting - Store
+	$(document).on("change", "#sort", function()
+	{
+		filtered = sortAll(allGames);
+		displayStoreFirst(filtered)
+	});
 	function sortByNameAZ(data)
 	{
 		return data.sort(function(a,b){
@@ -770,7 +820,7 @@ jQuery(document).ready(function()
 			}
 			return 0;
 		})
-	}
+	};
 	function sortByNameZA(data)
 	{
 		return data.sort(function(a,b){
@@ -784,7 +834,7 @@ jQuery(document).ready(function()
 			}
 			return 0;
 		})
-	}
+	};
 	function sortByPriceHighLow(data)
 	{
 		return data.sort(function(a,b){
@@ -801,7 +851,7 @@ jQuery(document).ready(function()
 			}
 			return 0;
 		})
-	}
+	};
 	function sortByPriceLowHigh(data)
 	{
 		return data.sort(function(a,b){
@@ -818,7 +868,7 @@ jQuery(document).ready(function()
 			}
 			return 0;
 		})
-	}
+	};
 	function sortAll(data)
 	{
 		let value = $("#sort").val();
@@ -837,7 +887,10 @@ jQuery(document).ready(function()
 		else{
 			return data;
 		}
-	}
+	};
+	//endregion
+
+	//region Pagination - Store
 	function displayPagination(otherPages, currentPage)
 	{
 		let allItems = [];
@@ -880,7 +933,10 @@ jQuery(document).ready(function()
 			}
 		})
 		
-	}
+	};
+	//endregion
+
+	//region Display no results - Store
 	function displayNoResults()
 	{
 		$("#products").removeClass("row-cols-1 row-cols-sm-2 row-cols-md-3");
@@ -891,6 +947,6 @@ jQuery(document).ready(function()
 							<span>Unfortunately I could not find any results matching your search.</span>	   
 						</div>`;
 			$("#products").html(msg) 
-	}
-
+	};
+	//endregion
 });
