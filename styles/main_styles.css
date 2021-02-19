@@ -1017,21 +1017,23 @@ section
 	color: #2a2a2a;
 	font-size: 20px;
 }
-.deal_ofthe_week_button
+.deal_ofthe_week_content a .deal_ofthe_week_button
 {
-	padding: 10px 30px;
+	padding: 10px 25px;
 	background: #1e1e27;
 	font-family: "ChineseRocks";
 	border-radius: 10px;
+	color: #fff;
 }
-.deal_ofthe_week_button a{
-	font-size: 25px;
+a .deal_ofthe_week_button {
+	font-size: 20px;
 }
-.deal_ofthe_week_button a span{
+a .deal_ofthe_week_button span{
 	transition: 0.5s;
 }
-.deal_ofthe_week_button a:hover span{
+.deal_ofthe_week_button:hover span{
 	color: #e21e21;
+	cursor: pointer;
 }
 .deal_ofthe_week_button:hover
 {

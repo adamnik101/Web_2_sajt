@@ -1,6 +1,5 @@
 jQuery(document).ready(function()
 {
-	"use strict";
 	
 	// Global
 	const header = $('.header');
@@ -73,12 +72,10 @@ jQuery(document).ready(function()
 	{
 		setHeader();
 		if(location.indexOf("index") != -1 || location == "/web-2/"){
-			truncateText();
 			removePng();
 		}
 		if(location.indexOf("categories") != -1){
 			filterResponsive();
-			truncateText();
 		}
 	});
 	$(document).on('scroll', function()
@@ -102,41 +99,8 @@ jQuery(document).ready(function()
 			closeMenu();
 		}
 	}
-		const minPx = 160;
-		const medPx = 185;
-		const cutTo = 10;
-		var savedText = []; 
-	function getText(){
-		var text = $(".card-title");
-		for(let i of text){
-			savedText.push(i.innerHTML)
-		}
-	}
-	function truncateText(){
-		var text = $(".card-title");
-		if(text.width() < minPx){
-			for(let i = 0; i < text.length; i++){
-				if(savedText[i].length > 15){
-					let newText = savedText[i].substring(0, cutTo + 4);
-					text[i].innerHTML = newText + "...";
-				}
-			}
-		}
-		else if(text.width() > minPx && text.width() < medPx){
-			for(let i = 0; i < text.length; i++){
-				if(savedText[i].length > 18){
-					let newText = savedText[i].substring(0, cutTo + 10);
-					text[i].innerHTML = newText + "...";
-				}
-			}
-		}
-		else{
-			for(let i = 0; i < text.length; i++){
-				text[i].innerHTML = savedText[i];
-			}
-		}
-	}
-	function removePng(){
+	function removePng()
+	{
 		if(window.innerWidth < 992){
 			$(".deal_ofthe_week_img img").hide();
 			$(".deal_ofthe_week").height("auto")
@@ -240,7 +204,7 @@ jQuery(document).ready(function()
 			}
 			}, 1000);
 	}
-	function displayGames(data, parent, animation){ // ispisivanje bloka sa igricom
+	function displayGames(data, parent){ // ispisivanje bloka sa igricom
 		if(parent != "products"){
 			$("#" + parent).addClass("row row-cols-2 row-cols-md-3 row-cols-lg-4 pl-0")
 		}
@@ -252,7 +216,7 @@ jQuery(document).ready(function()
 		}
 		for(let game of data){
 			let div = document.createElement("div");
-			div.className = `card mb-3 col${animation}`;
+			div.className = `card mb-3 col`;
 			let a = document.createElement("a");
 			a.setAttribute("href","#!");
 			a.className = "openSingle";
@@ -330,6 +294,7 @@ jQuery(document).ready(function()
 			progress();
 	}
 	function homepageGames(sectionId, data){ // ispisivanje igrica
+
 		if($(window).width() < 768 || $(window).width() >= 992){
 			var maxItemsFirstRow = 4;
 		}
@@ -350,14 +315,12 @@ jQuery(document).ready(function()
 					}
 				}
 			})
-			displayGames(firstRow, sectionId, ""); // ispisivanje prvog reda 
+			displayGames(firstRow, sectionId); // ispisivanje prvog reda
 	}
 	function displayAllSections(result){// ispisivanje svih sekcija na pocetnoj stranici + funkcije za dinamicko menjanje teksta ~ ellipsis
 		homepageGames("newReleases", result);
 		homepageGames("hotSales", result);
 		homepageGames("topSellers", result);
-		getText();
-		truncateText();
 	}
 	function getSingle(){//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
 		$.ajax({
@@ -511,6 +474,11 @@ jQuery(document).ready(function()
 		$("#" + div).html(display);
 	}
 	function displayStoreFirst(data){
+		data = filterPrice(data);
+		data = filterCat(data);
+		data = filterMode(data);
+		data = filterOther(data);
+		data = sortAll(data);
 		let otherPages = [];
 		let currentPage = [];
 		var items = data.filter(function(game){
@@ -528,9 +496,108 @@ jQuery(document).ready(function()
 		else{
 			$("#pag").empty()
 		}
-		getText();
-		truncateText();
-	}	
+		if(!data.length){
+			displayNoResults();
+		}
+	}
+	//filtriranje po ceni
+	var priceTo = 60;
+	var priceFrom = 0;
+
+	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
+	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
+
+	function filterPrice(data){
+		return data.filter(game => Math.floor(game.price.value.netPrice) < priceTo && Math.ceil(game.price.value.netPrice) > priceFrom);
+	}
+	function getRangeValue(output, value) {
+		return function () {
+			$(output).val($(value).val());
+			if (output == "#from") {
+				priceFrom = $(value).val();
+			} else {
+				priceTo = $(value).val();
+			}
+			filtered = filterPrice(allGames);
+			displayStoreFirst(filtered)
+		}
+	}
+	//filtriranje po kategorijama
+	function removeUnchecked(array, value){
+		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu
+		if(index != -1){	// ako se nalazi u nizu
+			array.splice(index, 1) // uklanjanje tog elementa
+		}
+	}
+	var filtered;
+	var checkedCat = [];
+	var checkedMode = [];
+	var checkedOther = [];
+	function filterCat(data){
+		if(checkedCat.length){
+			filtered = data.filter(game => checkedCat.some(checked => game.catId.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	}
+	function filterMode(data){
+		if(checkedMode.length){
+			filtered = data.filter(game => checkedMode.some(checked => game.modes.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	}
+	function filterOther(data){
+		if(checkedOther.length){
+			filtered = data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)));
+		}
+		else{
+			filtered = data;
+		}
+		return filtered;
+	}
+	$(document).on("change", ":checkbox[name='category']", function() {
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedCat.push(value);
+		}
+		else{
+			removeUnchecked(checkedCat, value);
+		}
+		filtered = filterCat(allGames);
+		displayStoreFirst(filtered)
+	})
+	$(document).on("change", ":checkbox[name='modes']", function() {
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedMode.push(value);
+		}
+		else{
+			removeUnchecked(checkedMode, value);
+		}
+		filtered = filterMode(allGames);
+		displayStoreFirst(filtered)
+	})
+	$(document).on("change", ":checkbox[name='other']", function() {
+		let value = parseInt($(this).val());
+		if($(this).is(":checked")){
+			checkedOther.push(value);
+		}
+		else{
+			removeUnchecked(checkedOther, value);
+		}
+		filtered = filterOther(allGames);
+		displayStoreFirst(filtered)
+	})
+	$(document).on("change", "#sort", function(){
+		filtered = sortAll(allGames);
+		displayStoreFirst(filtered)
+	})
+
 	function displayComingSoon(data){
 		let content = "<div class='owl-carousel' id='coming-owl'>"; 
 		for(let game of data){
@@ -651,77 +718,89 @@ jQuery(document).ready(function()
 			
 		}
 	}
-	function removeUnchecked(array, value){ 
-		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu 
-		if(index != -1){	// ako se nalazi u nizu
-			array.splice(index, 1) // uklanjanje tog elementa 
-		}
-	}
-	var filtered = [];
-	var checkedCat = [];
-	var checkedMode = [];
-	var checkedOther = [];
-	$(document).on("change", ":checkbox", function(){
-		let val = Number($(this).val());
-		if($(this).is(":checked")){
-			if($(this)[0].name == "modes"){
-				checkedMode.push(val);
-			}
-			else if($(this)[0].name == "other"){
-				checkedOther.push(val);
-			}
-			else{
-				checkedCat.push(val);
-			}
-		}
-		else{
-			if($(this)[0].name == "modes"){
-				removeUnchecked(checkedMode, val)
-			}
-			else if($(this)[0].name == "other"){
-				removeUnchecked(checkedOther, val);
-			}
-			else{
-				removeUnchecked(checkedCat, val)
-			}
-		}
-		filtered = allGames.filter(function(game){
-			if(checkedCat.every(value => game.catId.includes(value)) && checkedOther.every(function(value){ if(game.otherId !== null){ return game.otherId.includes(value)}}) && checkedMode.every(value => game.modes.includes(value)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo)
-				{ 
-					return game
-				}
-		})
-		displayStoreFirst(filtered);
-		if(!filtered.length){
-			displayNoResults()
-		}
-	})
 
-	var priceFrom = 0;
-	var priceTo = 60;
-	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
-	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
-			
-	function getRangeValue(output, value){
-		return function(){
-			$(output).val($(value).val());
-			if(output == "#from"){
-				priceFrom = $(value).val();
-			}
-			else{
-				priceTo = $(value).val();
-			}
-			
-			filtered = allGames.filter(function(game){
-				if(checkedCat.every(value => game.catId.includes(value)) && checkedOther.every(function(value){ if(game.otherId !== null){ return game.otherId.includes(value)}}) && checkedMode.every(value => game.modes.includes(value))){
-					return Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo
-			}})
-			displayStoreFirst(filtered)
-			if(!filtered.length){
-				displayNoResults();
-			}
-		}
-	}
+
+
+
+
+	// $(document).on("change", ":checkbox", function(){
+	// 	let val = Number($(this).val());
+	// 	if($(this).is(":checked")){
+	// 		if($(this)[0].name == "modes"){
+	// 			checkedMode.push(val);
+	// 		}
+	// 		else if($(this)[0].name == "other"){
+	// 			checkedOther.push(val);
+	// 		}
+	// 		else{
+	// 			checkedCat.push(val);
+	// 		}
+	// 	}
+	// 	else{
+	// 		if($(this)[0].name == "modes"){
+	// 			removeUnchecked(checkedMode, val);
+	// 		}
+	// 		else if($(this)[0].name == "other"){
+	// 			removeUnchecked(checkedOther, val);
+	// 		}
+	// 		else{
+	// 			removeUnchecked(checkedCat, val);
+	// 		}
+	// 	}
+	// 	filterAll();
+	// 	filtered = filterCat(allGames);
+	// 	filtered = filterMode(allGames);
+	// 	filtered = filterOther(allGames);
+	// 	displayStoreFirst(filtered);
+	// 	if(!filtered.length){
+	// 		displayNoResults();
+	// 	}
+	// })
+	// function filterCat(data){
+	// 	if(checkedCat.length){
+	// 		return data.filter(game => checkedCat.some(checked => game.catId.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// 	}
+	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// }
+	// function filterMode(data){
+	// 	if(checkedMode.length){
+	// 		return data.filter(game => checkedMode.some(checked => game.modes.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// 	}
+	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// }
+	// function filterOther(data){
+	// 	if(checkedOther.length){
+	// 		return data.filter(game => checkedOther.some(checked => game.otherId.includes(checked)) && Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// 	}
+	// 	return data.filter(game => Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo);
+	// }
+	// function filterAll(){
+	// 	getGames(displayStoreFirst);
+	// }
+	// var priceFrom = 0;
+	// var priceTo = 60;
+	// $("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
+	// $("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
+	//
+	// function getRangeValue(output, value){
+	// 	return function(){
+	// 		// $(output).val($(value).val());
+	// 		// if(output == "#from"){
+	// 		// 	priceFrom = $(value).val();
+	// 		// }
+	// 		// else{
+	// 		// 	priceTo = $(value).val();
+	// 		// }
+	// 		// filtered = allGames.filter(function(game){
+	// 		// 	if(checkedCat.every(value => game.catId.includes(value)) && checkedOther.every(function(value){ if(game.otherId !== null){ return game.otherId.includes(value)}}) && checkedMode.every(value => game.modes.includes(value))){
+	// 		// 		return Math.ceil(game.price.value.netPrice) > priceFrom && Math.floor(game.price.value.netPrice) < priceTo
+	// 		// }})
+	// 		// displayStoreFirst(filtered)
+	// 		// if(!filtered.length){
+	// 		// 	displayNoResults();
+	// 		// }
+	// 	}
+	// }
 
 	$("#sortDdl").hide();
 	$("#sortBtn").focus(function(){
@@ -731,7 +810,7 @@ jQuery(document).ready(function()
 		$("#sortDdl").fadeOut()
 	})
 	function sortByNameAZ(data){
-		data.sort(function(a,b){
+		return data.sort(function(a,b){
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
 			if(nameA < nameB){
@@ -744,7 +823,7 @@ jQuery(document).ready(function()
 		})
 	}
 	function sortByNameZA(data){
-		data.sort(function(a,b){
+		return data.sort(function(a,b){
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
 			if(nameA < nameB){
@@ -757,7 +836,7 @@ jQuery(document).ready(function()
 		})
 	}
 	function sortByPriceHighLow(data){
-		data.sort(function(a,b){
+		return data.sort(function(a,b){
 			var priceA;
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
@@ -773,7 +852,7 @@ jQuery(document).ready(function()
 		})
 	}
 	function sortByPriceLowHigh(data){
-		data.sort(function(a,b){
+		return data.sort(function(a,b){
 			var priceA;
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
@@ -788,31 +867,24 @@ jQuery(document).ready(function()
 			return 0;
 		})
 	}
-	$("#sort").on("change", function(){
-		let value = $(this).val();
+	function sortAll(data){
+		let value = $("#sort").val();
 		if(value == 1){
-			sortByNameAZ(allGames);
-			sortByNameAZ(filtered);
+			return sortByNameAZ(data);
 		}
 		else if(value == 2){
-			sortByNameZA(allGames);
-			sortByNameZA(filtered)
+			return sortByNameZA(data);
 		}
 		else if(value == 3){
-			sortByPriceHighLow(allGames);
-			sortByPriceHighLow(filtered)
+			return sortByPriceHighLow(data);
 		}
 		else if(value == 4){
-			sortByPriceLowHigh(allGames);
-			sortByPriceLowHigh(filtered)
-		}
-		if(!filtered.length){
-			displayStoreFirst(allGames)
+			return sortByPriceLowHigh(data);
 		}
 		else{
-			displayStoreFirst(filtered)
+			return data;
 		}
-	})
+	}
 	function displayPagination(otherPages, currentPage){
 		let allItems = [];
 		if(otherPages.length > maxItemsStore){
@@ -837,7 +909,6 @@ jQuery(document).ready(function()
 		}			
 		
 		$(".pagination-item").on("click", function(){
-			window.top.location.href = "#sortBy"
 			if(this.id == "pag-1"){
 				displayGames(currentPage, "products", "")
 					$(".pagination-item").removeClass("active-pag")
@@ -867,4 +938,5 @@ jQuery(document).ready(function()
 						</div>`;
 			$("#products").html(msg) 
 	}
+
 });
