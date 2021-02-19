@@ -1,7 +1,8 @@
 jQuery(document).ready(function()
 {
 	//region Global variables
-		//region Template variables
+
+	//region Template variables
 	const header = $('.header');
 	const hamburger = $('.hamburger_container');
 	const menu = $('.hamburger_menu');
@@ -10,12 +11,31 @@ jQuery(document).ready(function()
 	const fsOverlay = $('.fs_menu_overlay');
 	//endregion
 
-		//region My variables
+	//region My variables
+	//region Location
 	const location = window.location.pathname;
+	//endregion
+	//region Data storage
 	var allGames, categories, modes, otherFilters;
+	//endregion
+	//region Rotate Font Awesome
 	var degreesCat = 0, degreesPrice = 0, degreesMore = 0, degreesOther = 0;
+	//endregion
+	//region Store max items
 	var maxItemsStore = 9;
 	//endregion
+	//region Filter
+	var filtered;
+	var checkedCat = [];
+	var checkedMode = [];
+	var checkedOther = [];
+	//endregion
+	//region Price
+	var priceTo = 60;
+	var priceFrom = 0;
+	//endregion
+	//endregion
+
 	//endregion
 
 	//region Every page init - Header & Menu
@@ -660,8 +680,6 @@ jQuery(document).ready(function()
 	//endregion
 
 	//region Filtering functions - Price - Categories - Mode - Other
-	var priceTo = 60;
-	var priceFrom = 0;
 	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
 	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
 
@@ -682,7 +700,6 @@ jQuery(document).ready(function()
 			displayStoreFirst(filtered)
 		}
 	};
-	//filtriranje po kategorijama
 	function removeUnchecked(array, value)
 	{
 		var index = array.indexOf(value);	// dohvatanje indeksa elementa koji je unchecked u nizu
@@ -690,10 +707,7 @@ jQuery(document).ready(function()
 			array.splice(index, 1) // uklanjanje tog elementa
 		}
 	};
-	var filtered;
-	var checkedCat = [];
-	var checkedMode = [];
-	var checkedOther = [];
+
 	function filterCat(data)
 	{
 		if(checkedCat.length){
