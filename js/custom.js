@@ -1058,44 +1058,77 @@ $(document).ready(function()
 		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 	}
 
-	newsletterForm.onsubmit = function(event){
-		event.preventDefault();
+	newsletterForm.addEventListener('submit', function(e){
+		e.preventDefault();
 		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		if(correctNewsletter){
-			if(!news.length){
-				setCookie('newsletter', newsletter.value, 6);
-			}
-			else{
-				checkCookieNewsletter();
-			}
+			setCookie('newsletter', newsletter.value, 6);
 		}
-	}
+	})
 	//endregion
 
 	//region Set cookie function
-	var cookieVal = [];
 	function setCookie(name, value, duration){
+		checkCookieNewsletter();
 		let date = new Date();
 		date.setMonth(date.getMonth() + duration);
 		let cookie = document.cookie.split("; ").find(val => val.startsWith(name + '='));
 		if(cookie) {
-			console.log(value)
+			if(news.length){
+				if(news.includes(value)){
+					displayNewsletterModal();
+				}
+				else{
+					if(value.length){
+						if(!news.includes(value)){
+							news.push(value);
+						}
+					}
+					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
+				}
+			}
 		}
 		else{
 			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
 		}
+
 	};
-	var news = [];
+	var news = []; // ubacivanje mejlova za newsletter
 	function checkCookieNewsletter(){
-		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter='));
-		if(cookie){
-			let values = cookie.split(',');
-			let v = values[0].replace('newsletter=', '');
-			news.push(v);
-			setCookie('newsletter', news, 6);
+		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter=')); //dohvatamo kolacice vezane za newsletter mejlove
+		if(cookie){ //ako postoje
+			let values = cookie.split(','); // parcamo sve unete mejlove na komade - da dobijemo niz mejlova
+			let v = values[0].replace('newsletter=', ''); // dohvatamo prvu vrednost nakon naziva kolacica, i uklanjamo 'newsletter='
+			if(!news.includes(v)){ // prvo sto radimo, saljemo prvi element kolacica u niz
+				news.push(v);
+			}
+			for(let x of values){ // saljemo svaku vrednost koja ne sadrzi 'newsletter=' i one vrednosti ako ne postoje vec u nizu
+				if(!x.includes('newsletter')){
+					if(!news.includes(x)){
+						news.push(x);
+					}
+				}
+			}
 		}
 	}
-	checkCookieNewsletter();
+	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
+
+	function displayNewsletterModal(){
+		let modal = document.createElement('div');
+		modal.setAttribute('id', 'newsletter-subscribed-modal');
+		let footer = document.getElementsByTagName('footer')
+		modal.innerHTML = 'Oops. Looks like you are already subscribed to our newsletter.';
+		$(modal).insertAfter(footer);
+		$(modal).fadeIn();
+		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a
+			setTimeout(function(){$(modal).fadeOut(); resolve()}, 5000);
+		})
+		promise.then(function(){ // cekamo izvrsavanje promise-a
+			setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
+				$(modal).remove();
+			}, 1000)
+		})
+	}
 	//endregion
 
 });
