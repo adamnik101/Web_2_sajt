@@ -1091,7 +1091,6 @@ $(document).ready(function()
 		else{
 			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
 		}
-
 	};
 	var news = []; // ubacivanje mejlova za newsletter
 	function checkCookieNewsletter(){
