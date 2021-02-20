@@ -1076,12 +1076,13 @@ $(document).ready(function()
 		if(cookie) {
 			if(news.length){
 				if(news.includes(value)){
-					displayNewsletterModal();
+					displayNewsletterModal('Oops. Looks like you are already subscribed to our newsletter.');
 				}
 				else{
 					if(value.length){
 						if(!news.includes(value)){
 							news.push(value);
+							displayNewsletterModal('You have successfully subscribed to our newsletter.');
 						}
 					}
 					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
@@ -1112,11 +1113,11 @@ $(document).ready(function()
 	}
 	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
 
-	function displayNewsletterModal(){
+	function displayNewsletterModal(text){
 		let modal = document.createElement('div');
 		modal.setAttribute('id', 'newsletter-subscribed-modal');
 		let footer = document.getElementsByTagName('footer')
-		modal.innerHTML = 'Oops. Looks like you are already subscribed to our newsletter.';
+		modal.innerHTML = text;
 		$(modal).insertAfter(footer);
 		$(modal).fadeIn();
 		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a
