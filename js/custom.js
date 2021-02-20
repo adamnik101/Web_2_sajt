@@ -34,6 +34,9 @@ $(document).ready(function()
 	var priceTo = 60;
 	var priceFrom = 0;
 	//endregion
+	//region Newsletter
+	var news = []; // ubacivanje mejlova za newsletter
+	//endregion
 	//endregion
 
 	//endregion
@@ -41,6 +44,7 @@ $(document).ready(function()
 	//region Every page init - Header & Menu
 	setHeader();
 	initMenu();
+	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
 	//endregion
 
 	//region Page location
@@ -596,6 +600,31 @@ $(document).ready(function()
 		}
 	};
 	//endregion
+
+	//region Contact form - check
+	function checkInputValues(input, errDiv ,regEx, ifIsEmptyErrorMsg, ifDidntPassRegExMsg){
+		let val = false;
+		let err;
+		if(!input.value.length){
+			err = ifIsEmptyErrorMsg;
+			$(input).css('border', '2px solid #e21e21');
+			$('.' + errDiv).html(err);
+		}
+		else{
+			if(!regEx.test(input.value)){
+				err = ifDidntPassRegExMsg;
+				$(input).css('border', '2px solid #e21e21');
+				$('.' + errDiv).html(err);
+			}
+			else{
+				$(input).css('border', '2px solid green');
+				$('.' + errDiv).html('');
+				val = true;
+			}
+		}
+		return val;
+	} // for contact form
+	//endregion
 	//endregion
 
 	//region Single page product
@@ -1020,80 +1049,26 @@ $(document).ready(function()
 	};
 	//endregion
 
-
-	const newsletterForm = document.getElementById('newsletter_form');
-	const newsletter = document.getElementById('newsletter_email');
-	var correctNewsletter = false;
-	//region RegEx
+	//region Global RegEx
 
 	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/;
 
 	//endregion
 
-	function checkInputValues(input, errDiv ,regEx, ifIsEmptyErrorMsg, ifDidntPassRegExMsg){
-		let val = false;
-		let err;
-		if(!input.value.length){
-			err = ifIsEmptyErrorMsg;
-			$(input).css('border', '2px solid #e21e21');
-			$('.' + errDiv).html(err);
-		}
-		else{
-			if(!regEx.test(input.value)){
-				err = ifDidntPassRegExMsg;
-				$(input).css('border', '2px solid #e21e21');
-				$('.' + errDiv).html(err);
-			}
-			else{
-				$(input).css('border', '2px solid green');
-				$('.' + errDiv).html('');
-				val = true;
-			}
-		}
-		return val;
-	}
-
 	//region Newslettter
+	const newsletterForm = document.getElementById('newsletter_form');
+	const newsletter = document.getElementById('newsletter_email');
+	var correctNewsletter = false;
 	newsletter.onchange = function(){
 		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 	}
-
-	newsletterForm.addEventListener('submit', function(e){
+	newsletterForm.onsubmit = function (e){
 		e.preventDefault();
 		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		if(correctNewsletter){
 			setCookie('newsletter', newsletter.value, 6);
 		}
-	})
-	//endregion
-
-	//region Set cookie function
-	function setCookie(name, value, duration){
-		checkCookieNewsletter();
-		let date = new Date();
-		date.setMonth(date.getMonth() + duration);
-		let cookie = document.cookie.split("; ").find(val => val.startsWith(name + '='));
-		if(cookie) {
-			if(news.length){
-				if(news.includes(value)){
-					displayNewsletterModal('Oops. Looks like you are already subscribed to our newsletter.');
-				}
-				else{
-					if(value.length){
-						if(!news.includes(value)){
-							news.push(value);
-							displayNewsletterModal('You have successfully subscribed to our newsletter.');
-						}
-					}
-					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
-				}
-			}
-		}
-		else{
-			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
-		}
-	};
-	var news = []; // ubacivanje mejlova za newsletter
+	}
 	function checkCookieNewsletter(){
 		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter=')); //dohvatamo kolacice vezane za newsletter mejlove
 		if(cookie){ //ako postoje
@@ -1111,8 +1086,6 @@ $(document).ready(function()
 			}
 		}
 	}
-	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
-
 	function displayNewsletterModal(text){
 		let modal = document.createElement('div');
 		modal.setAttribute('id', 'newsletter-subscribed-modal');
@@ -1129,6 +1102,35 @@ $(document).ready(function()
 			}, 1000)
 		})
 	}
+
+	//endregion
+
+	//region Set cookie function
+	function setCookie(name, value, duration){
+		checkCookieNewsletter();
+		let date = new Date();
+		date.setMonth(date.getMonth() + duration);
+		let cookie = document.cookie.split("; ").find(val => val.startsWith(name + '='));
+		if(cookie) {
+			if(news.length){
+				if(news.includes(value)){
+					displayNewsletterModal('Oops. Looks like you are already subscribed to our newsletter.');
+				}
+				else{
+					if(value.length){
+						if(!news.includes(value)){
+							news.push(value);
+						}
+					}
+					displayNewsletterModal('You have successfully subscribed to our newsletter.');
+					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
+				}
+			}
+		}
+		else{
+			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
+		}
+	};
 	//endregion
 
 });
