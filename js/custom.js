@@ -65,6 +65,62 @@ $(document).ready(function()
 		getUpcoming(displayComingSoon);
 		filterResponsive();
 	}
+	else if(location.indexOf("contact") != -1){
+		const form = document.getElementById('contact');
+		const fullName = document.getElementById('input_name');
+		const mail = document.getElementById('input_email');
+		const subject = document.getElementById('input_subject')
+		const message = document.getElementById('input_message');
+		var correctName = false, correctMail = false, correctSubject = false, correctMessage = false;
+
+		const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/;
+		const subjectReg = /^[A-ZŠĐČĆŽ][a-zA-Z0-9-_ ]+$/;
+		const messageLength = 20;
+
+		fullName.onchange = function(){
+			checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
+		}
+		mail.onchange = function(){
+			checkInputValues(mail, 'mail', mailReg, 'Mail cannot be empty.', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
+		}
+		subject.onchange = function(){
+			checkInputValues(subject, 'subject', subjectReg, 'Subject cannot be empty.', 'Subject must start with capital letter.');
+		}
+		message.onchange = function(){
+			checkMessage();
+		}
+		form.onsubmit = function(event){
+			event.preventDefault();
+			correctName = checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
+			correctMail = checkInputValues(mail, 'mail', mailReg, 'Mail cannot be empty.', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
+			correctSubject = checkInputValues(subject, 'subject', subjectReg, 'Subject cannot be empty.', 'Subject must start with capital letter.');
+			correctMessage = checkMessage();
+			if(correctName && correctMail && correctSubject && correctMessage){
+				console.log('sdasadasdsasdsad')
+			}
+		}
+		function checkMessage(){
+			let val = false;
+			let err;
+			if(message.value.length < messageLength){
+				if(!message.value.length){
+					err = 'Message cannot be empty.';
+				}
+				else {
+					err = 'Message must contain at least 20 characters.';
+				}
+				$('.message').html(err);
+				$(message).css('border', '2px solid #e21e21');
+			}
+			else{
+				$(message).css('border', '2px solid green');
+				$('.message').html('');
+				val = true;
+			}
+			return val;
+		}
+	}
+
 	//endregion
 
 	//region Ajax Call jQuery
@@ -964,45 +1020,51 @@ $(document).ready(function()
 	};
 	//endregion
 
-	const fullName = document.getElementById('input_name');
-	const mail = document.getElementById('input_email');
+
+	const newsletterForm = document.getElementById('newsletter_form');
+	const newsletter = document.getElementById('newsletter_email');
+	var correctNewsletter = false;
 	//region RegEx
-	const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/;
+
 	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/;
+
 	//endregion
 
-	function checkFullName(){
-		if(!fullNameReg.test(fullName.value)){
-			let err = '<span class="err name">Name is not in a good format.</span>';
-			if(!$('#contact').find('.name').length){
-				$(err).insertAfter(fullName);
-				$(fullName).css('border', '2px solid #e21e21');
-			}
+	function checkInputValues(input, errDiv ,regEx, ifIsEmptyErrorMsg, ifDidntPassRegExMsg){
+		let val = false;
+		let err;
+		if(!input.value.length){
+			err = ifIsEmptyErrorMsg;
+			$(input).css('border', '2px solid #e21e21');
+			$('.' + errDiv).html(err);
 		}
 		else{
-			$('#contact').find('.name').remove();
-			$(fullName).css('border', '2px solid green');
-		}
-	}
-	function checkMail(){
-		if(!mailReg.test(mail.value)){
-			let err = '<span class="err mail">Mail is not in a good format.</span>';
-			if(!$('#contact').find('.mail').length){
-				$(err).insertAfter(mail);
-				$(mail).css('border', '2px solid #e21e21');
+			if(!regEx.test(input.value)){
+				err = ifDidntPassRegExMsg;
+				$(input).css('border', '2px solid #e21e21');
+				$('.' + errDiv).html(err);
+			}
+			else{
+				$(input).css('border', '2px solid green');
+				$('.' + errDiv).html('');
+				val = true;
 			}
 		}
-		else{
-			$('#contact').find('.mail').remove();
-			$(mail).css('border', '2px solid green');
-		}
+		return val;
 	}
+
 	//region Check Regular Exp on change
-	fullName.onchange = function(){
-		checkFullName();
+
+	newsletter.onchange = function(){
+		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 	}
-	mail.onchange = function(){
-		checkMail();
+
+	newsletterForm.onsubmit = function(event){
+		event.preventDefault();
+		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
+		if(correctNewsletter){
+			alert('You successfully subscribed to our newsletter!');
+		}
 	}
 	//endregion
 });

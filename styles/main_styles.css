@@ -1129,11 +1129,14 @@ a .deal_ofthe_week_button span{
 	border-radius: 20px;
 	background-color: #e21e21;
 	box-shadow: 10px 10px 15px rgb(17, 17, 17);
+	transition: 0.5s ease;
 }
 .discover #btnDiscover:hover ~ .game > span:first-child{
 	color: #fff;
 }
-
+.discover #btnDiscover:hover{
+	background-color: #fff;
+}
 .discover #btnDiscover:hover ~ .game{
 	color: #e21e21;
 }
@@ -1233,10 +1236,6 @@ a .deal_ofthe_week_button span{
 	margin-bottom: 0px;
 	line-height: 1.7;
 	color: #7f7f7f;
-}
-.newsletter_form
-{
-	height: 120px;
 }
 #newsletter_email
 {
@@ -1777,14 +1776,9 @@ textarea
 	padding-left: 20px;
 	padding-top: 15px;
 }
-textarea:hover
-{
-	border-color: #7f7f7f !important;
-}
-#contact .err{
+#contact .err, .newsletterErr{
 	color: #e21e21;
 	width: 100%;
-	padding: 10px;
 }
 
 .review_submit_btn
@@ -1805,4 +1799,12 @@ textarea:hover
 	background-color: #e21e21;
 	color: #fff;
 	padding: 10px 30px;
+}
+.cart-item{
+	background-color: #2c2c2c;
+	border-radius: 10px;
+}
+.summary-body{
+	background-color: #2c2c2c;
+	border-radius: 10px;
 }

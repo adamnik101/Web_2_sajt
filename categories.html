@@ -61,7 +61,7 @@
 							</ul>
 							<ul class="navbar_user">
 								<li class="checkout">
-									<a href="#!">
+									<a href="cart.html">
 										<i class="fa fa-shopping-cart" aria-hidden="true"></i>
 										<span id="checkout_items" class="checkout_items">0</span>
 									</a>
@@ -228,11 +228,14 @@
 						<p>Subscribe to our newsletter and get 20% off your first purchase</p>
 					</div>
 				</div>
-				<div class="col-lg-6">
-					<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-						<input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-						<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-					</div>
+				<div class="col-lg-6 d-flex justify-content-center align-items-center">
+					<form id="newsletter_form" class="d-flex justify-content-center align-items-center flex-column">
+						<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+							<input id="newsletter_email" type="email" placeholder="Your email">
+							<input id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Subscribe">
+						</div>
+						<span class="err newsletterErr text-center pb-2 pb-lg-0 pt-lg-2 pt-0"></span>
+					</form>
 				</div>
 			</div>
 		</div>
