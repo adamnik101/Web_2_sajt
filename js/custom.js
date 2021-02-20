@@ -1053,8 +1053,7 @@ $(document).ready(function()
 		return val;
 	}
 
-	//region Check Regular Exp on change
-
+	//region Newslettter
 	newsletter.onchange = function(){
 		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 	}
@@ -1063,8 +1062,40 @@ $(document).ready(function()
 		event.preventDefault();
 		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		if(correctNewsletter){
-			alert('You successfully subscribed to our newsletter!');
+			if(!news.length){
+				setCookie('newsletter', newsletter.value, 6);
+			}
+			else{
+				checkCookieNewsletter();
+			}
 		}
 	}
 	//endregion
+
+	//region Set cookie function
+	var cookieVal = [];
+	function setCookie(name, value, duration){
+		let date = new Date();
+		date.setMonth(date.getMonth() + duration);
+		let cookie = document.cookie.split("; ").find(val => val.startsWith(name + '='));
+		if(cookie) {
+			console.log(value)
+		}
+		else{
+			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
+		}
+	};
+	var news = [];
+	function checkCookieNewsletter(){
+		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter='));
+		if(cookie){
+			let values = cookie.split(',');
+			let v = values[0].replace('newsletter=', '');
+			news.push(v);
+			setCookie('newsletter', news, 6);
+		}
+	}
+	checkCookieNewsletter();
+	//endregion
+
 });

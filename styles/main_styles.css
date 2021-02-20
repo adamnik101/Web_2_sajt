@@ -1750,7 +1750,7 @@ select{
 {
 	font-size: 16px !important;
 	font-weight: 400;
-	color: #b9b4c7 !important;
+	color: #fff !important;
 }
 .input_ph:-moz-placeholder /* older Firefox*/
 {
