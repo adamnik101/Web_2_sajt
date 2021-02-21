@@ -49,7 +49,7 @@ $(document).ready(function()
 	//endregion
 
 	//region Page location
-	if(location.indexOf("index") !== -1 || location == "/Web_2_sajt/")
+	if(location.indexOf("index") !== -1 || location == "/gamehut/")
 	{
 		displayCountdown();
 		getGames(displayAllSections);
