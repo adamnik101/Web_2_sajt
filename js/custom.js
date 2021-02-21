@@ -141,7 +141,7 @@ $(document).ready(function()
 		function checkMessageCookie(){
 			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
 			if(cookie){
-				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime')[0]);
+				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime'));
 				console.log(msgTime)
 				let date = new Date(msgTime.split('=')[1]);
 				date.setHours(date.getHours() - 1);
