@@ -144,7 +144,7 @@ $(document).ready(function()
 				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime'));
 				console.log(msgTime)
 				let date = new Date(msgTime.split('=')[1]);
-				date.setHours(date.getHours() - 1);
+				date.setHours(date.getHours());
 				let now = new Date();
 				console.log(date.toUTCString(), now.toUTCString())
 				let difference = date.getTime() - now.getTime();
