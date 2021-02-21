@@ -1,8 +1,9 @@
+$(window).on('load',function(){
+	$('.loader-flex-fix').fadeOut();
+	console.log('loaded');
+})
 $(document).ready(function()
 {
-	$(window).on('load',function(){
-		$('.loader-flex-fix').fadeOut();
-	})
 	"use strict";
 	//region Global variables
 
