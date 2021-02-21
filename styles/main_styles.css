@@ -1825,6 +1825,15 @@ textarea
 .cart-item .removeGame .fas{
 	font-size: 16px;
 }
+.cart-item .quantityBtn{
+	border: none;
+	margin-left: 10px;
+	width: 25px;
+	height: 25px;
+	background-color: #747474;
+	color: #1d1d1d;
+	border-radius: 5px;
+}
 .summary-body{
 	background-color: #2c2c2c;
 	border-radius: 10px;

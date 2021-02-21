@@ -165,7 +165,6 @@ $(document).ready(function()
 		getTotal();
 		function displayCart(){
 			if(localStorage.getItem('addedGame')){
-				console.log(localStorage.getItem('addedGame'));
 				let gamesList = JSON.parse(localStorage.getItem('addedGame'));
 				let cart = '';
 				for(let game of gamesList){
@@ -182,9 +181,12 @@ $(document).ready(function()
 												<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
 											</div>
 											<div class='d-flex justify-content-start flex-row'>
-												<p class="m-0">Quantity:</p><h5 class="ml-2">${game.quantity}</h5>
+												<p class="m-0">Quantity:</p>
+												<h5 class="ml-2 mb-0">${game.quantity}</h5>
+												<button type="button" data-quantity="raise" data-id="${game.id}" class="quantityBtn"><i class="fas fa-plus"></i></button>
+												<button type="button" data-quantity="lower" data-id="${game.id}" class="quantityBtn"><i class="fas fa-minus"></i></button>
 											</div>
-											<button type="button" class="removeGame" data-id='${game.id}'><i class="fas fa-trash-alt"></i></button>
+											<button type="button" class="removeGame d-flex justify-content-center align-items-center" data-id='${game.id}'><i class="fas fa-trash-alt d-block"></i></button>
 			                            </div>
 			                        </div>
 			                    </li>`
@@ -197,7 +199,6 @@ $(document).ready(function()
 		}
 		$(document).on('click', '.removeGame', function(){
 			var id = $(this).data('id');
-			console.log(id)
 			let allAdded = JSON.parse(localStorage.getItem('addedGame'));
 			let afterRemoving = [];
 			for(let game of allAdded){
@@ -205,7 +206,6 @@ $(document).ready(function()
 					afterRemoving.push(game);
 				}
 			}
-			console.log('hjasdb jhasbdhaj b')
 			if(afterRemoving.length){
 				localStorage.setItem('addedGame', JSON.stringify(afterRemoving));
 			}
@@ -216,6 +216,36 @@ $(document).ready(function()
 			displayCart();
 			getTotal();
 		})
+		$(document).on('click', '.quantityBtn', changeQuantity);
+		function changeQuantity(){
+			const minQuantity = 1;
+			const maxQuantity = 100;
+			const quantityData = $(this).data('quantity');
+			const gameId = $(this).data('id');
+			var games = JSON.parse(localStorage.getItem('addedGame'));
+			if(quantityData == 'raise'){
+
+				games.forEach(function(game){
+					if(gameId == game.id){
+						if(game.quantity < maxQuantity){
+							game.quantity++;
+						}
+					}
+				})
+			}
+			else{
+				games.forEach(function(game){
+					if(gameId == game.id){
+						if(game.quantity > minQuantity){
+							game.quantity--;
+						}
+					}
+				})
+			}
+			localStorage.setItem('addedGame', JSON.stringify(games));
+			displayCart();
+			getTotal();
+		}
 	}
 	//endregion
 
@@ -752,11 +782,11 @@ $(document).ready(function()
 		var total = 0;
 		if(localStorage.getItem('addedGame')){
 			let allGames = JSON.parse(localStorage.getItem('addedGame'));
-				console.log(allGames)
 				for(let game of allGames){
-					total += parseFloat(game.quantity) * game.price;
+					total += game.quantity * game.price;
 				}
 		}
+		total = total.toFixed(2);
 		$('#total-price').html(total);
 	}
 	//endregion
@@ -918,7 +948,7 @@ $(document).ready(function()
 							price : game.price.value.netPrice,
 							quantity : 1
 						})
-						displayMessageModal(`You added <i>${game.name}</i> into your cart.`)
+						displayMessageModal(`You added <i>${game.name} </i> into your cart.`)
 					}
 					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
 				}
