@@ -1039,12 +1039,16 @@ a .deal_ofthe_week_button span{
 {
 	background: #2b2b34 !important;
 }
-.loader-wrapper{
+.loader-flex-fix{
 	width: 100%;
 	height: 100%;
 	position: fixed;
 	background: #242424;
 	z-index: 999;
+}
+.loader-wrapper{
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;

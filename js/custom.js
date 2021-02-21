@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
 	$(window).on('load',function(){
-		$('.loader-wrapper').fadeOut();
+		$('.loader-flex-fix').fadeOut();
 	})
 	"use strict";
 	//region Global variables
@@ -68,15 +68,14 @@ $(document).ready(function()
 	}
 	else if(location.indexOf("categories") !== -1)
 	{
-		initShop();
-		function initShop(){
 			getGames(displayStoreFirst);
-			getCategories(displayCheckbox, "categoryChb", categories, "categories");
-			getCategories(displayCheckbox, "mode", modes, "modes");
-			getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+			setTimeout(function(){
+				getCategories(displayCheckbox, "categoryChb", categories, "categories");
+				getCategories(displayCheckbox, "mode", modes, "modes");
+				getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+			}, 500)
 			getUpcoming(displayComingSoon);
 			filterResponsive();
-		}
 	}
 	else if(location.indexOf("contact") !== -1){
 		const form = document.getElementById('contact');
@@ -585,7 +584,7 @@ $(document).ready(function()
 	function displayCheckbox(data, div)
 	{
 		let display = "<div class='p-3'>";
-		let amount;
+		let amount ;
 		for(let item of data){
 			display += `<li class="d-flex align-items-center justify-content-start">
 							<label for="${item.name.split(" ").join("")}" class="customChb w-100"> ${item.name}
