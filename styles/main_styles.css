@@ -1039,6 +1039,25 @@ a .deal_ofthe_week_button span{
 {
 	background: #2b2b34 !important;
 }
+.loader-wrapper{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: #242424;
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.loader-wrapper .loader{
+	z-index: 999999;
+	background-image: url("../images/preloader.svg");
+	background-position: center;
+	background-size: contain;
+	width: 50%;
+	height: 50%;
+	background-repeat: no-repeat;
+}
 /*********************************
 7. Best Sellers
 *********************************/
@@ -1843,6 +1862,16 @@ textarea
 .summary-body{
 	background-color: #2c2c2c;
 	border-radius: 10px;
+}
+#total-price .price-final{
+	color: #fff;
+	font-size: 25px;
+}
+#line-total{
+	width: 100%;
+	height: 5px;
+	background-color: #747474;
+	border-radius: 2px;
 }
 #message-modal{
 	position: fixed;

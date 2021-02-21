@@ -1,3 +1,6 @@
+$(window).on('load', function(){
+	$('.loader-wrapper').fadeOut();
+});
 $(document).ready(function()
 {
 	"use strict";
@@ -787,7 +790,7 @@ $(document).ready(function()
 				}
 		}
 		total = total.toFixed(2);
-		$('#total-price').html(total);
+		$('#total-price').html(`<p>Your total:</p> <p class="price-final"><i class="fas fa-euro-sign"></i> ${total}</p>`);
 	}
 	//endregion
 
