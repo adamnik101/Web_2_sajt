@@ -1058,6 +1058,11 @@ a .deal_ofthe_week_button span{
 	height: 50%;
 	background-repeat: no-repeat;
 }
+#checkout{
+	border: none;
+	border-radius: 10px;
+	padding: 10px;
+}
 /*********************************
 7. Best Sellers
 *********************************/
@@ -1486,7 +1491,12 @@ a .deal_ofthe_week_button span{
 	height: 0;
 	width: 0;
   }
-  
+.customChb .amount{
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #747474 !important;
+}
   /* Create a custom checkbox */
   .checkmark {
 	position: absolute;

@@ -68,12 +68,15 @@ $(document).ready(function()
 	}
 	else if(location.indexOf("categories") !== -1)
 	{
-		getGames(displayStoreFirst);
-		getCategories(displayCheckbox, "categoryChb", categories, "categories");
-		getCategories(displayCheckbox, "mode", modes, "modes");
-		getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
-		getUpcoming(displayComingSoon);
-		filterResponsive();
+		initShop();
+		function initShop(){
+			getGames(displayStoreFirst);
+			getCategories(displayCheckbox, "categoryChb", categories, "categories");
+			getCategories(displayCheckbox, "mode", modes, "modes");
+			getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+			getUpcoming(displayComingSoon);
+			filterResponsive();
+		}
 	}
 	else if(location.indexOf("contact") !== -1){
 		const form = document.getElementById('contact');
@@ -582,21 +585,26 @@ $(document).ready(function()
 	function displayCheckbox(data, div)
 	{
 		let display = "<div class='p-3'>";
+		let amount;
 		for(let item of data){
 			display += `<li class="d-flex align-items-center justify-content-start">
 							<label for="${item.name.split(" ").join("")}" class="customChb w-100"> ${item.name}
 								<input type="checkbox" id="${item.name.split(" ").join("")}" value="${item.id}" name=`
 			if(div == "mode"){
 				display += "modes"
+				amount = allGames.filter(game => game.modes.includes(item.id));
 			}
 			else if(div == "categoryChb"){
 				display += "category"
+				amount = allGames.filter(game => game.catId.includes(item.id));
 			}
 			else{
 				display += "other"
+				amount = allGames.filter(game => game.otherId.includes(item.id));
 			}
 			display += `>
 								<span class="checkmark"></span>
+								<span class="amount">${amount.length}</span>
 							</label>					
 						</li>`
 		};
