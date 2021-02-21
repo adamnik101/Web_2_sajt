@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	$(document).on('load',function(){
+	$(window).on('load',function(){
 		$('.loader-wrapper').fadeOut();
 	})
 	"use strict";
