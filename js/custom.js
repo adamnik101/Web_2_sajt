@@ -134,7 +134,7 @@ $(document).ready(function()
 		var messageExpireTime;
 		function setMessageCookie(name, value, duration){
 			let date = new Date();
-			date.setHours(date.getHours() + duration);
+			date.setHours(date.getUTCHours() + duration);
 			document.cookie = `${name}=${value}; expires=${date.toUTCString()}; secure`
 			document.cookie = `msgTime=${date.toUTCString()}; expires=${date.toUTCString()}; secure`
 		}
