@@ -161,36 +161,61 @@ $(document).ready(function()
 		}
 	}
 	else if(location.indexOf("cart") !== - 1){
-		if(localStorage.getItem('addedGame')){
-			let gamesList = JSON.parse(localStorage.getItem('addedGame'));
-			let cart = '';
-			for(let game of gamesList){
-				cart += ` <li class="my-2">
-		                        <div class="cart-item row m-0 py-3">
-		                            <div class="cart-item-img col-4">
-		                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
-		                            </div>
-		                            <div class="col-8 d-flex flex-column ">
-			                            <div class="cart-item-name d-flex justify-content-start flex-row">
-			                                <p class="m-0">Game name:</p><h5 class="ml-2">${game.name}</h5>
-			                            </div>
-			                            <div class='d-flex justify-content-start flex-row'>
-											<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
-										</div>
-										<div class='d-flex justify-content-start flex-row'>
-											<p class="m-0">Quantity:</p><h5 class="ml-2">${game.quantity}</h5>
-										</div>
-										<button type="button" class="removeGame"><i class="fas fa-trash-alt"></i></button>
-		                            </div>
-		                        </div>
-		                    </li>`
-			}
-			$('#games-list').html(cart);
-		}
-		else{
-			$('#games-list').html("<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>");
-		}
+		displayCart();
 		getTotal();
+		function displayCart(){
+			if(localStorage.getItem('addedGame')){
+				console.log(localStorage.getItem('addedGame'));
+				let gamesList = JSON.parse(localStorage.getItem('addedGame'));
+				let cart = '';
+				for(let game of gamesList){
+					cart += ` <li class="my-2">
+			                        <div class="cart-item row m-0 py-3">
+			                            <div class="cart-item-img col-4">
+			                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
+			                            </div>
+			                            <div class="col-8 d-flex flex-column ">
+				                            <div class="cart-item-name d-flex justify-content-start flex-row">
+				                                <p class="m-0">Game name:</p><h5 class="ml-2">${game.name}</h5>
+				                            </div>
+				                            <div class='d-flex justify-content-start flex-row'>
+												<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
+											</div>
+											<div class='d-flex justify-content-start flex-row'>
+												<p class="m-0">Quantity:</p><h5 class="ml-2">${game.quantity}</h5>
+											</div>
+											<button type="button" class="removeGame" data-id='${game.id}'><i class="fas fa-trash-alt"></i></button>
+			                            </div>
+			                        </div>
+			                    </li>`
+				}
+				$('#games-list').html(cart);
+			}
+			else{
+				$('#games-list').html("<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>");
+			}
+		}
+		$(document).on('click', '.removeGame', function(){
+			var id = $(this).data('id');
+			console.log(id)
+			let allAdded = JSON.parse(localStorage.getItem('addedGame'));
+			let afterRemoving = [];
+			for(let game of allAdded){
+				if(game.id != id){
+					afterRemoving.push(game);
+				}
+			}
+			console.log('hjasdb jhasbdhaj b')
+			if(afterRemoving.length){
+				localStorage.setItem('addedGame', JSON.stringify(afterRemoving));
+			}
+			else{
+				localStorage.removeItem('addedGame');
+			}
+			checkCartAmount();
+			displayCart();
+			getTotal();
+		})
 	}
 	//endregion
 
@@ -724,14 +749,15 @@ $(document).ready(function()
 	}
 
 	function getTotal(){
+		var total = 0;
 		if(localStorage.getItem('addedGame')){
-			var total = 0;
 			let allGames = JSON.parse(localStorage.getItem('addedGame'));
-			for(let game of allGames){
-				total += parseFloat(game.quantity) * game.price;
-			}
-			$('#total-price').html(total);
+				console.log(allGames)
+				for(let game of allGames){
+					total += parseFloat(game.quantity) * game.price;
+				}
 		}
+		$('#total-price').html(total);
 	}
 	//endregion
 
@@ -882,7 +908,7 @@ $(document).ready(function()
 				if(game.id == gameId){
 					if(gameToAdd.some(x => x.id == gameId)) {
 						gameToAdd.find(x => x.id == gameId).quantity++;
-						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <i>${game.name}'s</i> in your cart.`)
+						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <i>${game.name}'s </i> in your cart.`)
 					}
 					else{
 						gameToAdd.push({
