@@ -87,7 +87,7 @@ $(document).ready(function()
 		var correctName = false, correctMail = false, correctSubject = false, correctMessage = false;
 
 		const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/;
-		const subjectReg = /^[A-ZŠĐČĆŽ][a-zA-Z0-9-_ ]+$/;
+		const subjectReg = /^[A-ZŠĐČĆŽ][a-zšđčćžA-ZŠĐČĆŽ0-9-_ ]+$/;
 		const messageLength = 20;
 
 		fullName.onchange = function(){
@@ -949,7 +949,7 @@ $(document).ready(function()
 				if(game.id == gameId){
 					if(gameToAdd.some(x => x.id == gameId)) {
 						gameToAdd.find(x => x.id == gameId).quantity++;
-						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <i>${game.name}'s </i> in your cart.`)
+						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <span>${game.name}'s </span> in your cart.`)
 					}
 					else{
 						gameToAdd.push({
@@ -959,7 +959,7 @@ $(document).ready(function()
 							price : game.price.value.netPrice,
 							quantity : 1
 						})
-						displayMessageModal(`You added <i>${game.name} </i> into your cart.`)
+						displayMessageModal(`You added <span>${game.name} </span> into your cart.`)
 					}
 					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
 				}
