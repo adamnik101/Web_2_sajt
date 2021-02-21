@@ -135,8 +135,8 @@ $(document).ready(function()
 		function setMessageCookie(name, value, duration){
 			let date = new Date();
 			date.setHours(date.getHours() + duration);
-			document.cookie = `${name}=${value};expires=${date.toUTCString()};secure`
-			document.cookie = `msgTime=${date.toUTCString()};expires=${date.toUTCString()};secure`
+			document.cookie = `${name}=${value}; expires=${date.toUTCString()}; secure`
+			document.cookie = `msgTime=${date.toUTCString()}; expires=${date.toUTCString()}; secure`
 		}
 		function checkMessageCookie(){
 			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
@@ -1164,14 +1164,14 @@ $(document).ready(function()
 					}
 					displayMessageModal('You have successfully subscribed to our newsletter.');
 					for(let i = news.length - 1; i < news.length; i++){
-						document.cookie = `${name}${i}=${news[i]};expires=${date.toUTCString()}`;
+						document.cookie = `${name}${i}=${news[i]}; expires=${date.toUTCString()}`;
 					}
 
 				}
 			}
 		}
 		else{
-			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
+			document.cookie = `${name}=${value}; expires=${date.toUTCString()}`;
 			displayMessageModal('You have successfully subscribed to our newsletter.');
 		}
 	}
