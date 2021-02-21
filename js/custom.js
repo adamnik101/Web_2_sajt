@@ -135,13 +135,14 @@ $(document).ready(function()
 		function setMessageCookie(name, value, duration){
 			let date = new Date();
 			date.setHours(date.getHours() + duration);
-			document.cookie = `${name}=${value};expires=${date.toUTCString()}`
-			document.cookie = 'msgTime=' + date.toUTCString();
+			document.cookie = `${name}=${value};expires=${date.toUTCString()};secure`
+			document.cookie = `msgTime=${date.toUTCString()};expires=${date.toUTCString()};secure`
 		}
 		function checkMessageCookie(){
 			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
 			if(cookie){
-				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime'));
+				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime')[0]);
+				console.log(msgTime)
 				let date = new Date(msgTime.split('=')[1]);
 				date.setHours(date.getHours() - 1);
 				let now = new Date();
@@ -1124,20 +1125,20 @@ $(document).ready(function()
 		}
 	};
 	function checkCookieNewsletter(){
-		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter=')); //dohvatamo kolacice vezane za newsletter mejlove
-		if(cookie){ //ako postoje
-			let values = cookie.split(','); // parcamo sve unete mejlove na komade - da dobijemo niz mejlova
-			let v = values[0].replace('newsletter=', ''); // dohvatamo prvu vrednost nakon naziva kolacica, i uklanjamo 'newsletter='
-			if(!news.includes(v)){ // prvo sto radimo, saljemo prvi element kolacica u niz
-				news.push(v);
+		let cookie = document.cookie.split("; "); //dohvatamo kolacice vezane za newsletter mejlove
+		let values = [];
+		for(let newsletter of cookie){
+			if(newsletter.includes('newsletter')){
+				values.push(newsletter.split('=')[1]);
 			}
-			for(let x of values){ // saljemo svaku vrednost koja ne sadrzi 'newsletter=' i one vrednosti ako ne postoje vec u nizu
-				if(!x.includes('newsletter')){
-					if(!news.includes(x)){
-						news.push(x);
-					}
+		}
+		if(cookie){ //ako postoje
+			for(let x of values){
+				if(!news.includes(x)){
+					news.push(x); // ubacujemo vrednosti kolacica koje vec ne postoje u nizu
 				}
 			}
+			console.log(news)
 		}
 	}
 
@@ -1162,7 +1163,10 @@ $(document).ready(function()
 						}
 					}
 					displayMessageModal('You have successfully subscribed to our newsletter.');
-					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
+					for(let i = news.length - 1; i < news.length; i++){
+						document.cookie = `${name}${i}=${news[i]};expires=${date.toUTCString()}`;
+					}
+
 				}
 			}
 		}
