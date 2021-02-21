@@ -102,8 +102,8 @@ $(document).ready(function()
 			correctMessage = checkMessage();
 			if(correctName && correctMail && correctSubject && correctMessage){
 				let isSent = checkMessageCookie();
-				if(isSent){
-					displayMessageModal('Oops. You must wait an hour between sending messages.');
+				if(isSent.val){
+					displayMessageModal(`You must wait ${isSent.msg} minutes to send another message.`);
 				}
 				else{
 					displayMessageModal('You have successfully sent a message.');
@@ -131,15 +131,28 @@ $(document).ready(function()
 			}
 			return val;
 		}
+		var messageExpireTime;
 		function setMessageCookie(name, value, duration){
 			let date = new Date();
 			date.setHours(date.getHours() + duration);
 			document.cookie = `${name}=${value};expires=${date.toUTCString()}`
+			document.cookie = 'msgTime=' + date.toUTCString();
 		}
 		function checkMessageCookie(){
 			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
 			if(cookie){
-				return true;
+				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime'));
+				let date = new Date(msgTime.split('=')[1]);
+				date.setHours(date.getHours() - 1);
+				let now = new Date();
+				console.log(date.toUTCString(), now.toUTCString())
+				let difference = date.getTime() - now.getTime();
+				let minutesLeft = Math.round(difference / 60000);
+				console.log(minutesLeft)
+				return {
+					val : true,
+					msg : minutesLeft
+				};
 			}
 			else{
 				return false;
