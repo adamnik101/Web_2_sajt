@@ -867,19 +867,24 @@ $(document).ready(function()
 		let gameId = $(this).data('id');
 			for(let game of games){
 				if(game.id == gameId){
-					gameToAdd.push({
-						id : game.id,
-						image : game.image.logo,
-						name : game.name,
-						price : game.price.value.netPrice,
-						quantity : 1
-					})
+					if(gameToAdd.some(x => x.id == gameId)) {
+						gameToAdd.find(x => x.id == gameId).quantity++;
+						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} ${game.name} in your cart.`)
+					}
+					else{
+						gameToAdd.push({
+							id : game.id,
+							image : game.image.logo,
+							name : game.name,
+							price : game.price.value.netPrice,
+							quantity : 1
+						})
+						displayMessageModal(`You added ${game.name} into cart.`)
+					}
 					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
 				}
 			}
-		console.log(gameToAdd);
 		checkCartAmount();
-		displayMessageModal('Added to cart')
 	}
 	//endregion
 

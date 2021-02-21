@@ -1815,6 +1815,12 @@ textarea
 	top: 0;
 	right: 15px;
 	padding: 5px 10px;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+	transition: 0.2s ease;
+}
+.cart-item .removeGame:hover{
+	box-shadow: none;
+	transform: scale(0.98);
 }
 .cart-item .removeGame .fas{
 	font-size: 16px;
