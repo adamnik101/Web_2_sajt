@@ -1044,7 +1044,7 @@ a .deal_ofthe_week_button span{
 	height: 100%;
 	position: fixed;
 	background: #242424;
-	z-index: 9999;
+	z-index: 999;
 	display: flex;
 	justify-content: center;
 	align-items: center;
