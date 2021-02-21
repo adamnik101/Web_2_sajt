@@ -241,6 +241,10 @@
 	#filter-header{
 		background-color: #1d1d1d;
 	}
+	.cart-item .removeGame {
+		top: 70%;
+	}
+
 }
 
 /************
@@ -412,7 +416,6 @@
 
 @media only screen and (max-width: 480px)
 {
-	
 }
 
 /************
