@@ -46,6 +46,7 @@ $(document).ready(function()
 	setHeader();
 	initMenu();
 	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
+	checkCartAmount();
 	//endregion
 
 	//region Page location
@@ -59,6 +60,7 @@ $(document).ready(function()
 	}
 	else if(location.indexOf("single") !== -1)
 	{
+		var games;
 		getSingle();
 	}
 	else if(location.indexOf("categories") !== -1)
@@ -158,7 +160,31 @@ $(document).ready(function()
 			}
 		}
 	}
-
+	else if(location.indexOf("cart") !== - 1){
+		if(localStorage.getItem('addedGame')){
+			let gamesList = JSON.parse(localStorage.getItem('addedGame'));
+			let cart = '';
+			for(let game of gamesList){
+				cart += ` <li class="my-2">
+		                        <div class="cart-item row m-0 py-3">
+		                            <div class="cart-item-img col-3">
+		                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
+		                            </div>
+		                            <div class="col-9">
+		                            <div class="cart-item-name">
+		                                <h5>${game.name}</h5>
+		                            </div>
+										<p>Price: <i class="fas fa-euro-sign"></i>${game.price}</p>
+		                            </div>
+		                        </div>
+		                    </li>`
+			}
+			$('#games-list').html(cart);
+		}
+		else{
+			$('#games-list').html("<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>");
+		}
+	}
 	//endregion
 
 	//region Ajax Call jQuery
@@ -678,6 +704,16 @@ $(document).ready(function()
 		})
 	}
 	//endregion
+
+	function checkCartAmount(){
+		if(localStorage.getItem('addedGame')){
+			let addedGames = JSON.parse(localStorage.getItem('addedGame'));
+			$('#checkout_items').html(addedGames.length);
+		}
+		else{
+			$('#checkout_items').html('0');
+		}
+	}
 	//endregion
 
 	//region Single page product
@@ -689,6 +725,7 @@ $(document).ready(function()
 			dataType : "json",
 			success : function(result){
 				displaySingle(result);
+				games = result;
 				var owl_single = $(".single");
 					owl_single.owlCarousel(
 						{
@@ -742,7 +779,7 @@ $(document).ready(function()
 					<div class="col-9 d-flex flex-column align-items-end">`;
 					if(!price.discount.isDiscounted){
 						logoDisplay += `<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
+											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Buy Now!</button>
 												<span id="current" class="pt-3">
 													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
 												</span>	
@@ -750,7 +787,7 @@ $(document).ready(function()
 					}
 					else{
 						logoDisplay +=`<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" value="${price.value.netPrice}">Buy Now!</button>
+											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Buy Now!</button>
 											<p class="d-flex justify-content-around align-items-center pt-3">
 												<span class="badge badge-danger">-${price.discount.amount}%</span>
 												<s class="pl-2 pr-2">
@@ -813,8 +850,31 @@ $(document).ready(function()
 
 			$("#" + minOrRec).append(li);
 		}
-
 	};
+	$(document).on('click', '#price', sendToCart);
+	function sendToCart(){
+		var gameToAdd = [];
+		if(localStorage.getItem('addedGame')){
+			gameToAdd = JSON.parse(localStorage.getItem('addedGame'));
+			console.log(gameToAdd)
+		}
+		let gameId = $(this).data('id');
+			for(let game of games){
+				if(game.id == gameId){
+					gameToAdd.push({
+						id : game.id,
+						image : game.image.logo,
+						name : game.name,
+						price : game.price.value.netPrice,
+						quantity : 1
+					})
+					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
+				}
+			}
+		console.log(gameToAdd);
+		checkCartAmount();
+		displayMessageModal('Added to cart')
+	}
 	//endregion
 
 	//region Filtering functions - Price - Categories - Mode - Other
