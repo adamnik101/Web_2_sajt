@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+	"use strict";
 	//region Global variables
 
 	//region Template variables
@@ -41,14 +42,14 @@ $(document).ready(function()
 
 	//endregion
 
-	//region Every page init - Header & Menu
+	//region Every page init - Header & Menu - Newsletter check
 	setHeader();
 	initMenu();
 	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
 	//endregion
 
 	//region Page location
-	if(location.indexOf("index") != -1 || location == "/Web_2_sajt/")
+	if(location.indexOf("index") !== -1 || location == "/Web_2_sajt/")
 	{
 		displayCountdown();
 		getGames(displayAllSections);
@@ -56,11 +57,11 @@ $(document).ready(function()
 		getUpcoming(displayComingSoon);
 		removePng();
 	}
-	else if(location.indexOf("single") != -1)
+	else if(location.indexOf("single") !== -1)
 	{
 		getSingle();
 	}
-	else if(location.indexOf("categories") != -1)
+	else if(location.indexOf("categories") !== -1)
 	{
 		getGames(displayStoreFirst);
 		getCategories(displayCheckbox, "categoryChb", categories, "categories");
@@ -69,7 +70,7 @@ $(document).ready(function()
 		getUpcoming(displayComingSoon);
 		filterResponsive();
 	}
-	else if(location.indexOf("contact") != -1){
+	else if(location.indexOf("contact") !== -1){
 		const form = document.getElementById('contact');
 		const fullName = document.getElementById('input_name');
 		const mail = document.getElementById('input_email');
@@ -83,16 +84,16 @@ $(document).ready(function()
 
 		fullName.onchange = function(){
 			checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
-		}
+		};
 		mail.onchange = function(){
 			checkInputValues(mail, 'mail', mailReg, 'Mail cannot be empty.', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
-		}
+		};
 		subject.onchange = function(){
 			checkInputValues(subject, 'subject', subjectReg, 'Subject cannot be empty.', 'Subject must start with capital letter.');
-		}
+		};
 		message.onchange = function(){
 			checkMessage();
-		}
+		};
 		form.onsubmit = function(event){
 			event.preventDefault();
 			correctName = checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
@@ -100,9 +101,16 @@ $(document).ready(function()
 			correctSubject = checkInputValues(subject, 'subject', subjectReg, 'Subject cannot be empty.', 'Subject must start with capital letter.');
 			correctMessage = checkMessage();
 			if(correctName && correctMail && correctSubject && correctMessage){
-				console.log('sdasadasdsasdsad')
+				let isSent = checkMessageCookie();
+				if(isSent){
+					displayMessageModal('Oops. You must wait an hour between sending messages.');
+				}
+				else{
+					displayMessageModal('You have successfully sent a message.');
+					setMessageCookie('message', 'sent', 2);
+				}
 			}
-		}
+		};
 		function checkMessage(){
 			let val = false;
 			let err;
@@ -122,6 +130,20 @@ $(document).ready(function()
 				val = true;
 			}
 			return val;
+		}
+		function setMessageCookie(name, value, duration){
+			let date = new Date();
+			date.setHours(date.getHours() + duration);
+			document.cookie = `${name}=${value};expires=${date.toUTCString()}`
+		}
+		function checkMessageCookie(){
+			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
+			if(cookie){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 	}
 
@@ -206,10 +228,10 @@ $(document).ready(function()
 			},10000,"linear",function () {
 				progress();
 				owl.trigger('next.owl.carousel');
-			})
-		};
+			});
+		}
 		progress();
-	};
+	}
 	//endregion
 
 	//region Display game item - homepage - store
@@ -272,7 +294,7 @@ $(document).ready(function()
 			}
 		}
 
-	};
+	}
 	//endregion
 
 	//region Header
@@ -625,6 +647,25 @@ $(document).ready(function()
 		return val;
 	} // for contact form
 	//endregion
+
+	//region Display modal
+	function displayMessageModal(text){
+		let modal = document.createElement('div');
+		modal.setAttribute('id', 'message-modal');
+		let footer = document.getElementsByTagName('footer');
+		modal.innerHTML = text;
+		$(modal).insertAfter(footer);
+		$(modal).fadeIn();
+		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a
+			setTimeout(function(){$(modal).fadeOut(); resolve()}, 5000);
+		})
+		promise.then(function(){ // cekamo izvrsavanje promise-a
+			setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
+				$(modal).remove();
+			}, 1000)
+		})
+	}
+	//endregion
 	//endregion
 
 	//region Single page product
@@ -933,7 +974,7 @@ $(document).ready(function()
 			}
 			return 0;
 		})
-	};
+	}
 	function sortByPriceHighLow(data)
 	{
 		return data.sort(function(a,b){
@@ -950,7 +991,7 @@ $(document).ready(function()
 			}
 			return 0;
 		})
-	};
+	}
 	function sortByPriceLowHigh(data)
 	{
 		return data.sort(function(a,b){
@@ -967,7 +1008,7 @@ $(document).ready(function()
 			}
 			return 0;
 		})
-	};
+	}
 	function sortAll(data)
 	{
 		let value = $("#sort").val();
@@ -986,16 +1027,16 @@ $(document).ready(function()
 		else{
 			return data;
 		}
-	};
+	}
 	//endregion
 
 	//region Pagination - Store
 	function displayPagination(otherPages, currentPage)
 	{
-		let allItems = [];
+		let allItems = [], another;
 		if(otherPages.length > maxItemsStore){
-			var another = otherPages.slice(maxItemsStore);
-			otherPages.splice(maxItemsStore, maxItemsStore * 2)
+			another = otherPages.slice(maxItemsStore);
+			otherPages.splice(maxItemsStore, maxItemsStore * 2);
 		}
 		allItems.push(currentPage, otherPages, another);
 		
@@ -1010,7 +1051,7 @@ $(document).ready(function()
 							display += `" id="pag-${i + 1}">${i + 1}</li>`
 						}
 			}
-			display += "</ul>"
+			display += "</ul>";
 			$("#pag").html(display);
 		}			
 		
@@ -1039,14 +1080,14 @@ $(document).ready(function()
 	function displayNoResults()
 	{
 		$("#products").removeClass("row-cols-1 row-cols-sm-2 row-cols-md-3");
-			$("#products").addClass("d-flex align-items-center justify-content-center h-100")
+			$("#products").addClass("d-flex align-items-center justify-content-center h-100");
 			var msg = `<div id="noMatch" class="pb-5 pb-md-0">
 							<i class="far fa-frown pb-3"></i>
 							<p>No results found</p>	
 							<span>Unfortunately I could not find any results matching your search.</span>	   
 						</div>`;
-			$("#products").html(msg) 
-	};
+			$("#products").html(msg);
+	}
 	//endregion
 
 	//region Global RegEx
@@ -1061,14 +1102,14 @@ $(document).ready(function()
 	var correctNewsletter = false;
 	newsletter.onchange = function(){
 		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
-	}
+	};
 	newsletterForm.onsubmit = function (e){
 		e.preventDefault();
 		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		if(correctNewsletter){
-			setCookie('newsletter', newsletter.value, 6);
+			setNewsletterCookie('newsletter', newsletter.value, 6);
 		}
-	}
+	};
 	function checkCookieNewsletter(){
 		let cookie = document.cookie.split("; ").find(val => val.startsWith('newsletter=')); //dohvatamo kolacice vezane za newsletter mejlove
 		if(cookie){ //ako postoje
@@ -1086,27 +1127,12 @@ $(document).ready(function()
 			}
 		}
 	}
-	function displayNewsletterModal(text){
-		let modal = document.createElement('div');
-		modal.setAttribute('id', 'newsletter-subscribed-modal');
-		let footer = document.getElementsByTagName('footer')
-		modal.innerHTML = text;
-		$(modal).insertAfter(footer);
-		$(modal).fadeIn();
-		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a
-			setTimeout(function(){$(modal).fadeOut(); resolve()}, 5000);
-		})
-		promise.then(function(){ // cekamo izvrsavanje promise-a
-			setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
-				$(modal).remove();
-			}, 1000)
-		})
-	}
+
 
 	//endregion
 
-	//region Set cookie function
-	function setCookie(name, value, duration){
+	//region Set newsletter cookie function
+	function setNewsletterCookie(name, value, duration){
 		checkCookieNewsletter();
 		let date = new Date();
 		date.setMonth(date.getMonth() + duration);
@@ -1114,7 +1140,7 @@ $(document).ready(function()
 		if(cookie) {
 			if(news.length){
 				if(news.includes(value)){
-					displayNewsletterModal('Oops. Looks like you are already subscribed to our newsletter.');
+					displayMessageModal('Oops. Looks like you are already subscribed to our newsletter.');
 				}
 				else{
 					if(value.length){
@@ -1122,15 +1148,27 @@ $(document).ready(function()
 							news.push(value);
 						}
 					}
-					displayNewsletterModal('You have successfully subscribed to our newsletter.');
+					displayMessageModal('You have successfully subscribed to our newsletter.');
 					document.cookie = `${name}=${news};expires=${date.toUTCString()}`;
 				}
 			}
 		}
 		else{
 			document.cookie = `${name}=${value};expires=${date.toUTCString()}`;
+			displayMessageModal('You have successfully subscribed to our newsletter.');
 		}
-	};
+	}
 	//endregion
 
+	let cookieAccept = document.getElementById('cookie-accept');
+	cookieAccept.onclick = function(){
+		localStorage.setItem('cookies', 'accepted');
+		$('#cookie-wrapper').fadeOut();
+	};
+	if(localStorage.getItem('cookies')){
+		$('#cookie-wrapper').remove();
+	}
+	else{
+		$('#cookie-wrapper').css('display', 'block');
+	}
 });

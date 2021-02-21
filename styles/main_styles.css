@@ -1809,7 +1809,7 @@ textarea
 	background-color: #2c2c2c;
 	border-radius: 10px;
 }
-#newsletter-subscribed-modal{
+#message-modal{
 	position: fixed;
 	text-align: center;
 	right: 30px;
@@ -1823,4 +1823,24 @@ textarea
 	z-index: 9;
 	display: none;
 	box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+}
+#cookie-wrapper{
+	display: none;
+}
+#cookie-notice{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	min-height: 70px;
+	background-color: rgba(0,0,0,0.8);
+	z-index: 9999;
+}
+#cookie-notice p{
+	color: #fff;
+}
+#cookie-notice #cookie-accept{
+	border: none;
+	padding: 5px 10px;
+	border-radius: 5px;
 }
