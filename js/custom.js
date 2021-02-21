@@ -167,10 +167,10 @@ $(document).ready(function()
 			for(let game of gamesList){
 				cart += ` <li class="my-2">
 		                        <div class="cart-item row m-0 py-3">
-		                            <div class="cart-item-img col-3">
+		                            <div class="cart-item-img col-4">
 		                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
 		                            </div>
-		                            <div class="col-9 d-flex flex-column ">
+		                            <div class="col-8 d-flex flex-column ">
 			                            <div class="cart-item-name d-flex justify-content-start flex-row">
 			                                <p class="m-0">Game name:</p><h5 class="ml-2">${game.name}</h5>
 			                            </div>
@@ -190,6 +190,7 @@ $(document).ready(function()
 		else{
 			$('#games-list').html("<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>");
 		}
+		getTotal();
 	}
 	//endregion
 
@@ -714,10 +715,22 @@ $(document).ready(function()
 	function checkCartAmount(){
 		if(localStorage.getItem('addedGame')){
 			let addedGames = JSON.parse(localStorage.getItem('addedGame'));
+			$('#total-price').html(localStorage.getItem('total'));
 			$('#checkout_items').html(addedGames.length);
 		}
 		else{
 			$('#checkout_items').html('0');
+		}
+	}
+
+	function getTotal(){
+		if(localStorage.getItem('addedGame')){
+			var total = 0;
+			let allGames = JSON.parse(localStorage.getItem('addedGame'));
+			for(let game of allGames){
+				total += parseFloat(game.quantity) * game.price;
+			}
+			$('#total-price').html(total);
 		}
 	}
 	//endregion
@@ -869,7 +882,7 @@ $(document).ready(function()
 				if(game.id == gameId){
 					if(gameToAdd.some(x => x.id == gameId)) {
 						gameToAdd.find(x => x.id == gameId).quantity++;
-						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} ${game.name} in your cart.`)
+						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <i>${game.name}'s</i> in your cart.`)
 					}
 					else{
 						gameToAdd.push({
@@ -879,7 +892,7 @@ $(document).ready(function()
 							price : game.price.value.netPrice,
 							quantity : 1
 						})
-						displayMessageModal(`You added ${game.name} into cart.`)
+						displayMessageModal(`You added <i>${game.name}</i> into your cart.`)
 					}
 					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
 				}
