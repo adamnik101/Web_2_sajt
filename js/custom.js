@@ -1,8 +1,8 @@
 $(document).ready(function()
 {
-	$(window).on('load', function(){
+	$(document).on('load',function(){
 		$('.loader-wrapper').fadeOut();
-	});
+	})
 	"use strict";
 	//region Global variables
 
