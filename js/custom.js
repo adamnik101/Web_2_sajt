@@ -146,7 +146,7 @@ $(document).ready(function()
 				let date = new Date(msgTime.split('=')[1]);
 				let now = new Date();
 				console.log(date.toUTCString(), now.toUTCString())
-				let difference = date.getTime() - now.getTime();
+				let difference = date.getTime(date.toUTCString()) - now.getTime(now.toUTCString());
 				let minutesLeft = Math.round(difference / 60000);
 				console.log(minutesLeft)
 				return {
