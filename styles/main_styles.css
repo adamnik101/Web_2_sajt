@@ -1803,7 +1803,21 @@ textarea
 .cart-item{
 	background-color: #2c2c2c;
 	border-radius: 10px;
-	height: 100px;
+	min-height: 100px;
+	position: relative;
+}
+.cart-item .removeGame{
+	border: none;
+	border-radius: 5px;
+	background-color: #e21e21;
+	color: #000;
+	position: absolute;
+	top: 0;
+	right: 15px;
+	padding: 5px 10px;
+}
+.cart-item .removeGame .fas{
+	font-size: 16px;
 }
 .summary-body{
 	background-color: #2c2c2c;

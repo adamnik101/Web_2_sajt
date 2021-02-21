@@ -170,11 +170,17 @@ $(document).ready(function()
 		                            <div class="cart-item-img col-3">
 		                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
 		                            </div>
-		                            <div class="col-9">
-		                            <div class="cart-item-name">
-		                                <h5>${game.name}</h5>
-		                            </div>
-										<p>Price: <i class="fas fa-euro-sign"></i>${game.price}</p>
+		                            <div class="col-9 d-flex flex-column ">
+			                            <div class="cart-item-name d-flex justify-content-start flex-row">
+			                                <p class="m-0">Game name:</p><h5 class="ml-2">${game.name}</h5>
+			                            </div>
+			                            <div class='d-flex justify-content-start flex-row'>
+											<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
+										</div>
+										<div class='d-flex justify-content-start flex-row'>
+											<p class="m-0">Quantity:</p><h5 class="ml-2">${game.quantity}</h5>
+										</div>
+										<button type="button" class="removeGame"><i class="fas fa-trash-alt"></i></button>
 		                            </div>
 		                        </div>
 		                    </li>`
@@ -779,7 +785,7 @@ $(document).ready(function()
 					<div class="col-9 d-flex flex-column align-items-end">`;
 					if(!price.discount.isDiscounted){
 						logoDisplay += `<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Buy Now!</button>
+											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Add to cart</button>
 												<span id="current" class="pt-3">
 													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
 												</span>	
@@ -787,7 +793,7 @@ $(document).ready(function()
 					}
 					else{
 						logoDisplay +=`<div class="d-flex flex-column align-items-end">
-											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Buy Now!</button>
+											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Add to cart</button>
 											<p class="d-flex justify-content-around align-items-center pt-3">
 												<span class="badge badge-danger">-${price.discount.amount}%</span>
 												<s class="pl-2 pr-2">
