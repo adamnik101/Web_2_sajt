@@ -708,6 +708,8 @@ $(document).ready(function()
 		if(window.innerWidth < 992){
 			let header = "<button type='button' id='closeFilter'>Close filters</button>";
 			$("#filter-header").html(header);
+			$('#filter').css("margin-top","85px")
+			$("#filter-header").css({position: 'fixed', top: 0, left: 0, 'z-index': 999, width: "300px"})
 			$("#filterBg").css("width", "150%");
 			$("#filter-small").html($("#filterBg"));
 			$("#filter-wrapper").hide();

@@ -907,16 +907,22 @@ section
 }
  .card-title{
 	margin: 0 0 3px 0;
-	/* width: 200px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden; */
+	 min-width: 100px;
+	 white-space: nowrap;
+	 overflow: hidden;
+	 text-overflow: ellipsis;
 }
  .card .card-img-top{
 	border-radius: 10px;
 	transition: 0.5s;
 	box-shadow: 0px 0px 10px #000;
 }
+ .card .developer{
+	 min-width: 100px;
+	 white-space: nowrap;
+	 overflow: hidden;
+	 text-overflow: ellipsis;
+ }
  .card .card-body{
 	padding: 20px 0 0 0;
 }
@@ -1500,6 +1506,10 @@ a .deal_ofthe_week_button span{
 	right: 0;
 	top: 0;
 	color: #747474 !important;
+	background-color: #1d1d1d;
+	width: 25px;
+	text-align: center;
+	border-radius: 5px;
 }
   /* Create a custom checkbox */
   .checkmark {
