@@ -859,12 +859,12 @@ $(document).ready(function()
 	};
 	function getLogoPriceSection(logo, alt, price)
 	{ //ispisivanje cene na single.html
-		var logoDisplay = `<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0">
+		var logoDisplay = `<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 mb-sm-0 px-5 px-sm-3">
 						<img src="${logo}" class="img-fluid" alt="${alt}">
 					</div>
-					<div class="col-12 col-sm-6 col-md-8 col-lg-9 d-flex flex-column align-items-end">`;
+					<div class="col-12 col-sm-6 col-md-8 col-lg-9 d-flex flex-column align-items-md-end align-items-center">`;
 					if(!price.discount.isDiscounted){
-						logoDisplay += `<div class="d-flex flex-column align-items-end">
+						logoDisplay += `<div class="d-flex flex-column align-items-sm-end align-items-center">
 											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Add to cart</button>
 												<span id="current" class="pt-3">
 													<i class="fas fa-euro-sign"></i>${price.value.netPrice}

@@ -493,6 +493,13 @@
 	{
 		font-size: 13px;
 	}
+	.breadcrumbs ul li{
+		font-size: 12px;
+		margin-right: 5px;
+	}
+	.breadcrumbs ul li i{
+		margin-right: 5px;
+	}
 	.banner_item
 	{
 		height: calc((100vw - 30px) / 2.6);
