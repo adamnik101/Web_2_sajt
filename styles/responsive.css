@@ -5,57 +5,20 @@
 
 [Table of Contents]
 
-1. 1600px
-2. 1440px
-3. 1280px
-4. 1199px
-5. 1024px
-6. 991px
-7. 959px
-8. 880px
-9. 768px
-10. 767px
-11. 539px
-12. 479px
-13. 400px
+
+1. 1199px
+2. 991px
+3. 959px
+4. 880px
+5. 768px
+6. 767px
+7. 479px
+8. 420px
 
 ******************************/
 
-
-@media only screen and (max-width: 1600px)
-{
-	
-}
-
 /************
-2. 1440px
-************/
-
-@media only screen and (max-width: 1540px)
-{
-	
-}
-
-/************
-3. 1380px
-************/
-
-@media only screen and (max-width: 1380px)
-{
-	
-}
-
-/************
-3. 1280px
-************/
-
-@media only screen and (max-width: 1280px)
-{
-	
-}
-
-/************
-4. 1199px
+1. 1199px
 ************/
 
 @media only screen and (max-width: 1199px)
@@ -97,16 +60,7 @@
 }
 
 /************
-5. 1024px
-************/
-
-@media only screen and (max-width: 1024px)
-{
-	
-}
-
-/************
-6. 991px
+2. 991px
 ************/
 
 @media only screen and (max-width: 991px)
@@ -248,7 +202,7 @@
 }
 
 /************
-7. 959px
+3. 959px
 ************/
 
 @media only screen and (max-width: 959px)
@@ -257,7 +211,7 @@
 }
 
 /************
-8. 880px
+4. 880px
 ************/
 
 @media only screen and (max-width: 880px)
@@ -266,7 +220,7 @@
 }
 
 /************
-9. 768px
+5. 768px
 ************/
 
 @media only screen and (max-width: 768px)
@@ -277,7 +231,7 @@
 }
 
 /************
-10. 767px
+6. 767px
 ************/
 
 @media only screen and (max-width: 767px)
@@ -351,7 +305,7 @@
 }
 
 /************
-11. 575px
+7. 575px
 ************/
 
 @media only screen and (max-width: 575px)
@@ -404,24 +358,7 @@
 }
 
 /************
-11. 539px
-************/
-
-@media only screen and (max-width: 539px)
-{
-	
-}
-
-/************
-12. 480px
-************/
-
-@media only screen and (max-width: 480px)
-{
-}
-
-/************
-13. 479px
+8. 479px
 ************/
 
 @media only screen and (max-width: 479px)
@@ -682,7 +619,7 @@
 }
 
 /************
-14. 400px
+7. 400px
 ************/
 
 @media only screen and (max-width: 420px)

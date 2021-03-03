@@ -1164,16 +1164,16 @@ $(document).ready(function()
 	function sortAll(data)
 	{
 		let value = $("#sort").val();
-		if(value == 1){
+		if(value == 'nameASC'){
 			return sortByNameAZ(data);
 		}
-		else if(value == 2){
+		else if(value == 'nameDESC'){
 			return sortByNameZA(data);
 		}
-		else if(value == 3){
+		else if(value == 'priceDESC'){
 			return sortByPriceHighLow(data);
 		}
-		else if(value == 4){
+		else if(value == 'priceASC'){
 			return sortByPriceLowHigh(data);
 		}
 		else{

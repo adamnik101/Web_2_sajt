@@ -1,44 +1,5 @@
 @charset "utf-8";
-/* CSS Document */
-
-/******************************
-
-COLOR PALETTE
-
-
-
-
-[Table of Contents]
-
-1. Fonts
-2. Body and some general stuff
-3. Home
-	3.1 Currency
-	3.2 Language
-	3.3 Account
-	3.4 Main Navigation
-	3.5 Hamburger Menu
-	3.6 Logo
-	3.7 Main Slider
-4. Banner
-5. New Arrivals
-	5.1 New Arrivals Sorting
-	5.2 New Arrivals Products Grid
-6. Deal of the week
-7. Best Sellers
-	7.1 Slider Nav
-8. Benefit
-9. Blogs
-10. Newsletter
-11. Footer
-
-
-
-******************************/
-
-/***********
-1. Fonts
-***********/
+/*region fontovi */
 @font-face{
     font-family:ChineseRocks;
     src: url('../font/ChineseRocks.ttf');
@@ -51,13 +12,9 @@ COLOR PALETTE
 	font-family: Fugaz;
 	src: url('../font/FugazOne-Regular.ttf');
 }
-
-/*********************************
-2. Body and some general stuff
-*********************************/
-
-*
-{
+/*endregion*/
+/*region template global*/
+* {
 	margin: 0;
 	padding: 0;
 	-webkit-box-sizing: border-box;
@@ -263,15 +220,8 @@ section
 	width: 100%;
 	overflow: hidden;
 }
-
-#logo-game-container .badge{
-	font-size: 16px;
-	background-color: #e21e21;
-}
-#logo-game-container #current{
-	color: #fff;
-	font-size: 20px;
-}
+/*endregion*/
+/*region owl carousel navigation*/
 .owl-dots{
 	display: flex;
 	flex-direction: row;
@@ -292,6 +242,8 @@ section
 	transition: 0.2s;
 	background-color: #e21e21 !important;
 	}
+/*endregion*/
+/*region game name and description card*/
 #gameName{
 	font-size: 17px;
 }
@@ -316,10 +268,8 @@ section
 #infoText p{
 	color: #cacaca;
 }
-/*********************************
-3. Home
-*********************************/
-
+/*endregion*/
+/*region header top nav*/
 .header
 {
 	position: fixed;
@@ -343,24 +293,6 @@ section
 	color: #cacaca;
 	text-transform: uppercase;
 }
-
-/*********************************
-3.1 Currency
-*********************************/
-
-
-/*********************************
-3.2 Language
-*********************************/
-
-/*********************************
-3.3 Account
-***
-
-/*********************************
-3.4 Main Navigation
-*********************************/
-
 .main_nav_container
 {
 	width: 100%;
@@ -455,11 +387,8 @@ section
 	font-size: 12px;
 	color: #fff;
 }
-
-/*********************************
-3.5 Hamburger Menu
-*********************************/
-
+/*endregion*/
+/*region menu - hamburger*/
 .hamburger_container
 {
 	display: none;
@@ -614,11 +543,8 @@ section
 {
 	border-bottom: none;
 }
-
-/*********************************
-3.6 Logo
-*********************************/
-
+/*endregion*/
+/*region logo container*/
 .logo_container
 {
 	position: absolute;
@@ -642,7 +568,8 @@ section
 {
 	color: #fff;
 }
-
+/*endregion*/
+/*region breadcrumbs */
 .breadcrumbs
 {
 	width: 100%;
@@ -667,33 +594,17 @@ section
 {
 	color: #989898;
 }
-#price{
-	width: 200px;
-	height: 50px;
-	border: none;
-	font-weight: bold;
-	font-size: 25px;
-	background-color: #e21e21;
-	color: #ffffff;
-	box-shadow: 0px 0px 10px #000;
-}
 
-.single_product_container, .contact_container
+.breadcrumbs_container, .contact_container
 {
 	margin-top: 150px;
 }
-/*********************************
-3.7 Main Slider
-*********************************/
-
+/*endregion*/
+/*region main slider*/
 .main_slider
 {
 	width: 100%;
 	height: 700px;
-	/* background-image: url('../images/slider_1.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center; */
 	margin-top: 150px;
 }
  .main_slider #transparent{
@@ -832,11 +743,8 @@ section
 	width: 140px;
 	margin-top: 32px;
 }
-
-/*********************************
-4. Banner
-*********************************/
-
+/*endregion*/
+/*region game card item*/
 .banner
 {
 	width: 100%;
@@ -895,12 +803,6 @@ section
 	transition: 0.5s;
 	position: relative;
 }
- .animate{
-	position: relative;
-	height: 0px;
-	bottom: -10%;
-	opacity: 0;
-}
  .card a:hover > .card-img-top{
 	opacity: 0.7;
 	transition: 0.5s;
@@ -933,12 +835,8 @@ section
  .card .card-body .price .badge{
 	font-size: 14px;
 }
-/*********************************
-6. Deal of the week
-*********************************/
-#sysReq .reqOutput .borderBot{
-	border-bottom: 2px solid #ffffff;
-}
+/*endregion*/
+/*region sys requirements*/
 #sysReq .reqOutput{
 	background-color: #2c2c2c;
 	color: #fff;
@@ -947,6 +845,8 @@ section
 #sysReq .reqOutput p{
 	color: #cacaca;
 }
+/*endregion*/
+/*region deal of the week*/
 .deal_ofthe_week
 {
 	width: 100%;
@@ -961,9 +861,6 @@ section
 {
 	height: 500px;
 	position: relative;
-}
-.owl-deals .owl-item img{
-	width: auto;
 }
 .deal_ofthe_week_img img
 {
@@ -1045,6 +942,8 @@ a .deal_ofthe_week_button span{
 {
 	background: #2b2b34 !important;
 }
+/*endregion*/
+/*region preloader*/
 .loader-flex-fix{
 	width: 100%;
 	height: 100%;
@@ -1068,23 +967,8 @@ a .deal_ofthe_week_button span{
 	height: 50%;
 	background-repeat: no-repeat;
 }
-#checkout{
-	border: none;
-	border-radius: 10px;
-	padding: 10px;
-}
-/*********************************
-7. Best Sellers
-*********************************/
-/*********************************
-7.1 Slider Nav
-*********************************/
-
-
-/*********************************
-8. Benefit
-*********************************/
-
+/*endregion*/
+/*region benefit*/
 .benefit
 {
 	margin-top: 25px;
@@ -1137,6 +1021,8 @@ a .deal_ofthe_week_button span{
 	color: #616161;
 	transition: 0.5s;
 }
+/*endregion*/
+/*region discover section*/
 .discover h1{
 	font-size: 100px;
 	text-align: center;
@@ -1174,16 +1060,10 @@ a .deal_ofthe_week_button span{
 .discover #btnDiscover:hover ~ .game{
 	color: #e21e21;
 }
-/*********************************
-9. Blogs
-*********************************/
-
-.blogs
-{
-	margin-top: 72px;
-}
-.blogs .section_title h6{
-	color: #fff !important;
+/*endregion*/
+/*region upcoming section*/
+.upcoming{
+	margin-top: 50px;
 }
 #coming-owl .owl-stage{
 	padding-top: 15px;
@@ -1245,11 +1125,8 @@ a .deal_ofthe_week_button span{
 	line-height: 1.25;
 	margin-bottom: 0px;
 }
-
-/*********************************
-10. Newsletter
-*********************************/
-
+/*endregion*/
+/*region newsletter*/
 .newsletter
 {
 	width: 100%;
@@ -1336,11 +1213,8 @@ a .deal_ofthe_week_button span{
 {
 	background: #e21e21;
 }
-
-/*********************************
-11. Footer
-*********************************/
-
+/*endregion*/
+/*region footer*/
 .footer_nav_container
 {
 	height: 130px;
@@ -1404,158 +1278,17 @@ a .deal_ofthe_week_button span{
 {
 	color: #e21e21;
 }
-
- .single{
+/*endregion*/
+/*region single item */
+.single{
 	 width: 100%;
 } 
 .single .item{
 	width: 100%;
 	height: 100%;
 }
-#filter{
-	background-color: #2a2a2a;
-	border-radius: 10px;
-}
-#filterBg{
-	color: #fff;
-	background-color: #616161;
-	border-radius: 10px;
-}
-.circ{
-	background-color: #616161;
-	border-radius: 50%;
-	width: 25px;
-	height: 25px;
-}
-#filterBg .fas{
-	color: #fff;
-	font-size: 25px;
-}
-#filter span{
-	color: #fff;
-}
-.hoverFilter:hover{
-	background-color: #e21e21;
-}
-.hoverFilter{
-	transition: 0.2s;
-	cursor: pointer;
-	border-radius: 10px;
-}
-.slidecontainer {
-	width: 80%; /* Width of the outside container */
-  }
-  
-  /* The slider itself */
-  .slider {
-	-webkit-appearance: none;  /* Override default CSS styles */
-	appearance: none;
-	width: 100%; /* Full-width */
-	height: 10px; /* Specified height */
-	background: #d3d3d3; /* Grey background */
-	outline: none; /* Remove outline */ /* Set transparency (for mouse-over effects on hover) */
-	-webkit-transition: .2s; /* 0.2 seconds transition on hover */
-	transition: opacity .2s;
-	border-radius: 10px;
-  }
-  
-  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-  .slider::-webkit-slider-thumb {
-	-webkit-appearance: none; /* Override default look */
-	appearance: none;
-	width: 15px; /* Set a specific slider handle width */
-	height: 15px; /* Slider handle height */
-	border-radius: 50%;
-	transform: scale(1.5);
-	background: #e21e21; /* Green background */
-	cursor: pointer; /* Cursor on hover */
-  }
-  
-  .slider::-moz-range-thumb {
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #4CAF50; /* Green background */
-	cursor: pointer; /* Cursor on hover */
-  }
-  .slidecontainer label{
-	  color: #fff;
-  }
-  .whiteChb li{
-	  color: #fff;
-  }
-.customChb{
-	display: block;
-	position: relative;
-	cursor: pointer;
-	padding-left: 35px;
-	margin-bottom: 15px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-.customChb input {
-	position: absolute;
-	opacity: 0;
-	cursor: pointer;
-	height: 0;
-	width: 0;
-  }
-.customChb .amount{
-	position: absolute;
-	right: 0;
-	top: 0;
-	color: #747474 !important;
-	background-color: #1d1d1d;
-	width: 25px;
-	text-align: center;
-	border-radius: 5px;
-}
-  /* Create a custom checkbox */
-  .checkmark {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 25px;
-	width: 25px;
-	background-color: #eee;
-	border-radius: 5px;
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .customChb:hover input ~ .checkmark {
-	background-color: #d3d3d3;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .customChb input:checked ~ .checkmark {
-	background-color: #e21e21;
-  }
-  
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-	content: "";
-	position: absolute;
-	display: none;
-  }
-  
-  /* Show the checkmark when checked */
-  .customChb input:checked ~ .checkmark:after {
-	display: block;
-  }
-  
-  /* Style the checkmark/indicator */
-  .customChb .checkmark:after {
-	left: 9px;
-	top: 5px;
-	width: 5px;
-	height: 10px;
-	border: solid white;
-	border-width: 0 3px 3px 0;
-	-webkit-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	transform: rotate(45deg);
-  }
+/*endregion*/
+/*region no matches search design*/
 #noMatch{
 	width: 90%;
 	height: 50%;
@@ -1573,6 +1306,8 @@ a .deal_ofthe_week_button span{
 	font-size: 16px;
 	color: #fff;
 }
+/*endregion*/
+/*region sort btn*/
 #sortBtn-wrapper{
 	color: #fff;
 }
@@ -1582,6 +1317,8 @@ select{
 	color: #fff;
 	border: none;
 }
+/*endregion*/
+/*region pagination*/
 .pagination-item{
 	background-color: #2a2a2a;
 	color: #fff;
@@ -1598,6 +1335,8 @@ select{
 .badge{
 	background-color: #e21e21;
 }
+/*endregion*/
+/*region store banner*/
 #store-banner{
 	background-image: url("../images/deal_of_the_week.jpg");
 	background-position: center;
@@ -1614,53 +1353,17 @@ select{
 	bottom: 0;
 	height: inherit;
 }
-#store-banner span{
+#store-banner div{
 	position: absolute;
 	right: 4px;
 	top: 150px;
 }
-#store-banner span h1,h4{
+#store-banner div h1,h4{
 	color: #fff;
 	text-shadow: 0px 0px 10px #000;
 }
-#filter-header{
-	height: 85px;
-	text-align: center;
-	padding-top: 20px;
-}
-#modal{
-	z-index: 9999;
-}
-#modal-wrapper{
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-	backdrop-filter: blur(5px);
-}
-#modal-wrapper #modal-header{
-	background-color: #1d1d1d;
-	padding: 20px;
-}
-#modal-wrapper #modal-header h2{
-	color: #e21e21;
-}
-#modal-wrapper #modal-body{
-	background-color: #3b3b3b;
-	padding: 30px;
-	color: #fff;
-}
-#modal-wrapper #modal-footer{
-	background-color: #777777;
-	padding: 20px;
-}
-#modal-wrapper #modal-footer input[type="button"]{
-	border: none;
-}
-/* contact css */
-
+/*endregion*/
+/*region contact section*/
 .contact_contents
 {
 	padding-right: 30px;
@@ -1687,11 +1390,6 @@ select{
 {
 	margin-top: 39px;
 }
-
-/*********************************
-7. Follow Us
-*********************************/
-
 .follow_us_contents
 {
 	margin-top: 32px;
@@ -1738,11 +1436,8 @@ select{
 	transform: translateY(-5px);
 	box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
 }
-
-/*********************************
-8. Contact Form
-*********************************/
-
+/*endregion*/
+/*region contact form */
 .form_input
 {
 	display: block;
@@ -1833,6 +1528,13 @@ textarea
 	font-weight: 500;
 	cursor: pointer;
 }
+/*endregion*/
+/*region filter section*/
+#filter-header{
+	height: 85px;
+	text-align: center;
+	padding-top: 20px;
+}
 #filter-wrapper{
 	width: 300px;
 }
@@ -1842,6 +1544,142 @@ textarea
 	color: #fff;
 	padding: 10px 30px;
 }
+#filter{
+	background-color: #2a2a2a;
+	border-radius: 10px;
+}
+#filterBg{
+	color: #fff;
+	background-color: #616161;
+	border-radius: 10px;
+}
+.circ{
+	background-color: #616161;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+}
+#filterBg .fas{
+	color: #fff;
+	font-size: 25px;
+}
+#filter span{
+	color: #fff;
+}
+.hoverFilter:hover{
+	background-color: #e21e21;
+}
+.hoverFilter{
+	transition: 0.2s;
+	cursor: pointer;
+	border-radius: 10px;
+}
+.slidecontainer {
+	width: 80%;
+}
+
+
+.slider {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 10px;
+	background: #d3d3d3;
+	outline: none;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
+	border-radius: 10px;
+}
+
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	transform: scale(1.5);
+	background: #e21e21;
+	cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+	width: 25px;
+	height: 25px;
+	background: #4CAF50;
+	cursor: pointer;
+}
+.slidecontainer label{
+	color: #fff;
+}
+.whiteChb li{
+	color: #fff;
+}
+.customChb{
+	display: block;
+	position: relative;
+	cursor: pointer;
+	padding-left: 35px;
+	margin-bottom: 15px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.customChb input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+.customChb .amount{
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #747474 !important;
+	background-color: #1d1d1d;
+	width: 25px;
+	text-align: center;
+	border-radius: 5px;
+}
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+	border-radius: 5px;
+}
+
+.customChb:hover input ~ .checkmark {
+	background-color: #d3d3d3;
+}
+.customChb input:checked ~ .checkmark {
+	background-color: #e21e21;
+}
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.customChb input:checked ~ .checkmark:after {
+	display: block;
+}
+.customChb .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+/*endregion*/
+/*region cart item*/
 .cart-item{
 	background-color: #2c2c2c;
 	border-radius: 10px;
@@ -1876,12 +1714,16 @@ textarea
 	color: #1d1d1d;
 	border-radius: 5px;
 }
+/*endregion*/
+/*region game name ellipsis*/
 .game-name{
 	min-width: 100px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/*endregion*/
+/*region summary checkout price*/
 .summary-body{
 	background-color: #2c2c2c;
 	border-radius: 10px;
@@ -1896,6 +1738,23 @@ textarea
 	background-color: #747474;
 	border-radius: 2px;
 }
+#checkout{
+	border: none;
+	border-radius: 10px;
+	padding: 10px;
+}
+#price{
+	width: 200px;
+	height: 50px;
+	border: none;
+	font-weight: bold;
+	font-size: 25px;
+	background-color: #e21e21;
+	color: #ffffff;
+	box-shadow: 0px 0px 10px #000;
+}
+/*endregion*/
+/*region modal message*/
 #message-modal{
 	position: fixed;
 	text-align: center;
@@ -1911,6 +1770,8 @@ textarea
 	display: none;
 	box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
 }
+/*endregion*/
+/*region cookie*/
 #cookie-wrapper{
 	display: none;
 }
@@ -1931,3 +1792,4 @@ textarea
 	padding: 5px 10px;
 	border-radius: 5px;
 }
+/*endregion*/
