@@ -57,26 +57,30 @@ $(document).ready(function()
 	if(location.indexOf("index") !== -1 || location == "/gamehut/")
 	{
 		displayCountdown();
-		getGames(displayAllSections);
+		getData('allGames', displayAllSections);
 		owlDisplay();
-		getUpcoming(displayComingSoon);
+		getData('comingSoon', displayComingSoon);
 		removePng();
 	}
 	else if(location.indexOf("single") !== -1)
 	{
-		var games;
-		getSingle();
+		getData('allGames', displaySingle);
 	}
 	else if(location.indexOf("categories") !== -1)
 	{
-			getGames(displayStoreFirst);
-			setTimeout(function(){
-				getCategories(displayCheckbox, "categoryChb", categories, "categories");
-				getCategories(displayCheckbox, "mode", modes, "modes");
-				getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
-			}, 500)
-			getUpcoming(displayComingSoon);
-			filterResponsive();
+		let promise = new Promise(function(resolve, reject){ // preko promise-a, jer mi je bez promise-a pri svakom ucitavanju stranice nekad izbacivao error a nekad nije
+			setTimeout(() => resolve(), 100);
+			getData('allGames', displayStoreFirst);
+		})
+		promise.then(function (){
+			getCategories(displayCheckbox, "categoryChb", categories, "categories");
+		}).then(function () {
+			getCategories(displayCheckbox, "mode", modes, "modes");
+		}).then(function(){
+			getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+		})
+		getData('comingSoon', displayComingSoon);
+		filterResponsive();
 	}
 	else if(location.indexOf("contact") !== -1){
 		const form = document.getElementById('contact');
@@ -256,24 +260,42 @@ $(document).ready(function()
 	//endregion
 
 	//region Ajax Call jQuery
-	function getGames(callback)
-	{
+	function getData(path, callback){
 		$.ajax({
-			url: "js/data/allGames.json",
-			type: "GET",
-			dataType: "json",
-			success: function(result){
-				allGames = result;
+			url : 'js/data/' + path + '.json',
+			dataType : 'json',
+			method : 'GET',
+			success : function(result){
+				if(path == 'allGames'){
+					allGames = result;
+				}
+				if(location.indexOf('single') != -1){
+					var owl_single = $(".single");
+					owl_single.owlCarousel(
+						{
+							items:1,
+							loop : true,
+							autoplay: true,
+							mouseDrag: true,
+							touchDrag: true,
+							dots: true,
+							nav: false,
+							autoplayHoverPause: true
+						}
+					);
+				}
 				callback(result);
 			},
-			error: function(xhr,status, error) { console.log(error); }
-		});
-	};
+			error : function(xhr, status, err){
+				console.error(err);
+			}
+		})
+	}
 	function getCategories(callback, divId, storage, path)
 	{
 		$.ajax({
 			url : "js/data/" + path +".json",
-			type : "GET",
+			method : "GET",
 			dataType : "json",
 			success : function(result){
 				storage = result;
@@ -281,16 +303,6 @@ $(document).ready(function()
 			},
 			error : function(xhr, status, error) { console.log(error); }
 
-		})
-	};
-	function getUpcoming(callback)
-	{
-		$.ajax({
-			url : "js/data/comingSoon.json",
-			type : "GET",
-			dataType : "json",
-			success : callback,
-			error : function(xhr, status, err){ console.log(err)}
 		})
 	};
 	//endregion
@@ -520,7 +532,7 @@ $(document).ready(function()
 		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
 
 		var x = setInterval(function() {
-			var now = new Date().getTime(); //trenutno vreme
+			var now = new Date().getTime(); //trenutno vreme u milisekundama
 			var razlika = countDownDate - now;
 			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
 			var hours = Math.floor((razlika % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -805,32 +817,7 @@ $(document).ready(function()
 	//endregion
 
 	//region Single page product
-	function getSingle()
-	{//funkcija za dohvatanje podataka o igrici + owl-carousel za single.html
-		$.ajax({
-			url : "js/data/allGames.json",
-			type : "GET",
-			dataType : "json",
-			success : function(result){
-				displaySingle(result);
-				games = result;
-				var owl_single = $(".single");
-					owl_single.owlCarousel(
-						{
-							items:1,
-							loop : true,
-							autoplay: true,
-							mouseDrag: true,
-							touchDrag: true,
-							dots: true,
-							nav: false,
-							autoplayHoverPause: true
-						}
-						);
-			},
-			error: function(xhr,status, error) { console.log(error); }
-		});
-	};
+
 	function displaySingle(allGames)
 	{
 		for(let item of allGames){
@@ -947,7 +934,7 @@ $(document).ready(function()
 			console.log(gameToAdd)
 		}
 		let gameId = $(this).data('id');
-			for(let game of games){
+			for(let game of allGames){
 				if(game.id == gameId){
 					if(gameToAdd.some(x => x.id == gameId)) {
 						gameToAdd.find(x => x.id == gameId).quantity++;
