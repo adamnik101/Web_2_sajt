@@ -51,6 +51,7 @@ $(document).ready(function()
 	initMenu();
 	checkCookieNewsletter();// dohvatamo kolacice za newsletter, tj ako postoje vec uneti mejlovi
 	checkCartAmount();
+	getData('navigation', displayNav);
 	//endregion
 
 	//region Page location
@@ -66,7 +67,7 @@ $(document).ready(function()
 	{
 		getData('allGames', displaySingle);
 	}
-	else if(location.indexOf("categories") !== -1)
+	else if(location.indexOf("shop") !== -1)
 	{
 		let promise = new Promise(function(resolve, reject){ // preko promise-a, jer mi je bez promise-a pri svakom ucitavanju stranice nekad izbacivao error a nekad nije
 			setTimeout(() => resolve(), 100);
@@ -314,7 +315,7 @@ $(document).ready(function()
 		if(location.indexOf("index") != -1 || location == "/Web_2_sajt/"){
 			removePng();
 		}
-		if(location.indexOf("categories") != -1){
+		if(location.indexOf("shop") != -1){
 			filterResponsive();
 		}
 	});
@@ -706,7 +707,7 @@ $(document).ready(function()
 				autoplayHoverPause: true,
 				responsive : {
 					0 : { items : 1},
-					576 : { items : 2},
+					768 : { items : 2},
 					992: { items : 3}
 				}
 			}
@@ -813,6 +814,21 @@ $(document).ready(function()
 		}
 		total = total.toFixed(2);
 		$('#total-price').html(`<p>Your total:</p> <p class="price-final"><i class="fas fa-euro-sign"></i> ${total}</p>`);
+	}
+	function displayNav(data){
+		let mainNav = '';
+		let otherNav = '';
+		for(let link of data){
+			otherNav += `<li><a href="${link.link}">${link.name}</a></li>`
+			if(link.id >= 4){
+				continue;
+			}
+			mainNav += `<li><a href="${link.link}">${link.name}</a></li>`;
+		}
+		$(".navbar_menu").html(mainNav);
+		$(".footer_nav").html(otherNav);
+		$(".menu_top_nav").html(otherNav);
+		$(".menu_top_nav").find("li").addClass('menu_item');
 	}
 	//endregion
 
