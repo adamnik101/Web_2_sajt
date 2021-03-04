@@ -393,14 +393,11 @@
 		margin-top: 5px;
 		margin-bottom: 30px;
 	}
-	#sortBy #filterBg{
-		width: 120% !important;
-	}
 	#sortBy select{
 		width: 130px !important;
 	}
 	#sortBy select, #sortBy span {
-		font-size: 13px !important;
+		font-size: 14px !important;
 	}
 	#sortBy span i{
 		font-size: 11px !important;

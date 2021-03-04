@@ -292,7 +292,7 @@ $(document).ready(function()
 						callback(result);
 					},
 					error : function(xhr, status, err){
-						console.error(err);
+						reject(console.error(err));
 					}
 				})
 			})
@@ -648,6 +648,7 @@ $(document).ready(function()
 	};
 	function displayStoreFirst(data)
 	{
+		data = filterSearch(data);
 		data = filterPrice(data);
 		data = filterCat(data);
 		data = filterMode(data);
@@ -746,14 +747,14 @@ $(document).ready(function()
 	function filterResponsive()
 	{
 		if(window.innerWidth < 992){
-			let header = "<button type='button' id='closeFilter'>Close filters</button>";
-			$("#filter-header").html(header);
-			$('#filter').css("margin-top","85px")
-			$("#filter-header").css({position: 'fixed', top: 0, left: 0, 'z-index': 999, width: "300px"})
+			if(!$('#close').length){
+				let close = `<div id="close" class="d-flex justify-content-center align-items-center p-3"><button type="button" id="closeFilter">Close filters</button> </div>`;
+				$("#filter").prepend($(close));
+			}
 			$("#filterBg").css("width", "150%");
 			$("#filter-small").html($("#filterBg"));
 			$("#filter-wrapper").hide();
-			$("#filter-wrapper").css("background-color", "#1d1d1d");
+			$("#filter-wrapper").css({"background-color" : "#1d1d1d", 'box-shadow': "50px 0px 50px 500px rgba(0,0,0,0.6)"});
 			$("#filterBg").on("click", function(){
 				$("#filter-wrapper").fadeIn();
 			});
@@ -766,11 +767,11 @@ $(document).ready(function()
 			})
 		}
 		else{
-			$("#filter-header").html("");
+			$('#close').remove();
 			$("#filterBg").css("width", "100%");
 			$("#filter").prepend($("#filterBg"))
 			$("#filter-wrapper").show();
-			$("#filter-wrapper").css("background-color", "transparent")
+			$("#filter-wrapper").css({"background-color" : "transparent", 'box-shadow': "none"})
 			$("#filter-wrapper").css({position : "relative", "z-index" : 1, "overflow-y" : "hidden"})
 		}
 	};
@@ -1015,6 +1016,22 @@ $(document).ready(function()
 	//endregion
 
 	//region Filtering functions - Price - Categories - Mode - Other
+	$("#search").on('keyup', function(){
+		filtered = filterSearch(allGames)
+		displayStoreFirst(filtered)
+	})
+	function filterSearch(data){
+		let search = document.getElementById('search');
+		let text = search.value.trim().toLowerCase();
+		if(search.value.length){
+			data = data.filter(function(game){
+				if(game.name.toLowerCase().indexOf(text) != -1){
+					return game;
+				}
+			})
+		}
+		return data;
+	}
 	$("#priceFrom").on("input", getRangeValue("#from", "#priceFrom"));
 	$("#priceTo").on("input", getRangeValue("#to", "#priceTo"));
 
@@ -1024,6 +1041,14 @@ $(document).ready(function()
 	};
 	function getRangeValue(output, value)
 	{
+		$('#priceTo').on('mouseup', function (){
+			filtered = filterPrice(allGames);
+			displayStoreFirst(filtered);
+		})
+		$('#priceFrom').on('mouseup', function (){
+			filtered = filterPrice(allGames);
+			displayStoreFirst(filtered);
+		})
 		return function () {
 			$(output).val($(value).val());
 			if (output == "#from") {
@@ -1031,8 +1056,6 @@ $(document).ready(function()
 			} else {
 				priceTo = $(value).val();
 			}
-			filtered = filterPrice(allGames);
-			displayStoreFirst(filtered)
 		}
 	};
 	function removeUnchecked(array, value)

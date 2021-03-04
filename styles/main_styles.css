@@ -1323,6 +1323,13 @@ a .deal_ofthe_week_button span{
 }
 /*endregion*/
 /*region sort btn*/
+#search{
+	border: none;
+	border-radius: 5px;
+	background: #2c2c2c;
+	color: #fff;
+	width: 100%;
+}
 #sortBtn-wrapper{
 	color: #fff;
 }
