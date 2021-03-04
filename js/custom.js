@@ -61,9 +61,9 @@ $(document).ready(() =>
 	//region Page location
 	if(location.indexOf("index") !== -1 || location == "/gamehut/")
 	{
+		getData('allGames', displayHomeSlider);
 		displayCountdown();
 		getData('allGames', displayAllSections);
-		owlDisplay();
 		getData('comingSoon', displayComingSoon);
 		removePng();
 	}
@@ -356,6 +356,37 @@ $(document).ready(() =>
 	//region Functions
 
 	//region Homepage slider
+	function displayHomeSlider(data){
+		let content = '<div class="owl-carousel">';
+		for(let game of data){
+			let gameToGet = game.name.toLowerCase();
+			if(gameToGet.indexOf('minecraft') != - 1 || gameToGet.indexOf('redemption ii') != -1 || gameToGet.indexOf('heat') != -1){
+				content += `<div class="sliderTekst sliderImage">
+						<div class="container fill_height">
+						<div class="row align-items-center fill_height">
+						<div class="col">
+						<div class="main_slider_content">
+						<h6>${getHeadline(game)}</h6>
+						<h1>${game.name}</h1>
+						<p>${getInfoText(game)}</p>
+						<div class="red_button shop_now_button openSingle p-2" data-id="${game.id}"><a href="#!">Buy ${game.name}</a></div>
+						</div>
+						</div>
+						</div>
+						</div>
+						</div>`
+			}
+		}
+		content += '</div>'
+		$('#slider').html(content);
+		let backImg = $('.sliderImage');
+		for(let i = 0; i< backImg.length; i++){
+			backImg[i].style.setProperty('--url', "url(\'../images/slider_"+  (i+1) + ".jpg\')");
+
+		}
+		console.log(backImg.length);
+		owlDisplay();
+	}
 	function owlDisplay()
 	{
 		var owl = $('.owl-carousel');
@@ -378,6 +409,21 @@ $(document).ready(() =>
 			});
 		}
 		progress();
+	}
+	function getHeadline(data){
+		if(data.newRelease.value){
+			return 'Available now!'
+		}
+		else if(data.price.discount.isDiscounted){
+			return 'On sale!'
+		}
+		else{
+			return 'Check out!'
+		}
+	}
+	function getInfoText(data){
+		let duzina = data.info.text.length;
+		return data.info.text[0][1];
 	}
 	//endregion
 
