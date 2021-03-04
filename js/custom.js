@@ -203,7 +203,10 @@ $(document).ready(function()
 				$('#games-list').html(cart);
 			}
 			else{
-				$('#games-list').html("<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>");
+				let text = "<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>"
+				$('#games-list').html(text);
+				$('#bag').removeClass('col-md-8');
+				$('#summary').remove();
 			}
 		}
 		$(document).on('click', '.removeGame', function(){
