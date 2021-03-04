@@ -1325,7 +1325,7 @@ a .deal_ofthe_week_button span{
 /*region sort btn*/
 #search{
 	border: none;
-	border-radius: 5px;
+	border-radius: 10px;
 	background: #2c2c2c;
 	color: #fff;
 	width: 100%;

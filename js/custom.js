@@ -78,9 +78,15 @@ $(document).ready(function()
 			})
 		promise.then(function (data){
 			//console.log(data) ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
-			 getCategories(displayCheckbox, "categoryChb", categories, "categories");
-			 getCategories(displayCheckbox, "mode", modes, "modes");
-			 getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+			try{
+				getCategories(displayCheckbox, "categoryChb", categories, "categories");
+				getCategories(displayCheckbox, "mode", modes, "modes");
+				getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+			}
+			catch (e){
+				console.error(e.message);
+			}
+
 		})
 		getData('comingSoon', displayComingSoon);
 		filterResponsive();
@@ -293,6 +299,7 @@ $(document).ready(function()
 					},
 					error : function(xhr, status, err){
 						reject(console.error(err));
+						throw ('Greska pri dohvatanju podataka iz baze.');
 					}
 				})
 			})
@@ -300,21 +307,25 @@ $(document).ready(function()
 		catch (e){
 			console.error(e.message);
 		}
-
 	}
 	function getCategories(callback, divId, storage, path)
 	{
-		$.ajax({
-			url : "js/data/" + path +".json",
-			method : "GET",
-			dataType : "json",
-			success : function(result){
-				storage = result;
-				callback(allGames, storage, divId)
-			},
-			error : function(xhr, status, error) { console.error(error); }
+		try{
+			$.ajax({
+				url : "js/data/" + path +".json",
+				method : "GET",
+				dataType : "json",
+				success : function(result){
+					storage = result;
+					callback(allGames, storage, divId)
+				},
+				error : function(xhr, status, error) { console.error(error);}
+			})
+		}
+		catch (e) {
+			console.error(e);
+		}
 
-		})
 	};
 	//endregion
 
@@ -334,7 +345,14 @@ $(document).ready(function()
 		setHeader();
 	});
 	//endregion
-
+	$('#numberOfProducts').on("change", function (){
+		let value = parseInt(this.value);
+		changeNumber(value);
+		displayStoreFirst(allGames);
+	})
+	function changeNumber(value){
+		maxItemsStore = value;
+	}
 	//region Functions
 
 	//region Homepage slider
@@ -617,6 +635,9 @@ $(document).ready(function()
 		let amount ;
 		try{
 			for(let item of data){
+				if(!data){
+					throw ('Greska pri dohvatanju podataka.');
+				}
 				display += `<li class="d-flex align-items-center justify-content-start">
 							<label for="${item.name.split(" ").join("")}" class="customChb w-100"> ${item.name}
 								<input type="checkbox" id="${item.name.split(" ").join("")}" value="${item.id}" name=`
@@ -642,7 +663,7 @@ $(document).ready(function()
 			$("#" + div).html(display);
 		}
 		catch (e) {
-			console.error('Greska: ' + e.message); // ako iz nekog razloga ne moze da dohvati vrednosti parametra games
+			console.error(e.message); // ako iz nekog razloga ne moze da dohvati vrednosti parametra games
 		}
 
 	};
@@ -751,10 +772,9 @@ $(document).ready(function()
 				let close = `<div id="close" class="d-flex justify-content-center align-items-center p-3"><button type="button" id="closeFilter">Close filters</button> </div>`;
 				$("#filter").prepend($(close));
 			}
-			$("#filterBg").css("width", "150%");
 			$("#filter-small").html($("#filterBg"));
 			$("#filter-wrapper").hide();
-			$("#filter-wrapper").css({"background-color" : "#1d1d1d", 'box-shadow': "50px 0px 50px 500px rgba(0,0,0,0.6)"});
+			$("#filter-wrapper").css({"background-color" : "#1d1d1d", 'box-shadow': "50px 0px 50px 1000px rgba(0,0,0,0.6)"});
 			$("#filterBg").on("click", function(){
 				$("#filter-wrapper").fadeIn();
 			});
