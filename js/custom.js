@@ -373,9 +373,12 @@ $(document).ready(function()
 			div.className = `card mb-3 col`;
 			let favorite = document.createElement('div');
 			let cart = document.createElement('i');
-			cart.className = 'fas fa-shopping-cart';
+			cart.className = 'fas fa-cart-plus';
 			favorite.appendChild(cart);
 			favorite.setAttribute('data-id', game.id);
+			favorite.setAttribute('data-toggle', 'tooltip');
+			favorite.setAttribute('data-placement', 'top');
+			favorite.setAttribute('title', 'Add to cart');
 			favorite.className = 'favorite d-flex justify-content-center align-items-center';
 			div.appendChild(favorite)
 			let a = document.createElement("a");
@@ -416,6 +419,7 @@ $(document).ready(function()
 			li2.innerHTML = price(game, game.price.discount);
 			ul.appendChild(li2)
 			$("#" + parent).append(div)
+			$('[data-toggle="tooltip"]').tooltip();
 		}
 
 	}
@@ -1364,4 +1368,5 @@ $(document).ready(function()
 		$('#cookie-wrapper').css('display', 'block');
 	}
 	//endregion
+
 });
