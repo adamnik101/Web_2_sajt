@@ -70,7 +70,7 @@ $(document).ready(function()
 	else if(location.indexOf("shop") !== -1)
 	{
 		let promise = new Promise(function(resolve, reject){ // preko promise-a, jer mi je bez promise-a pri svakom ucitavanju stranice nekad izbacivao error a nekad nije
-			setTimeout(() => resolve(), 100);
+			setTimeout(() => resolve(), 300);
 			getData('allGames', displayStoreFirst);
 		})
 		promise.then(function (){
