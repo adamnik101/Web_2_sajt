@@ -144,10 +144,6 @@ h6::selection
 	font-weight: 500;
 	color: #777777 !important;
 }
-.form-control
-{
-	color: #db5246;
-}
 section
 {
 	display: block;
@@ -1333,11 +1329,17 @@ a .deal_ofthe_week_button span{
 #sortBtn-wrapper{
 	color: #fff;
 }
-select{
+.form-control{
 	background-color: #2a2a2a;
 	border-radius: 10px;
-	color: #fff;
 	border: none;
+	color: #fff;
+	height: 100%;
+}
+.form-control:focus{
+	background: #2a2a2a;
+	color: #fff;
+	box-shadow: 0px 0px 10px #101010;
 }
 /*endregion*/
 /*region pagination*/
