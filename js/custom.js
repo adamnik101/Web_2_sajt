@@ -69,16 +69,14 @@ $(document).ready(function()
 	}
 	else if(location.indexOf("shop") !== -1)
 	{
-		let promise = new Promise(function(resolve, reject){ // preko promise-a, jer mi je bez promise-a pri svakom ucitavanju stranice nekad izbacivao error a nekad nije
-			setTimeout(() => resolve(), 300);
-			getData('allGames', displayStoreFirst);
-		})
-		promise.then(function (){
-			getCategories(displayCheckbox, "categoryChb", categories, "categories");
-		}).then(function () {
-			getCategories(displayCheckbox, "mode", modes, "modes");
-		}).then(function(){
-			getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
+		let promise = new Promise(function (resolve, reject) { // preko promise-a jer mi je izbacivalo da je promenljiva allGames undefined kad pokusam da ispisem broj igrica za odredjenu kategoriju
+				return resolve(getData('allGames', displayStoreFirst));
+			})
+		promise.then(function (data){
+			 console.log(data)// ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
+			 getCategories(displayCheckbox, "categoryChb", categories, "categories");
+			 getCategories(displayCheckbox, "mode", modes, "modes");
+			 getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
 		})
 		getData('comingSoon', displayComingSoon);
 		filterResponsive();
@@ -261,35 +259,37 @@ $(document).ready(function()
 	//endregion
 
 	//region Ajax Call jQuery
-	function getData(path, callback){
-		$.ajax({
-			url : 'js/data/' + path + '.json',
-			dataType : 'json',
-			method : 'GET',
-			success : function(result){
-				if(path == 'allGames'){
-					allGames = result;
+	function getData(path, callback, storage){
+		return new Promise( (resolve, reject) => {
+			$.ajax({
+				url : 'js/data/' + path + '.json',
+				dataType : 'json',
+				method : 'GET',
+				success : function(result){
+					if(path == 'allGames'){
+						resolve(allGames = result) //vrednosti ce sigurno i uvek biti u ovoj promenljivoj pomocu promise-a, potrebna za kasnije filtriranje
+					}
+					if(location.indexOf('single') != -1){
+						var owl_single = $(".single");
+						owl_single.owlCarousel(
+							{
+								items:1,
+								loop : true,
+								autoplay: true,
+								mouseDrag: true,
+								touchDrag: true,
+								dots: true,
+								nav: false,
+								autoplayHoverPause: true
+							}
+						);
+					}
+					callback(result);
+				},
+				error : function(xhr, status, err){
+					console.error(err);
 				}
-				if(location.indexOf('single') != -1){
-					var owl_single = $(".single");
-					owl_single.owlCarousel(
-						{
-							items:1,
-							loop : true,
-							autoplay: true,
-							mouseDrag: true,
-							touchDrag: true,
-							dots: true,
-							nav: false,
-							autoplayHoverPause: true
-						}
-					);
-				}
-				callback(result);
-			},
-			error : function(xhr, status, err){
-				console.error(err);
-			}
+			})
 		})
 	}
 	function getCategories(callback, divId, storage, path)
@@ -300,9 +300,9 @@ $(document).ready(function()
 			dataType : "json",
 			success : function(result){
 				storage = result;
-				callback(storage, divId)
+				callback(allGames, storage, divId)
 			},
-			error : function(xhr, status, error) { console.log(error); }
+			error : function(xhr, status, error) { console.error(error); }
 
 		})
 	};
@@ -595,7 +595,7 @@ $(document).ready(function()
 	//endregion
 
 	//region Display store & checkboxes
-	function displayCheckbox(data, div)
+	function displayCheckbox(games,data, div)
 	{
 		let display = "<div class='p-3'>";
 		let amount ;
@@ -605,15 +605,15 @@ $(document).ready(function()
 								<input type="checkbox" id="${item.name.split(" ").join("")}" value="${item.id}" name=`
 			if(div == "mode"){
 				display += "modes"
-				amount = allGames.filter(game => game.modes.includes(item.id));
+				amount = games.filter(game => game.modes.includes(item.id));
 			}
 			else if(div == "categoryChb"){
 				display += "category"
-				amount = allGames.filter(game => game.catId.includes(item.id));
+				amount = games.filter(game => game.catId.includes(item.id));
 			}
 			else{
 				display += "other"
-				amount = allGames.filter(game => game.otherId.includes(item.id));
+				amount = games.filter(game => game.otherId.includes(item.id));
 			}
 			display += `>
 								<span class="checkmark"></span>
@@ -782,7 +782,7 @@ $(document).ready(function()
 		modal.innerHTML = text;
 		$(modal).insertAfter(footer);
 		$(modal).fadeIn();
-		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a
+		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni pomocu timeout
 			setTimeout(function(){$(modal).fadeOut(); resolve()}, 5000);
 		})
 		promise.then(function(){ // cekamo izvrsavanje promise-a
