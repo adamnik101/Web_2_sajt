@@ -1,9 +1,9 @@
-$(window).on('load',function(){
+$(window).on('load',() => {
 	$('.loader-flex-fix').fadeOut();
 })
-$(document).ready(function()
+$(document).ready(() =>
 {
-	window.onerror = function(message, url , line){
+	window.onerror = (message, url , line) => {
 		console.log('Poruka: ' + message);
 		console.log('URL: ' + url);
 		console.log('Linija u kojoj je nastala greska: ' + line);
@@ -73,10 +73,10 @@ $(document).ready(function()
 	}
 	else if(location.indexOf("shop") !== -1)
 	{
-		let promise = new Promise(function (resolve, reject) { // preko promise-a jer mi je izbacivalo da je promenljiva allGames undefined kad pokusam da ispisem broj igrica za odredjenu kategoriju
+		let promise = new Promise( (resolve, reject) => { // preko promise-a jer mi je izbacivalo da je promenljiva allGames undefined kad pokusam da ispisem broj igrica za odredjenu kategoriju
 				return resolve(getData('allGames', displayStoreFirst));
 			})
-		promise.then(function (data){
+		promise.then((data) => {
 			//console.log(data) ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
 			try{
 				getCategories(displayCheckbox, "categoryChb", categories, "categories");
@@ -103,19 +103,19 @@ $(document).ready(function()
 		const subjectReg = /^[A-ZŠĐČĆŽ][a-zšđčćžA-ZŠĐČĆŽ0-9-_ ]+$/;
 		const messageLength = 20;
 
-		fullName.onchange = function(){
+		fullName.onchange = () => {
 			checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
 		};
-		mail.onchange = function(){
+		mail.onchange = () =>{
 			checkInputValues(mail, 'mail', mailReg, 'Mail cannot be empty.', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		};
-		subject.onchange = function(){
+		subject.onchange = () => {
 			checkInputValues(subject, 'subject', subjectReg, 'Subject cannot be empty.', 'Subject must start with capital letter.');
 		};
-		message.onchange = function(){
+		message.onchange = () => {
 			checkMessage();
 		};
-		form.onsubmit = function(event){
+		form.onsubmit = (event) =>{
 			event.preventDefault();
 			correctName = checkInputValues(fullName, 'name', fullNameReg, 'Name cannot be empty.', 'First name/last name must start with capital letter');
 			correctMail = checkInputValues(mail, 'mail', mailReg, 'Mail cannot be empty.', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
@@ -217,7 +217,7 @@ $(document).ready(function()
 				$('#summary').remove();
 			}
 		}
-		$(document).on('click', '.removeGame', function(){
+		$(document).on('click', '.removeGame', function () {
 			var id = $(this).data('id');
 			let allAdded = JSON.parse(localStorage.getItem('addedGame'));
 			let afterRemoving = [];
@@ -244,7 +244,7 @@ $(document).ready(function()
 			const gameId = $(this).data('id');
 			var games = JSON.parse(localStorage.getItem('addedGame'));
 			if(quantityData == 'raise'){
-				games.forEach(function(game){
+				games.forEach((game) =>{
 					if(gameId == game.id){
 						if(game.quantity < maxQuantity){
 							game.quantity++;
@@ -253,7 +253,7 @@ $(document).ready(function()
 				})
 			}
 			else{
-				games.forEach(function(game){
+				games.forEach((game) => {
 					if(gameId == game.id){
 						if(game.quantity > minQuantity){
 							game.quantity--;
@@ -276,7 +276,7 @@ $(document).ready(function()
 					url : 'js/data/' + path + '.json',
 					dataType : 'json',
 					method : 'GET',
-					success : function(result){
+					success : (result) => {
 						if(path == 'allGames'){
 							resolve(allGames = result) //vrednosti ce sigurno i uvek biti u ovoj promenljivoj pomocu promise-a, potrebna za kasnije filtriranje
 						}
@@ -297,7 +297,7 @@ $(document).ready(function()
 						}
 						callback(result);
 					},
-					error : function(xhr, status, err){
+					error : (xhr, status, err) => {
 						reject(console.error(err));
 						throw ('Greska pri dohvatanju podataka iz baze.');
 					}
@@ -315,11 +315,11 @@ $(document).ready(function()
 				url : "js/data/" + path +".json",
 				method : "GET",
 				dataType : "json",
-				success : function(result){
+				success : (result) => {
 					storage = result;
 					callback(allGames, storage, divId)
 				},
-				error : function(xhr, status, error) { console.error(error);}
+				error : (xhr, status, error) => { console.error(error);}
 			})
 		}
 		catch (e) {
@@ -372,7 +372,7 @@ $(document).ready(function()
 			$("#progressBar").css("width","0%");
 			$("#progressBar").animate({
 				width:"100%"
-			},10000,"linear",function () {
+			},10000,"linear", () => {
 				progress();
 				owl.trigger('next.owl.carousel');
 			});
@@ -515,7 +515,7 @@ $(document).ready(function()
 			{
 				if(items[i].classList.contains("has-children"))
 				{
-					items[i].onclick = function()
+					items[i].onclick = () =>
 					{
 						this.classList.toggle("active");
 						var panel = this.children[1];
@@ -566,7 +566,7 @@ $(document).ready(function()
 	{
 		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
 
-		var x = setInterval(function() {
+		var x = setInterval(() => {
 			var now = new Date().getTime(); //trenutno vreme u milisekundama
 			var razlika = countDownDate - now; //
 			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
@@ -593,7 +593,7 @@ $(document).ready(function()
 			var maxItemsFirstRow = 3;
 		}
 		let counter = [];
-		let firstRow = data.filter(function(game, index){ // izvlacenje prvih 4 igrica
+		let firstRow = data.filter((game, index) => { // izvlacenje prvih 4 igrica
 			if(counter.length < maxItemsFirstRow){
 				if(sectionId == "newReleases"){
 					return game.newRelease.value && counter.push(index);
@@ -844,11 +844,11 @@ $(document).ready(function()
 			$(modal).insertAfter(footer); // da ga postavim na kraju stranice
 		}
 		$(message).fadeIn();
-		 let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
-		 	setTimeout(function(){$(message).fadeOut(); resolve()}, 3000);
+		 let promise = new Promise((resolve, reject) => {  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
+		 	setTimeout(() => {$(message).fadeOut(); resolve()}, 3000);
 		 })
-		 promise.then(function(){ // cekamo izvrsavanje promise-a
-		 	setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
+		 promise.then(() => { // cekamo izvrsavanje promise-a
+		 	setTimeout(() => {// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
 		 		$(message).remove();
 		 	}, 1000)
 		 })
@@ -1044,7 +1044,7 @@ $(document).ready(function()
 		let search = document.getElementById('search');
 		let text = search.value.trim().toLowerCase();
 		if(search.value.length){
-			data = data.filter(function(game){
+			data = data.filter((game) => {
 				if(game.name.toLowerCase().indexOf(text) != -1){
 					return game;
 				}
@@ -1069,7 +1069,7 @@ $(document).ready(function()
 			filtered = filterPrice(allGames);
 			displayStoreFirst(filtered);
 		})
-		return function () {
+		return  () => {
 			$(output).val($(value).val());
 			if (output == "#from") {
 				priceFrom = $(value).val();
@@ -1157,7 +1157,7 @@ $(document).ready(function()
 
 	function rotateHandler(button, div)
 	{
-		return function(){
+		return () => {
 			$(button).slideToggle();
 			if(div == "#filterCat"){
 				degreesCat += 180;
@@ -1188,7 +1188,7 @@ $(document).ready(function()
 	});
 	function sortByNameAZ(data)
 	{
-		return data.sort(function(a,b){
+		return data.sort((a,b) =>{
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
 			if(nameA < nameB){
@@ -1202,7 +1202,7 @@ $(document).ready(function()
 	};
 	function sortByNameZA(data)
 	{
-		return data.sort(function(a,b){
+		return data.sort((a,b) => {
 			var nameA = a.name.toLowerCase();
 			var nameB = b.name.toLowerCase();
 			if(nameA < nameB){
@@ -1216,7 +1216,7 @@ $(document).ready(function()
 	}
 	function sortByPriceHighLow(data)
 	{
-		return data.sort(function(a,b){
+		return data.sort((a,b) =>{
 			var priceA;
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
@@ -1233,7 +1233,7 @@ $(document).ready(function()
 	}
 	function sortByPriceLowHigh(data)
 	{
-		return data.sort(function(a,b){
+		return data.sort((a,b) =>{
 			var priceA;
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
@@ -1323,10 +1323,10 @@ $(document).ready(function()
 	const newsletterForm = document.getElementById('newsletter_form');
 	const newsletter = document.getElementById('newsletter_email');
 	var correctNewsletter = false;
-	newsletter.onchange = function(){
+	newsletter.onchange = ()=>{
 		checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 	};
-	newsletterForm.onsubmit = function (e){
+	newsletterForm.onsubmit =  (e)=>{
 		e.preventDefault();
 		correctNewsletter = checkInputValues(newsletter, 'newsletterErr', mailReg, 'Newsletter email cannot be empty', 'Mail is not in a good format. (E.q: johndoe5@gmail.com)');
 		if(correctNewsletter){
@@ -1387,10 +1387,10 @@ $(document).ready(function()
 
 	//region cookie accept
 	let cookieAccept = document.getElementById('cookie-accept');
-	cookieAccept.onclick = function(){
+	cookieAccept.onclick = () => {
 		localStorage.setItem('cookies', 'accepted');
 		$('#cookie-wrapper').fadeOut();
-	};
+	}
 	if(localStorage.getItem('cookies')){
 		$('#cookie-wrapper').remove();
 	}
