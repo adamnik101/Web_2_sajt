@@ -1,9 +1,13 @@
 $(window).on('load',function(){
 	$('.loader-flex-fix').fadeOut();
-	console.log('loaded');
 })
 $(document).ready(function()
 {
+	window.onerror = function(message, url , line){
+		console.log('Poruka: ' + message);
+		console.log('URL: ' + url);
+		console.log('Linija u kojoj je nastala greska: ' + line);
+	}
 	"use strict";
 	//region Global variables
 
@@ -73,7 +77,7 @@ $(document).ready(function()
 				return resolve(getData('allGames', displayStoreFirst));
 			})
 		promise.then(function (data){
-			 console.log(data)// ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
+			//console.log(data) ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
 			 getCategories(displayCheckbox, "categoryChb", categories, "categories");
 			 getCategories(displayCheckbox, "mode", modes, "modes");
 			 getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
@@ -143,7 +147,7 @@ $(document).ready(function()
 			return val;
 		}
 		var messageExpireTime;
-		function setMessageCookie(name, value, duration){
+		function setMessageCookie(name, value, duration){ // cookie za vremensko ogranicenje slanja ponovnih poruka
 			let date = new Date();
 			date.setUTCHours(date.getUTCHours() + duration);
 			document.cookie = `${name}=${value}; expires=${date.toUTCString()}; secure`
@@ -153,12 +157,10 @@ $(document).ready(function()
 			let cookie = document.cookie.split('; ').find(message => message.startsWith('message'));
 			if(cookie){
 				let msgTime = document.cookie.split('; ').find(message => message.startsWith('msgTime'));
-				console.log(msgTime)
 				let date = new Date(msgTime.split('=')[1]);
 				let now = new Date();
 				let difference = date.getTime() - now.getTime();
 				let minutesLeft = Math.round(difference / 60000);
-				console.log(minutesLeft)
 				return {
 					val : true,
 					msg : minutesLeft
@@ -236,7 +238,6 @@ $(document).ready(function()
 			const gameId = $(this).data('id');
 			var games = JSON.parse(localStorage.getItem('addedGame'));
 			if(quantityData == 'raise'){
-
 				games.forEach(function(game){
 					if(gameId == game.id){
 						if(game.quantity < maxQuantity){
@@ -263,37 +264,43 @@ $(document).ready(function()
 
 	//region Ajax Call jQuery
 	function getData(path, callback, storage){
-		return new Promise( (resolve, reject) => {
-			$.ajax({
-				url : 'js/data/' + path + '.json',
-				dataType : 'json',
-				method : 'GET',
-				success : function(result){
-					if(path == 'allGames'){
-						resolve(allGames = result) //vrednosti ce sigurno i uvek biti u ovoj promenljivoj pomocu promise-a, potrebna za kasnije filtriranje
+		try{
+			return new Promise( (resolve, reject) => {
+				$.ajax({
+					url : 'js/data/' + path + '.json',
+					dataType : 'json',
+					method : 'GET',
+					success : function(result){
+						if(path == 'allGames'){
+							resolve(allGames = result) //vrednosti ce sigurno i uvek biti u ovoj promenljivoj pomocu promise-a, potrebna za kasnije filtriranje
+						}
+						if(location.indexOf('single') != -1){
+							var owl_single = $(".single");
+							owl_single.owlCarousel(
+								{
+									items:1,
+									loop : true,
+									autoplay: true,
+									mouseDrag: true,
+									touchDrag: true,
+									dots: true,
+									nav: false,
+									autoplayHoverPause: true
+								}
+							);
+						}
+						callback(result);
+					},
+					error : function(xhr, status, err){
+						console.error(err);
 					}
-					if(location.indexOf('single') != -1){
-						var owl_single = $(".single");
-						owl_single.owlCarousel(
-							{
-								items:1,
-								loop : true,
-								autoplay: true,
-								mouseDrag: true,
-								touchDrag: true,
-								dots: true,
-								nav: false,
-								autoplayHoverPause: true
-							}
-						);
-					}
-					callback(result);
-				},
-				error : function(xhr, status, err){
-					console.error(err);
-				}
+				})
 			})
-		})
+		}
+		catch (e){
+			console.error(e.message);
+		}
+
 	}
 	function getCategories(callback, divId, storage, path)
 	{
@@ -543,7 +550,7 @@ $(document).ready(function()
 
 		var x = setInterval(function() {
 			var now = new Date().getTime(); //trenutno vreme u milisekundama
-			var razlika = countDownDate - now;
+			var razlika = countDownDate - now; //
 			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
 			var hours = Math.floor((razlika % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 			var minutes = Math.floor((razlika % (1000 * 60 * 60)) / (1000 * 60));
@@ -581,10 +588,10 @@ $(document).ready(function()
 				}
 			}
 		})
-		displayGames(firstRow, sectionId); // ispisivanje prvog reda
+		displayGames(firstRow, sectionId);
 	};
 	function displayAllSections(result)
-	{// ispisivanje svih sekcija na pocetnoj stranici + funkcije za dinamicko menjanje teksta ~ ellipsis
+	{// ispisivanje svih sekcija na pocetnoj stranici
 		homepageGames("newReleases", result);
 		homepageGames("hotSales", result);
 		homepageGames("topSellers", result);
@@ -608,30 +615,36 @@ $(document).ready(function()
 	{
 		let display = "<div class='p-3'>";
 		let amount ;
-		for(let item of data){
-			display += `<li class="d-flex align-items-center justify-content-start">
+		try{
+			for(let item of data){
+				display += `<li class="d-flex align-items-center justify-content-start">
 							<label for="${item.name.split(" ").join("")}" class="customChb w-100"> ${item.name}
 								<input type="checkbox" id="${item.name.split(" ").join("")}" value="${item.id}" name=`
-			if(div == "mode"){
-				display += "modes"
-				amount = games.filter(game => game.modes.includes(item.id));
-			}
-			else if(div == "categoryChb"){
-				display += "category"
-				amount = games.filter(game => game.catId.includes(item.id));
-			}
-			else{
-				display += "other"
-				amount = games.filter(game => game.otherId.includes(item.id));
-			}
-			display += `>
+				if(div == "mode"){
+					display += "modes"
+					amount = games.filter(game => game.modes.includes(item.id));
+				}
+				else if(div == "categoryChb"){
+					display += "category"
+					amount = games.filter(game => game.catId.includes(item.id));
+				}
+				else{
+					display += "other"
+					amount = games.filter(game => game.otherId.includes(item.id));
+				}
+				display += `>
 								<span class="checkmark"></span>
 								<span class="amount">${amount.length}</span>
 							</label>					
 						</li>`
-		};
-		display += '</div>'
-		$("#" + div).html(display);
+			};
+			display += '</div>'
+			$("#" + div).html(display);
+		}
+		catch (e) {
+			console.error('Greska: ' + e.message); // ako iz nekog razloga ne moze da dohvati vrednosti parametra games
+		}
+
 	};
 	function displayStoreFirst(data)
 	{
@@ -640,25 +653,30 @@ $(document).ready(function()
 		data = filterMode(data);
 		data = filterOther(data);
 		data = sortAll(data);
-		let otherPages = [];
-		let currentPage = [];
-		var items = data.filter(function(game){
-			if(currentPage.length < maxItemsStore){
-				return currentPage.push(game)
+		let allItems = [];// ovde stavljamo niz igrica za svaku stranicu
+		let pageNumber = 0;// od 0 brojimo stranice
+		let brojStranica = Math.ceil(data.length / maxItemsStore); // dobijamo broj stranica na osnovu maksimalnog broja igrica po stranici
+		for(let i = 0; i < brojStranica; i++){
+			allItems.push([]);// prvo ubacujemo --nested-- niz onoliko puta koliko je ukupan broj stranica u koga kasnije ubacujemo maksimalni broj igrica za jednu stranicu, onda dobijamo igrice po svakoj stranici
+			pageNumber++;// povecavamo broj stranica
+			for(let x = 0; x < data.length; x++){
+				if(x == (maxItemsStore * pageNumber)){ //  9 * 1 || 9 * 2 || 9 * 3 ----- ulazimo u if ako je index jednak maksimalnom broju igrica za odredjenu stranicu
+					break; // izlaz
+				}
+				else if(x >= pageNumber * maxItemsStore - maxItemsStore){ // ako je index igrice veci ili jednak od prethodnog broja igrica racunajuci prethodne stranice
+					allItems[i].push(data[x]) // ubacujemo igrice u nested array unutar allItems promenljive
+				}
 			}
-			else{
-				otherPages.push(game);
-			}
-		});
-		displayGames(items, "products", "")
-		if(currentPage.length <= maxItemsStore && currentPage.length > 0){
-			displayPagination(otherPages, currentPage);
+		};
+		if(allItems.length){
+			displayPagination(allItems, brojStranica);
+			displayGames(allItems[0], "products", ""); // uvek prikazujemo prvu stranicu
 		}
 		else{
-			$("#pag").empty()
+			$("#pag").empty() // brisemo paginaciju ako nema igrica za prikaz
 		}
 		if(!data.length){
-			displayNoResults();
+			displayNoResults(); // ispisujemo poruku korisniku da nema rezultata po njegovih kriterijuma
 		}
 	};
 	//endregion
@@ -802,7 +820,7 @@ $(document).ready(function()
 		if($("#modal").length){
 			modal.appendChild(message); // da ne dolazi do preklapanja poruka, vec da se ispisuju jedna ispod druge
 		}else{
-			$(modal).insertAfter(footer);
+			$(modal).insertAfter(footer); // da ga postavim na kraju stranice
 		}
 		$(message).fadeIn();
 		 let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
@@ -820,7 +838,7 @@ $(document).ready(function()
 		if(localStorage.getItem('addedGame')){
 			let addedGames = JSON.parse(localStorage.getItem('addedGame'));
 			$('#total-price').html(localStorage.getItem('total'));
-			$('#checkout_items').html(addedGames.length);
+			$('#checkout_items').html(addedGames.length); // ispisujemo broj igrica unetih u korpu, distinct, ne povecavamo broj ako igrica vec postoji u korpi, vec u drugoj funkciji povecavamo quantity
 		}
 		else{
 			$('#checkout_items').html('0');
@@ -832,10 +850,10 @@ $(document).ready(function()
 		if(localStorage.getItem('addedGame')){
 			let allGames = JSON.parse(localStorage.getItem('addedGame'));
 				for(let game of allGames){
-					total += game.quantity * game.price;
+					total += game.quantity * game.price; // ukupna cena
 				}
 		}
-		total = total.toFixed(2);
+		total = total.toFixed(2); // dve decimale
 		$('#total-price').html(`<p>Your total:</p> <p class="price-final"><i class="fas fa-euro-sign"></i> ${total}</p>`);
 	}
 	function displayNav(data){
@@ -971,7 +989,6 @@ $(document).ready(function()
 		var gameToAdd = [];
 		if(localStorage.getItem('addedGame')){
 			gameToAdd = JSON.parse(localStorage.getItem('addedGame'));
-			console.log(gameToAdd)
 		}
 		let gameId = $(this).data('id');
 			for(let game of allGames){
@@ -1056,42 +1073,29 @@ $(document).ready(function()
 		}
 		return filtered;
 	};
-	$(document).on("change", ":checkbox[name='category']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedCat.push(value);
+	$(document).on('change', ':checkbox', function(){
+		let name = this.getAttribute('name');
+		if(name.indexOf('category') != -1){
+			checkboxFilter(this, checkedCat, filterCat);
+		}
+		else if(name.indexOf('modes') != -1){
+			checkboxFilter(this, checkedMode, filterMode);
 		}
 		else{
-			removeUnchecked(checkedCat, value);
+			checkboxFilter(this, checkedOther, filterOther);
 		}
-		filtered = filterCat(allGames);
-		displayStoreFirst(filtered)
-	});
-	$(document).on("change", ":checkbox[name='modes']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedMode.push(value);
+	})
+	function checkboxFilter(checkbox, array, filterArray){
+		let value = parseInt($(checkbox).val());
+		if($(checkbox).is(":checked")){
+			array.push(value);
 		}
 		else{
-			removeUnchecked(checkedMode, value);
+			removeUnchecked(array, value);
 		}
-		filtered = filterMode(allGames);
+		filtered = filterArray(allGames);
 		displayStoreFirst(filtered)
-	});
-	$(document).on("change", ":checkbox[name='other']", function()
-	{
-		let value = parseInt($(this).val());
-		if($(this).is(":checked")){
-			checkedOther.push(value);
-		}
-		else{
-			removeUnchecked(checkedOther, value);
-		}
-		filtered = filterOther(allGames);
-		displayStoreFirst(filtered)
-	});
+	}
 	//endregion
 
 	//region Open single page
@@ -1223,45 +1227,29 @@ $(document).ready(function()
 	//endregion
 
 	//region Pagination - Store
-	function displayPagination(otherPages, currentPage)
+	function displayPagination(allPages, numberOfPages)
 	{
-		let allItems = [], another;
-		if(otherPages.length > maxItemsStore){
-			another = otherPages.slice(maxItemsStore);
-			otherPages.splice(maxItemsStore, maxItemsStore * 2);
-		}
-		allItems.push(currentPage, otherPages, another);
-		
-		if(allItems.length){
+		if(allPages.length){
 			let display = `<ul class="d-flex flex-row" id="pagination">`;
-			for(let i = 0; i < allItems.length; i++){
-					if(allItems[i] != undefined && allItems[i].length > 0){
-						display += `<li class="pagination-item mr-2`;
-							if(i == 0){
-								display+=" active-pag";
-							}
-							display += `" id="pag-${i + 1}">${i + 1}</li>`
-						}
+			for(let i = 0; i < numberOfPages; i++){
+				display += `<li class="pagination-item mr-2`;
+				if(i == 0){
+					display+=" active-pag";
+				}
+				display += `" id="pag-${i + 1}">${i + 1}</li>`
 			}
 			display += "</ul>";
 			$("#pag").html(display);
 		}			
 		
 		$(".pagination-item").on("click", function(){
-			if(this.id == "pag-1"){
-				displayGames(currentPage, "products", "")
+			let pag = document.getElementsByClassName('pagination-item');
+			for(let i = 0; i < pag.length; i++){
+				if(this.id == pag[i].id){
+					displayGames(allPages[i], 'products');
 					$(".pagination-item").removeClass("active-pag")
 					$(this).addClass("active-pag")
-			}
-			else if(this.id == "pag-2"){
-				$(".pagination-item").removeClass("active-pag")
-				$(this).addClass("active-pag");
-				displayGames(otherPages, "products", "")
-			}
-			else{
-				$(".pagination-item").removeClass("active-pag")
-				$(this).addClass("active-pag");
-				displayGames(another, "products", "")
+				}
 			}
 		})
 		
@@ -1284,7 +1272,7 @@ $(document).ready(function()
 
 	//region Global RegEx
 
-	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/;
+	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/; // potreban za newsletter na svakoj strani i contact stranicu
 
 	//endregion
 
@@ -1316,7 +1304,6 @@ $(document).ready(function()
 					news.push(x); // ubacujemo vrednosti kolacica koje vec ne postoje u nizu
 				}
 			}
-			console.log(news)
 		}
 	}
 
