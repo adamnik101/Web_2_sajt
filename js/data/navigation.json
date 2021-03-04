@@ -1,27 +1,27 @@
 [
   {
     "id" : 1,
-    "name" : "home",
+    "name" : "Home",
     "link" : "index.html"
   },
   {
     "id" : 2,
-    "name" : "shop",
+    "name" : "Shop",
     "link" : "shop.html"
   },
   {
     "id" : 3,
-    "name" : "contact",
+    "name" : "Contact",
     "link" : "contact.html"
   },
   {
     "id" : 4,
-    "name" : "documentation",
+    "name" : "Documentation",
     "link" : "documentation.pdf"
   },
   {
     "id" : 5,
-    "name" : "author",
+    "name" : "Author",
     "link" : "author.html"
   }
 ]

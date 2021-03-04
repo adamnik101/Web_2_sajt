@@ -1793,3 +1793,35 @@ textarea
 	border-radius: 5px;
 }
 /*endregion*/
+/*region autor*/
+#autor h1{
+	font-size: 35px;
+}
+#autor img{
+	border-radius: 20px;
+}
+#autor ul li a{
+	color: #3b3b3b;
+	font-size: 20px;
+	margin-right: 20px;
+	transition: 0.5s;
+}
+#autor ul li a:hover{
+	color: #e21e21;
+}
+#autor a button{
+	border: none;
+	background: #3b3b3b;
+	padding: 10px 20px;
+	margin-top: 10px;
+	border-radius: 5px;
+	color: #cacaca;
+	font-weight: bold;
+	transition: 0.5s;
+}
+#autor a button:hover{
+	color: #1d1d1d;
+	background: #e21e21;
+}
+/*endregion*/
+
