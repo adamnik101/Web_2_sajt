@@ -180,11 +180,11 @@ $(document).ready(function()
 					cart += ` <li class="my-2">
 			                        <div class="cart-item row m-0 py-3">
 			                            <div class="cart-item-img col-12 col-sm-4 col-md-3 d-flex justify-content-center align-items-center pb-3 pb-sm-0">
-			                                <img src="${game.image}" alt="${game.name}" class="img-fluid">
+			                                <a href="#!" class="openSingle" data-id="${game.id}"><img src="${game.image}" alt="${game.name}" class="img-fluid"></a>
 			                            </div>
 			                            <div class="col-12 col-sm-8 col-md-9 d-flex flex-column ">
 				                            <div class="cart-item-name d-flex justify-content-start flex-row">
-				                                <p class="m-0">Name:</p><h5 class="ml-2 game-name">${game.name}</h5>
+				                                <p class="m-0">Name:</p><a href="#!" class="openSingle" data-id="${game.id}"><h5 class="ml-2 game-name">${game.name}</h5></a>
 				                            </div>
 				                            <div class='d-flex justify-content-start flex-row'>
 												<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
@@ -1331,6 +1331,7 @@ $(document).ready(function()
 	}
 	//endregion
 
+	//region cookie accept
 	let cookieAccept = document.getElementById('cookie-accept');
 	cookieAccept.onclick = function(){
 		localStorage.setItem('cookies', 'accepted');
@@ -1342,4 +1343,5 @@ $(document).ready(function()
 	else{
 		$('#cookie-wrapper').css('display', 'block');
 	}
+	//endregion
 });
