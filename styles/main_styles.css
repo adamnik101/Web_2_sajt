@@ -803,6 +803,21 @@ section
 	transition: 0.5s;
 	position: relative;
 }
+ .card .favorite{
+	 position: absolute;
+	 bottom: 100px;
+	 right: 30px;
+	 width: 45px;
+	 height: 45px;
+	 background: #1e1e27;
+	 z-index: 9;
+	 border-radius: 50%;
+	 cursor: pointer;
+ }
+.card .favorite .fas{
+	color: #cacaca;
+	font-size: 18px;
+}
  .card a:hover > .card-img-top{
 	opacity: 0.7;
 	transition: 0.5s;
@@ -1714,6 +1729,14 @@ textarea
 	color: #1d1d1d;
 	border-radius: 5px;
 }
+#games-list #sendToShop{
+	border: none;
+	padding: 10px 30px;
+	margin: 20px 0px;
+	background: #cacaca;
+	border-radius: 5px;
+	text-transform: uppercase;
+}
 /*endregion*/
 /*region game name ellipsis*/
 .game-name{
@@ -1755,20 +1778,24 @@ textarea
 }
 /*endregion*/
 /*region modal message*/
-#message-modal{
+#modal{
 	position: fixed;
-	text-align: center;
 	right: 30px;
 	bottom: 50px;
+	height: auto;
+	z-index: 999;
+}
+#message-modal{
+	text-align: center;
 	width: 300px;
 	height: auto;
 	background-color: #e7e7e7;
 	color: #000;
 	padding: 10px;
 	border-radius: 10px;
-	z-index: 9;
 	display: none;
 	box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+	margin: 10px 0;
 }
 /*endregion*/
 /*region cookie*/

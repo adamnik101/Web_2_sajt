@@ -203,7 +203,7 @@ $(document).ready(function()
 				$('#games-list').html(cart);
 			}
 			else{
-				let text = "<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5></div></li>"
+				let text = "<li class='my-2'><div class=\"cart-item col-12 pt-4\"><h5>You have no games added into your cart.</h5><a href='shop.html'><button type='button' id='sendToShop'>Shop now!</button> </a></div></li>"
 				$('#games-list').html(text);
 				$('#bag').removeClass('col-md-8');
 				$('#summary').remove();
@@ -371,6 +371,13 @@ $(document).ready(function()
 		for(let game of data){
 			let div = document.createElement("div");
 			div.className = `card mb-3 col`;
+			let favorite = document.createElement('div');
+			let cart = document.createElement('i');
+			cart.className = 'fas fa-shopping-cart';
+			favorite.appendChild(cart);
+			favorite.setAttribute('data-id', game.id);
+			favorite.className = 'favorite d-flex justify-content-center align-items-center';
+			div.appendChild(favorite)
 			let a = document.createElement("a");
 			a.setAttribute("href","#!");
 			a.className = "openSingle";
@@ -408,12 +415,7 @@ $(document).ready(function()
 			li2.className = "price"
 			li2.innerHTML = price(game, game.price.discount);
 			ul.appendChild(li2)
-			if(parent != "products"){
-				$("#" + parent).append(div)
-			}
-			else{
-				$("#" + parent).append(div)
-			}
+			$("#" + parent).append(div)
 		}
 
 	}
@@ -779,20 +781,34 @@ $(document).ready(function()
 
 	//region Display modal
 	function displayMessageModal(text){
-		let modal = document.createElement('div');
-		modal.setAttribute('id', 'message-modal');
+		var modal;
+		if(!$('#modal').length){
+			modal = document.createElement('div'); // kreiram div u koji cu da smestam poruke
+			modal.setAttribute('id', 'modal');
+		}
+		else{
+			modal = document.getElementById('modal'); // ako postoji, onda ga dohvati
+		}
+		let message = document.createElement('div');
+		message.setAttribute('id', 'message-modal');
+		message.innerHTML = text;
+
+		modal.appendChild(message);
 		let footer = document.getElementsByTagName('footer');
-		modal.innerHTML = text;
-		$(modal).insertAfter(footer);
-		$(modal).fadeIn();
-		let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni pomocu timeout
-			setTimeout(function(){$(modal).fadeOut(); resolve()}, 5000);
-		})
-		promise.then(function(){ // cekamo izvrsavanje promise-a
-			setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
-				$(modal).remove();
-			}, 1000)
-		})
+		if($("#modal").length){
+			modal.appendChild(message); // da ne dolazi do preklapanja poruka, vec da se ispisuju jedna ispod druge
+		}else{
+			$(modal).insertAfter(footer);
+		}
+		$(message).fadeIn();
+		 let promise = new Promise(function(resolve, reject){  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
+		 	setTimeout(function(){$(message).fadeOut(); resolve()}, 3000);
+		 })
+		 promise.then(function(){ // cekamo izvrsavanje promise-a
+		 	setTimeout(function(){// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
+		 		$(message).remove();
+		 	}, 1000)
+		 })
 	}
 	//endregion
 
@@ -946,6 +962,7 @@ $(document).ready(function()
 		}
 	};
 	$(document).on('click', '#price', sendToCart);
+	$(document).on('click', '.favorite', sendToCart);
 	function sendToCart(){
 		var gameToAdd = [];
 		if(localStorage.getItem('addedGame')){
