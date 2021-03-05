@@ -188,11 +188,11 @@ $(document).ready(() =>
 					cart += ` <li class="my-2">
 			                        <div class="cart-item row m-0 py-3">
 			                            <div class="cart-item-img col-12 col-sm-4 col-md-3 d-flex justify-content-center align-items-center pb-3 pb-sm-0">
-			                                <a href="#!" class="openSingle" data-id="${game.id}"><img src="${game.image}" alt="${game.name}" class="img-fluid"></a>
+			                                <a href="single.html" class="openSingle" data-id="${game.id}"><img src="${game.image}" alt="${game.name}" class="img-fluid"></a>
 			                            </div>
 			                            <div class="col-12 col-sm-8 col-md-9 d-flex flex-column ">
 				                            <div class="cart-item-name d-flex justify-content-start flex-row">
-				                                <p class="m-0">Name:</p><a href="#!" class="openSingle" data-id="${game.id}"><h5 class="ml-2 game-name">${game.name}</h5></a>
+				                                <p class="m-0">Name:</p><a href="single.html" class="openSingle" data-id="${game.id}"><h5 class="ml-2 game-name">${game.name}</h5></a>
 				                            </div>
 				                            <div class='d-flex justify-content-start flex-row'>
 												<p class="m-0">Price:</p><h5 class="ml-2"><i class="fas fa-euro-sign"></i> ${game.price}</h5>
@@ -353,6 +353,33 @@ $(document).ready(() =>
 	function changeNumber(value){
 		maxItemsStore = value;
 	}
+	function getDateString(game){
+		let month, day, year, date;
+		date = game;
+		console.log(date)
+		let dateSplit = date.split("-");
+		day = dateSplit[2];
+		year = dateSplit[0];
+		switch(dateSplit[1]){
+			case "01" : month = "Jan";break;
+			case "02" : month = "Feb";break;
+			case "03" : month = "Mar";break;
+			case "04" : month = "Apr";break;
+			case "05" : month = "May";break;
+			case "06" : month = "Jun";break;
+			case "07" : month = "Jul";break;
+			case "08" : month = "Aug";break;
+			case "09" : month = "Sep";break;
+			case "10" : month = "Oct";break;
+			case "11" : month = "Nov";break;
+			case "12" : month = "Dec";break;
+		}
+		return {
+			month : month,
+			day : day,
+			year : year
+		}
+	}
 	//region Functions
 
 	//region Homepage slider
@@ -369,7 +396,7 @@ $(document).ready(() =>
 						<h6>${getHeadline(game)}</h6>
 						<h1>${game.name}</h1>
 						<p>${getInfoText(game)}</p>
-						<div class="red_button shop_now_button openSingle p-2" data-id="${game.id}"><a href="#!">Buy ${game.name}</a></div>
+						<div class="red_button shop_now_button openSingle p-2" data-id="${game.id}"><a href="single.html">Buy ${game.name}</a></div>
 						</div>
 						</div>
 						</div>
@@ -453,7 +480,7 @@ $(document).ready(() =>
 			favorite.className = 'favorite d-flex justify-content-center align-items-center';
 			div.appendChild(favorite)
 			let a = document.createElement("a");
-			a.setAttribute("href","#!");
+			a.setAttribute("href","single.html");
 			a.className = "openSingle";
 			a.setAttribute("data-id", game.id)
 			a.style.position = "relative";
@@ -748,37 +775,18 @@ $(document).ready(() =>
 		}
 	};
 	//endregion
-
 	//region Coming Soon section
 	function displayComingSoon(data)
 	{
 		let content = "<div class='owl-carousel' id='coming-owl'>";
 		for(let game of data){
-			let month, day, year;
-			let date = game.releaseDate;
-			let dateSplit = date.split("-");
-			day = dateSplit[2];
-			year = dateSplit[0];
-			switch(dateSplit[1]){
-				case "01" : month = "Jan";break;
-				case "02" : month = "Feb";break;
-				case "03" : month = "Mar";break;
-				case "04" : month = "Apr";break;
-				case "05" : month = "May";break;
-				case "06" : month = "Jun";break;
-				case "07" : month = "Jul";break;
-				case "08" : month = "Aug";break;
-				case "09" : month = "Sep";break;
-				case "10" : month = "Oct";break;
-				case "11" : month = "Nov";break;
-				case "12" : month = "Dec";break;
-			}
+			let date = getDateString(game.releaseDate);
 			content += `<div class="soon_item_col">
 							<div class="soon_item">
 								<div class="soon_background" id="bg${game.id}"></div>
 								<div class="soon_content d-flex flex-column align-items-center justify-content-center text-center">
 									<img src="${game.image.logo.src}" class="img-fluid" alt="${game.image.logo.alt}">
-									<h4 class="soon_title pt-3">Release Date: ${month} ${day}, ${year}</h4>
+									<h4 class="soon_title pt-3">Release Date: ${date.month} ${date.day}, ${date.year}</h4>
 								</div>
 							</div>
 						</div>`;
@@ -1006,6 +1014,14 @@ $(document).ready(() =>
 		var info = "";
 		var text = "";
 		for(let i in about){
+			if(about[i].name.toLowerCase().indexOf('release') != -1){
+				let date = getDateString(about[i].value);
+				info += `<li>
+						<h6>${about[i].name}</h6>
+						<p>${date.month} ${date.day}, ${date.year}</p>
+					</li>`
+				continue;
+			}
 			info += `<li>
 						<h6>${about[i].name}</h6>
 						<p>${about[i].value}</p>

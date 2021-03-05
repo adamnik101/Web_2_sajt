@@ -12,7 +12,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Dec 10, 2020"
+                "value" : "2020-12-20"
             },
             {
                 "name" : "Rating",
@@ -106,7 +106,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "May 26, 2020"
+                "value" : "2020-05-26"
             },
             {
                 "name" : "Rating",
@@ -198,7 +198,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 10, 2020"
+                "value" : "2020-11-10"
             },
             {
                 "name" : "Rating",
@@ -290,7 +290,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Feb 6, 2020"
+                "value" : "2020-02-06"
             },
             {
                 "name" : "Rating",
@@ -377,7 +377,7 @@
         }
     },
     {
-        "id" : 16,
+        "id" : 5,
         "name" : "Mafia: Definite Edition",
         "modes": [1],
         "otherId" : [1,2],
@@ -389,7 +389,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Sep 25, 2020"
+                "value" : "2020-09-25"
             },
             {
                 "name" : "Rating",
@@ -472,7 +472,7 @@
         }
     },
     {
-        "id" : 5,
+        "id" : 6,
         "name" : "Blair Witch",
         "modes": [1],
         "otherId" : [1],
@@ -484,7 +484,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Oct 29, 2020"
+                "value" : "2020-10-29"
             },
             {
                 "name" : "Rating",
@@ -566,7 +566,7 @@
         }
     },
     {
-        "id" : 6,
+        "id" : 7,
         "name" : "Snowrunner",
         "modes": [1, 2],
         "otherId" : [1],
@@ -578,7 +578,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Oct 29, 2020"
+                "value" : "2020-10-29"
             },
             {
                 "name" : "Rating",
@@ -656,7 +656,7 @@
         }
     },
     {
-        "id" : 13,
+        "id" : 8,
         "name" : "The Elder Scrolls V: Skyrim",
         "modes": [1],
         "otherId" : [3],
@@ -668,7 +668,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Oct 28, 2016"
+                "value" : "2016-10-28"
             },
             {
                 "name" : "Rating",
@@ -747,7 +747,7 @@
         }
     },
     {
-        "id" : 39,
+        "id" : 9,
         "name" : "Back 4 Blood",
         "modes": [1, 2],
         "otherId" : [1],
@@ -759,7 +759,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Feb 22, 2021"
+                "value" : "2021-02-22"
             },
             {
                 "name" : "Rating",
@@ -839,7 +839,7 @@
         }
     },
     {
-        "id" : 7,
+        "id" : 10,
         "name" : "Godfall",
         "modes": [1 , 2],
         "otherId" : [1],
@@ -851,7 +851,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 12, 2020"
+                "value" : "2020-11-12"
             },
             {
                 "name" : "Rating",
@@ -937,7 +937,7 @@
         }
     },
     {
-        "id" : 28,
+        "id" : 11,
         "catId" : [8,10],
         "name" : "Dirt 5",
         "modes": [1, 2],
@@ -950,7 +950,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2019-11-05"
             },
             {
                 "name" : "Rating",
@@ -1030,7 +1030,7 @@
         }
     },
     {
-        "id" : 25,
+        "id" : 12,
         "name" : "Bee Simulator",
         "modes": [1],
         "otherId" : [3],
@@ -1039,18 +1039,18 @@
             "about" : [
             {
                 "name" : "Publisher",
-                "value" : "Codemasters"
+                "value" : "BIGBEN INTERACTIVE"
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2019-11-05"
             },
             {
                 "name" : "Rating",
-                "value" : "9.9/10"
+                "value" : "7.5/10"
             }],
-            "text" : [["America, 1899.","Arthur Morgan and the Van der Linde gang are outlaws on the run. With federal agents and the best bounty hunters in the nation massing on their heels, the gang must rob, steal and fight their way across the rugged heartland of America in order to survive. As deepening internal divisions threaten to tear the gang apart, Arthur must make a choice between his own ideals and loyalty to the gang who raised him."],
-            ["Explore", "Step into the vibrant, ever-evolving world of Red Dead Online and experience life in frontier America. Chase down bounties, battle outlaw gangs and other players, hunt, fish and trade, search for exotic treasures, run Moonshine, and much more to discover in a world of astounding..."]
+            "text" : [["READY, STEADY, FLY!","Explore a world brimming with life in which you collect pollen, defy dangerous wasps and save your hive"],
+            ["DANCING WITH THE BEES", "The world of bees is not as carefree as one may think. Wasps and some of the less friendly people will take any chance to ruin your plans. Don't hesitate to use your sting to save your swarm from enemies."]
         ]
         },
         "newRelease" : {
@@ -1123,7 +1123,7 @@
         }
     },
     {
-        "id" : 31,
+        "id" : 13,
         "catId" : [6,1,7],
         "name" : "Call of Duty: Cold War",
         "modes" : [2,1],
@@ -1132,11 +1132,11 @@
             "about" : [
             {
                 "name" : "Publisher",
-                "value" : "Codemasters"
+                "value" : "Activision"
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2020-11-13"
             },
             {
                 "name" : "Rating",
@@ -1216,7 +1216,7 @@
         }
     },
     {
-        "id" : 30,
+        "id" : 14,
         "catId" : [8,10, 13],
         "name" : "WRC 9 FIA Rally Championship",
         "modes" : [1,2],
@@ -1225,11 +1225,11 @@
             "about" : [
             {
                 "name" : "Publisher",
-                "value" : "Codemasters"
+                "value" : "Nacon"
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2020-09-03"
             },
             {
                 "name" : "Rating",
@@ -1308,7 +1308,7 @@
         }
     },
     {
-        "id" : 23,
+        "id" : 15,
         "catId" : [13],
         "name" : "Fifa 2020",
         "modes" : [1,2],
@@ -1321,7 +1321,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2019-12-20"
             },
             {
                 "name" : "Rating",
@@ -1400,7 +1400,7 @@
         }
     },
     {
-        "id" : 24,
+        "id" : 16,
         "catId" : [13],
         "name" : "NBA 2K21",
         "modes" : [1,2],
@@ -1413,7 +1413,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2020-12-30"
             },
             {
                 "name" : "Rating",
@@ -1493,7 +1493,7 @@
         }
     },
     {
-        "id" : 8,
+        "id" : 17,
         "name" : "Hitman III",
         "modes" : [1],
         "otherId" : [1,2],
@@ -1505,7 +1505,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Jan 20, 2021"
+                "value" : "2021-01-21"
             },
             {
                 "name" : "Rating",
@@ -1587,7 +1587,7 @@
         }
     },
     {
-        "id" : 20,
+        "id" : 18,
         "catId" : [5,12,10],
         "name" : "Cities Skylines",
         "modes" : [1,2],
@@ -1596,19 +1596,17 @@
             "about" : [
             {
                 "name" : "Publisher",
-                "value" : "Rockstar Games"
+                "value" : "Colossal Order"
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2015-03-10"
             },
             {
                 "name" : "Rating",
-                "value" : "9.9/10"
+                "value" : "8.5/10"
             }],
-            "text" : [["America, 1899.","Arthur Morgan and the Van der Linde gang are outlaws on the run. With federal agents and the best bounty hunters in the nation massing on their heels, the gang must rob, steal and fight their way across the rugged heartland of America in order to survive. As deepening internal divisions threaten to tear the gang apart, Arthur must make a choice between his own ideals and loyalty to the gang who raised him."],
-            ["Explore", "Step into the vibrant, ever-evolving world of Red Dead Online and experience life in frontier America. Chase down bounties, battle outlaw gangs and other players, hunt, fish and trade, search for exotic treasures, run Moonshine, and much more to discover in a world of astounding..."]
-        ]
+            "text" : [["BUILD", "Cities: Skylines is a modern take on the classic city simulation. The game introduces new game play elements to realize the thrill and hardships of creating and maintaining a real city whilst expanding on some well-established tropes of the city building experience. You’re only limited by your imagination, so take control and reach for the sky!"]]
         },
         "newRelease" : {
             "value" : false,
@@ -1680,7 +1678,7 @@
         }
     },
     {
-        "id" : 21,
+        "id" : 19,
         "catId" : [1, 12, 3],
         "name" : "Fall Guys",
         "modes" : [2],
@@ -1693,7 +1691,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2020-02-15"
             },
             {
                 "name" : "Rating",
@@ -1772,7 +1770,7 @@
         }
     },
     {
-        "id" : 9,
+        "id" : 20,
         "catId" : [1,2,4,6],
         "otherId" : [3, 2],
         "name" : "Red Dead Redemption II",
@@ -1785,7 +1783,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2018-10-26"
             },
             {
                 "name" : "Rating",
@@ -1865,7 +1863,7 @@
         }
     },
     {
-        "id" : 19,
+        "id" : 21,
         "catId" : [5,12],
         "name" : "Sid Meier's: Civilization VI",
         "modes" : [1,2],
@@ -1874,11 +1872,11 @@
             "about" : [
             {
                 "name" : "Publisher",
-                "value" : "Rockstar Games"
+                "value" : "2K Games"
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2016-10-21"
             },
             {
                 "name" : "Rating",
@@ -1958,7 +1956,7 @@
         }
     },
     {
-        "id" : 18,
+        "id" : 22,
         "catId" : [8,12],
         "name" : "Need For Speed: Heat",
         "modes" : [1],
@@ -1971,15 +1969,13 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2019-11-08"
             },
             {
                 "name" : "Rating",
                 "value" : "9.9/10"
             }],
-            "text" : [["America, 1899.","Arthur Morgan and the Van der Linde gang are outlaws on the run. With federal agents and the best bounty hunters in the nation massing on their heels, the gang must rob, steal and fight their way across the rugged heartland of America in order to survive. As deepening internal divisions threaten to tear the gang apart, Arthur must make a choice between his own ideals and loyalty to the gang who raised him."],
-            ["Explore", "Step into the vibrant, ever-evolving world of Red Dead Online and experience life in frontier America. Chase down bounties, battle outlaw gangs and other players, hunt, fish and trade, search for exotic treasures, run Moonshine, and much more to discover in a world of astounding..."]
-        ]
+            "text" : [["RACE!", "Hustle by day and risk it all at night in Need for Speed™ Heat, a white-knuckle street racer, where the lines of the law fade as the sun starts to set. By day, Palm City hosts the Speedhunter Showdown, a sanctioned competition where you earn Bank to customize and upgrade your high-performance cars. At night, ramp up the intensity in illicit street races that build your reputation, getting you access to bigger races and better parts. But stay ready – cops are waiting and not all of them play fair."]]
         },
         "newRelease" : {
             "value" : false,
@@ -2050,7 +2046,7 @@
         }
     },
     {
-        "id" : 17,
+        "id" : 23,
         "catId" : [8, 10, 12],
         "name" : "Forza Horizon 4",
         "modes" : [1,2],
@@ -2063,7 +2059,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Nov 5, 2019"
+                "value" : "2019-04-30"
             },
             {
                 "name" : "Rating",
@@ -2143,7 +2139,7 @@
         }
     },
     {
-        "id" : 10,
+        "id" : 24,
         "name" : "Far Cry 3",
         "catId" : [1,2, 7, 11,6],
         "modes" : [1,2],
@@ -2243,7 +2239,7 @@
         "mature" : true
     },
     {
-        "id" : 11,
+        "id" : 25,
         "name" : "Grand Theft Auto V",
         "modes" : [1,2],
         "catId" : [4, 6, 12],
@@ -2256,7 +2252,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Sep 17, 2013"
+                "value" : "2013-09-17"
             },
             {
                 "name" : "Rating",
@@ -2342,7 +2338,7 @@
         }
     },
     {
-        "id" : 12,
+        "id" : 26,
         "name" : "Stranded Deep",
         "catId" : [12,2,10,3],
         "modes" : [1],
@@ -2355,7 +2351,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Apr 30, 2017"
+                "value" : "2017-04-30"
             },
             {
                 "name" : "Rating",
@@ -2434,7 +2430,7 @@
         }
     }, 
     {
-        "id" : 14,
+        "id" : 27,
         "name" : "Medium",
         "catId" : [9, 2],
         "modes" : [1],
@@ -2447,7 +2443,7 @@
             },
             {
                 "name" : "Release date",
-                "value" : "Jan 28, 2021"
+                "value" : "2021-01-21"
             },
             {
                 "name" : "Rating",
