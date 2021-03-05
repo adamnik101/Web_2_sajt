@@ -350,36 +350,7 @@ $(document).ready(() =>
 		changeNumber(value);
 		displayStoreFirst(allGames);
 	})
-	function changeNumber(value){
-		maxItemsStore = value;
-	}
-	function getDateString(game){
-		let month, day, year, date;
-		date = game;
-		console.log(date)
-		let dateSplit = date.split("-");
-		day = dateSplit[2];
-		year = dateSplit[0];
-		switch(dateSplit[1]){
-			case "01" : month = "Jan";break;
-			case "02" : month = "Feb";break;
-			case "03" : month = "Mar";break;
-			case "04" : month = "Apr";break;
-			case "05" : month = "May";break;
-			case "06" : month = "Jun";break;
-			case "07" : month = "Jul";break;
-			case "08" : month = "Aug";break;
-			case "09" : month = "Sep";break;
-			case "10" : month = "Oct";break;
-			case "11" : month = "Nov";break;
-			case "12" : month = "Dec";break;
-		}
-		return {
-			month : month,
-			day : day,
-			year : year
-		}
-	}
+
 	//region Functions
 
 	//region Homepage slider
@@ -649,7 +620,7 @@ $(document).ready(() =>
 			$("#day").html(days);
 			$("#hour").html(hours);
 			$("#minute").html(minutes);
-			$("#second").html(seconds)
+			$("#second").html(seconds);
 			if (razlika < 0) {
 				clearInterval(x);
 				$(".deal_ofthe_week_col").html("New deals coming soon!");
@@ -919,7 +890,6 @@ $(document).ready(() =>
 			$('#checkout_items').html('0');
 		}
 	}
-
 	function getTotal(){
 		var total = 0;
 		if(localStorage.getItem('addedGame')){
@@ -945,6 +915,36 @@ $(document).ready(() =>
 		$(".footer_nav").html(otherNav);
 		$(".menu_top_nav").html(otherNav);
 		$(".menu_top_nav").find("li").addClass('menu_item');
+	}
+	function changeNumber(value){
+		maxItemsStore = value;
+	}
+	function getDateString(game){
+		let month, day, year, date;
+		date = game;
+		console.log(date)
+		let dateSplit = date.split("-");
+		day = dateSplit[2];
+		year = dateSplit[0];
+		switch(dateSplit[1]){
+			case "01" : month = "Jan";break;
+			case "02" : month = "Feb";break;
+			case "03" : month = "Mar";break;
+			case "04" : month = "Apr";break;
+			case "05" : month = "May";break;
+			case "06" : month = "Jun";break;
+			case "07" : month = "Jul";break;
+			case "08" : month = "Aug";break;
+			case "09" : month = "Sep";break;
+			case "10" : month = "Oct";break;
+			case "11" : month = "Nov";break;
+			case "12" : month = "Dec";break;
+		}
+		return {
+			month : month,
+			day : day,
+			year : year
+		}
 	}
 	//endregion
 
