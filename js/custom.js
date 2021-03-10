@@ -216,6 +216,9 @@ $(document).ready(() =>
 				$('#bag').removeClass('col-md-8');
 				$('#summary').remove();
 			}
+			$("#checkout").on('click', function(){
+				alert('Oops, we are having problems with checkout. Try again later.')
+			})
 		}
 		$(document).on('click', '.removeGame', function () {
 			var id = $(this).data('id');
