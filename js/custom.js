@@ -611,11 +611,15 @@ $(document).ready(() =>
 	//region Homepage display sections
 	function displayCountdown()
 	{
-		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
-
+		var countDownDate = new Date("Mar 31, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
+		const seconds = 1000,
+			minutes = seconds * 60,
+			hours = minutes * 60,
+			day = hours * 24;
+		const msCas = 1000 * 60 * 60; //  1 sat
 		var x = setInterval(() => {
 			var now = new Date().getTime(); //trenutno vreme u milisekundama
-			var razlika = countDownDate - now; //
+			var razlika = (countDownDate + msCas)  - now; // ovde dodajem jedan sat u odnosu na GMT vreme
 			var days = Math.floor(razlika / (1000 * 60 * 60 * 24));
 			var hours = Math.floor((razlika % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 			var minutes = Math.floor((razlika % (1000 * 60 * 60)) / (1000 * 60));
