@@ -66,6 +66,7 @@ $(document).ready(() =>
 		getData('allGames', displayAllSections);
 		getData('comingSoon', displayComingSoon);
 		removePng();
+		getData('allGames', displayTimerFeature);
 	}
 	else if(location.indexOf("single") !== -1)
 	{
@@ -634,6 +635,49 @@ $(document).ready(() =>
 			}
 		}, 1000);
 	};
+	function displayTimerFeature(data){
+		console.log(data);
+		for (let x of data){
+			if(x.id == 20){
+				var content = `<div class="row">
+							<div class="col-lg-6">
+								<div class="deal_ofthe_week_img">
+									<img src="images/deal_week_guy.png" class="img-fluid" alt="guy1880">
+								</div>
+							</div>
+							<div class="col-lg-6 text-right deal_ofthe_week_col">
+								<div class="deal_ofthe_week_content d-flex flex-column align-items-center justify-content-center">
+								<div class="section_title d-flex flex-column align-items-center">
+									<h2 class="mb-3">Deal of the month!</h2>
+									<img src="${x.image.logo}" alt="logo">
+								</div>
+								<ul class="timer mt-5">
+									<li class="d-inline-flex flex-column justify-content-center align-items-center">
+										<div id="day" class="timer_num"></div>
+										<div class="timer_unit">Days</div>
+									</li>
+									<li class="d-inline-flex flex-column justify-content-center align-items-center">
+										<div id="hour" class="timer_num"></div>
+										<div class="timer_unit">Hours</div>
+									</li>
+									<li class="d-inline-flex flex-column justify-content-center align-items-center">
+										<div id="minute" class="timer_num"></div>
+										<div class="timer_unit">Mins</div>
+									</li>
+									<li class="d-inline-flex flex-column justify-content-center align-items-center">
+										<div id="second" class="timer_num"></div>
+										<div class="timer_unit">Sec</div>
+									</li>
+								</ul>
+								<a href="single.html" data-id="${x.id}" class="mt-5 openSingle"><div class="red_button deal_ofthe_week_button d-flex justify-content-center align-items-center flex-row">Buy ${x.name} </div></a>
+								</div>
+								</div>
+							</div>`
+			}
+		}
+
+		$(".deal_ofthe_week").html(content);
+	}
 	function homepageGames(sectionId, data)
 	{ // ispisivanje igrica
 
