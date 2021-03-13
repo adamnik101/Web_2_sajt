@@ -611,7 +611,7 @@ $(document).ready(() =>
 	//region Homepage display sections
 	function displayCountdown()
 	{
-		var countDownDate = new Date("Mar 31, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
+		var countDownDate = new Date("April 1, 2021 00:00:00").getTime(); // do ovog dana da se vrsi odbrojavanje - uzima se broj milisekundi
 		const seconds = 1000,
 			minutes = seconds * 60,
 			hours = minutes * 60,
