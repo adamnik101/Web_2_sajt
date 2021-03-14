@@ -1299,7 +1299,6 @@ a .deal_ofthe_week_button span{
 	border-radius: 10px;
 	border: none;
 	color: #fff;
-	height: 100%;
 }
 .form-control:focus{
 	background: #2a2a2a;
@@ -1731,6 +1730,14 @@ textarea
 .summary-body{
 	background-color: #2c2c2c;
 	border-radius: 10px;
+}
+.summary-body .fa-cc-mastercard{
+	font-size: 25px;
+	color: #cacaca;
+}
+#checkoutForm .form-control{
+	background: #cacaca !important;
+	color: #1d1d1d !important;
 }
 #total-price .price-final{
 	color: #fff;

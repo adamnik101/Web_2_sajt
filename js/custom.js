@@ -99,8 +99,6 @@ $(document).ready(() =>
 		const subject = document.getElementById('input_subject')
 		const message = document.getElementById('input_message');
 		var correctName = false, correctMail = false, correctSubject = false, correctMessage = false;
-
-		const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/;
 		const subjectReg = /^[A-ZŠĐČĆŽ][a-zšđčćžA-ZŠĐČĆŽ0-9-_ ]+$/;
 		const messageLength = 20;
 
@@ -217,9 +215,6 @@ $(document).ready(() =>
 				$('#bag').removeClass('col-md-8');
 				$('#summary').remove();
 			}
-			$("#checkout").on('click', function(){
-				alert('Oops, we are having problems with checkout. Try again later.')
-			})
 		}
 		$(document).on('click', '.removeGame', function () {
 			var id = $(this).data('id');
@@ -240,6 +235,7 @@ $(document).ready(() =>
 			displayCart();
 			getTotal();
 		})
+		$('[data-toggle="tooltip"]').tooltip();
 		$(document).on('click', '.quantityBtn', changeQuantity);
 		function changeQuantity(){
 			const minQuantity = 1;
@@ -269,9 +265,92 @@ $(document).ready(() =>
 			displayCart();
 			getTotal();
 		}
+		$('#checkoutOrder').on('submit', function (e){
+			e.preventDefault();
+			proveriUnosOrder();
+		});
 	}
 	//endregion
-
+	function proveriUnosOrder(){
+		let name = $("#fullname");
+		let email = $("#email");
+		let card = $("#card");
+		let cvv = $("#cvv");
+		let date = $("#date");
+		const cardReg = /^[5][0-9]{15}$/;
+		const cvvReg = /^[0-9]{3}$/;
+		const dateReg = /^([0][1-9]|[1-2][0-2])\/([2][1-6])$/;
+		let brojGresaka = 0;
+		if(!fullNameReg.test(name.val())){
+			console.log(name.val())
+			if(!$('#nameErr').length){
+				let err = "<p id='nameErr' class='text-danger'>First name/last name must start with capital letter and must contain only letters.</p>";
+				name.css("border", "2px solid red");
+				$(err).insertAfter(name);
+			}
+			brojGresaka++;
+		}
+		else{
+			name.css("border", "2px solid gray");
+			$('#nameErr').remove();
+		}
+		if(!mailReg.test(email.val())){
+			if(!$('#mailErr').length){
+				let err = "<p id='mailErr' class='text-danger'>E.q. johndoe@gmail.com</p>";
+				email.css("border", "2px solid red");
+				$(err).insertAfter(email);
+			}
+			brojGresaka++;
+		}
+		else{
+			email.css("border", "2px solid gray");
+			$('#mailErr').remove();
+		}
+		if(!cardReg.test(card.val())){
+			if(!$('#cardErr').length){
+				let err = "<p id='cardErr' class='text-danger'>Credit card number must contain 16 digits only starting with 5.</p>";
+				card.css("border", "2px solid red");
+				$(err).insertAfter(card);
+			}
+			brojGresaka++;
+		}
+		else{
+			card.css("border", "2px solid gray");
+			$('#cardErr').remove();
+		}
+		if(!cvvReg.test(cvv.val())){
+			if(!$('#cvvErr').length){
+				let err = "<p id='cvvErr' class='text-danger'>CVV is found on backside of your credit card.</p>";
+				cvv.css("border", "2px solid red");
+				$(err).insertAfter(cvv);
+			}
+			brojGresaka++;
+		}
+		else{
+			cvv.css("border", "2px solid gray");
+			$('#cvvErr').remove();
+		}
+		if(!dateReg.test(date.val())){
+			if(!$('#dateErr').length){
+				let err = "<p id='dateErr' class='text-danger'>Expiration date is found on front of you credit card.</p>";
+				date.css("border", "2px solid red");
+				$(err).insertAfter(date);
+			}
+			brojGresaka++;
+		}
+		else{
+			date.css("border", "2px solid gray");
+			$('#dateErr').remove();
+		}
+		if(!brojGresaka){
+			$("#infoUser").html(name.val().split(' ')[0] + ', you have successfully ordered '+ JSON.parse(localStorage.getItem('addedGame')).length + ' games. Check your email for more information.');
+			$("#checkoutSuccess").modal('show');
+			localStorage.removeItem('addedGame');
+			setTimeout(function(){
+				window.location.replace('https://adamnik101.github.io/gamehut/index.html');
+			}, 5000);
+		}
+	}
 	//region Ajax Call jQuery
 	function getData(path, callback, storage){
 		try{
@@ -1428,7 +1507,8 @@ $(document).ready(() =>
 
 	//region Global RegEx
 
-	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/; // potreban za newsletter na svakoj strani i contact stranicu
+	const mailReg =  /^[a-z][a-z.\d-_]+@[a-z]+(\.[a-z]+)+$/;// potreban za newsletter na svakoj strani i contact stranicu
+	const fullNameReg = /^[A-ZŠĐČĆŽ][a-zšđčćž]{2,14}(\s[A-ZČĆŽŠĐ][a-zšđčćž]{2,19})+$/; // za kontakt formu i order formu
 
 	//endregion
 
