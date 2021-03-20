@@ -76,6 +76,7 @@ $(document).ready(() =>
 	{
 		getData('allGames', displayStoreFirst)
 		.then( (data) => {
+			//console.log(data) ispisuje sve igrice potrebne za ispisivanje filtera
 			try{
 				getCategories(displayCheckbox, "categoryChb", categories, "categories");
 				getCategories(displayCheckbox, "mode", modes, "modes");
