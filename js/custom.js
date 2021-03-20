@@ -75,8 +75,8 @@ $(document).ready(() =>
 	else if(location.indexOf("shop") !== -1)
 	{
 		let promise = new Promise( (resolve, reject) => { // preko promise-a jer mi je izbacivalo da je promenljiva allGames undefined kad pokusam da ispisem broj igrica za odredjenu kategoriju
-				return resolve(getData('allGames', displayStoreFirst));
-			})
+			return resolve(getData('allGames', displayStoreFirst));
+		})
 		promise.then((data) => {
 			//console.log(data) ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
 			try{
@@ -282,7 +282,6 @@ $(document).ready(() =>
 		const dateReg = /^([0][1-9]|[1-2][0-2])\/([2][1-6])$/;
 		let brojGresaka = 0;
 		if(!fullNameReg.test(name.val())){
-			console.log(name.val())
 			if(!$('#nameErr').length){
 				let err = "<p id='nameErr' class='text-danger'>First name/last name must start with capital letter and must contain only letters.</p>";
 				name.css("border", "2px solid red");
@@ -465,7 +464,6 @@ $(document).ready(() =>
 			backImg[i].style.setProperty('--url', "url(\'../images/slider_"+  (i+1) + ".jpg\')");
 
 		}
-		console.log(backImg.length);
 		owlDisplay();
 	}
 	function owlDisplay()
@@ -581,14 +579,14 @@ $(document).ready(() =>
 	function setHeader()
 	{
 
-			if($(window).scrollTop() > 100)
-			{
-				header.css({'top':"-50px"});
-			}
-			else
-			{
-				header.css({'top':"0"});
-			}
+		if($(window).scrollTop() > 100)
+		{
+			header.css({'top':"-50px"});
+		}
+		else
+		{
+			header.css({'top':"0"});
+		}
 
 		if(window.innerWidth > 991 && menuActive)
 		{
@@ -715,7 +713,6 @@ $(document).ready(() =>
 		}, 1000);
 	};
 	function displayTimerFeature(data){
-		console.log(data);
 		for (let x of data){
 			if(x.id == 20){
 				var content = `<div class="row">
@@ -999,14 +996,14 @@ $(document).ready(() =>
 			$(modal).insertAfter(footer); // da ga postavim na kraju stranice
 		}
 		$(message).fadeIn();
-		 let promise = new Promise((resolve, reject) => {  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
-		 	setTimeout(() => {$(message).fadeOut(); resolve()}, 3000);
-		 })
-		 promise.then(() => { // cekamo izvrsavanje promise-a
-		 	setTimeout(() => {// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
-		 		$(message).remove();
-		 	}, 1000)
-		 })
+		let promise = new Promise((resolve, reject) => {  //promise da bih obrisao element nakon izvrsvanja fade out-a, simuliram asinhroni zahtev pomocu timeout
+			setTimeout(() => {$(message).fadeOut(); resolve()}, 3000);
+		})
+		promise.then(() => { // cekamo izvrsavanje promise-a
+			setTimeout(() => {// nakon sto je gotov promise, izvrsava se i brise element nakon jedne sekunde
+				$(message).remove();
+			}, 1000)
+		})
 	}
 	//endregion
 
@@ -1024,9 +1021,9 @@ $(document).ready(() =>
 		var total = 0;
 		if(localStorage.getItem('addedGame')){
 			let allGames = JSON.parse(localStorage.getItem('addedGame'));
-				for(let game of allGames){
-					total += game.quantity * game.price; // ukupna cena
-				}
+			for(let game of allGames){
+				total += game.quantity * game.price; // ukupna cena
+			}
 		}
 		total = total.toFixed(2); // dve decimale
 		$('#total-price').html(`<p>Your total:</p> <p class="price-final"><i class="fas fa-euro-sign"></i> ${total}</p>`);
@@ -1052,7 +1049,6 @@ $(document).ready(() =>
 	function getDateString(game){
 		let month, day, year, date;
 		date = game;
-		console.log(date)
 		let dateSplit = date.split("-");
 		day = dateSplit[2];
 		year = dateSplit[0];
@@ -1114,16 +1110,16 @@ $(document).ready(() =>
 						<img src="${logo}" class="img-fluid" alt="${alt}">
 					</div>
 					<div class="col-12 col-sm-6 col-md-8 col-lg-9 d-flex flex-column align-items-md-end align-items-center">`;
-					if(!price.discount.isDiscounted){
-						logoDisplay += `<div class="d-flex flex-column align-items-sm-end align-items-center">
+		if(!price.discount.isDiscounted){
+			logoDisplay += `<div class="d-flex flex-column align-items-sm-end align-items-center">
 											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Add to cart</button>
 												<span id="current" class="pt-3">
 													<i class="fas fa-euro-sign"></i>${price.value.netPrice}
 												</span>	
 										</div>`
-					}
-					else{
-						logoDisplay +=`<div class="d-flex flex-column align-items-end">
+		}
+		else{
+			logoDisplay +=`<div class="d-flex flex-column align-items-end">
 											<button type="button" id="price" data-id="${localStorage.getItem('id')}" value="${price.value.netPrice}">Add to cart</button>
 											<p class="d-flex justify-content-around align-items-center pt-3">
 												<span class="badge badge-danger">-${price.discount.amount}%</span>
@@ -1135,9 +1131,9 @@ $(document).ready(() =>
 												</span>
 											</p>	
 										</div>`
-					}
-					logoDisplay += "</div>"
-				$("#logo-game-container").append(logoDisplay);
+		}
+		logoDisplay += "</div>"
+		$("#logo-game-container").append(logoDisplay);
 	};
 	function getAbout(about, textInfo)
 	{//ispisivanje informacija o igrici na single.html
@@ -1204,25 +1200,25 @@ $(document).ready(() =>
 			gameToAdd = JSON.parse(localStorage.getItem('addedGame'));
 		}
 		let gameId = $(this).data('id');
-			for(let game of allGames){
-				if(game.id == gameId){
-					if(gameToAdd.some(x => x.id == gameId)) {
-						gameToAdd.find(x => x.id == gameId).quantity++;
-						displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <span>${game.name}'s </span> in your cart.`)
-					}
-					else{
-						gameToAdd.push({
-							id : game.id,
-							image : game.image.logo,
-							name : game.name,
-							price : game.price.value.netPrice,
-							quantity : 1
-						})
-						displayMessageModal(`You added <span>${game.name} </span> into your cart.`)
-					}
-					localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
+		for(let game of allGames){
+			if(game.id == gameId){
+				if(gameToAdd.some(x => x.id == gameId)) {
+					gameToAdd.find(x => x.id == gameId).quantity++;
+					displayMessageModal(`You have ${gameToAdd.find(x => x.id == gameId).quantity} <span>${game.name}'s </span> in your cart.`)
 				}
+				else{
+					gameToAdd.push({
+						id : game.id,
+						image : game.image.logo,
+						name : game.name,
+						price : game.price.value.netPrice,
+						quantity : 1
+					})
+					displayMessageModal(`You added <span>${game.name} </span> into your cart.`)
+				}
+				localStorage.setItem('addedGame', JSON.stringify(gameToAdd));
 			}
+		}
 		checkCartAmount();
 	}
 	//endregion
@@ -1367,7 +1363,7 @@ $(document).ready(() =>
 				degreesOther += 180;
 				$(div).find(".fas").css("transform", "rotate(" + degreesOther + "deg)");
 			}
-			
+
 		}
 	};
 	//endregion
@@ -1413,7 +1409,7 @@ $(document).ready(() =>
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
 			priceB = Math.round(b.price.value.netPrice);
-			
+
 			if(priceA < priceB){
 				return 1;
 			}
@@ -1430,7 +1426,7 @@ $(document).ready(() =>
 			var priceB;
 			priceA = Math.round(a.price.value.netPrice);
 			priceB = Math.round(b.price.value.netPrice);
-			
+
 			if(priceA < priceB){
 				return -1;
 			}
@@ -1475,8 +1471,8 @@ $(document).ready(() =>
 			}
 			display += "</ul>";
 			$("#pag").html(display);
-		}			
-		
+		}
+
 		$(".pagination-item").on("click", function(){
 			let pag = document.getElementsByClassName('pagination-item');
 			for(let i = 0; i < pag.length; i++){
@@ -1487,7 +1483,7 @@ $(document).ready(() =>
 				}
 			}
 		})
-		
+
 	};
 	//endregion
 
@@ -1495,13 +1491,13 @@ $(document).ready(() =>
 	function displayNoResults()
 	{
 		$("#products").removeClass("row-cols-1 row-cols-sm-2 row-cols-md-3");
-			$("#products").addClass("d-flex align-items-center justify-content-center h-100");
-			var msg = `<div id="noMatch" class="pb-5 pb-md-0">
+		$("#products").addClass("d-flex align-items-center justify-content-center h-100");
+		var msg = `<div id="noMatch" class="pb-5 pb-md-0">
 							<i class="far fa-frown pb-3"></i>
 							<p>No results found</p>	
 							<span>Unfortunately I could not find any results matching your search.</span>	   
 						</div>`;
-			$("#products").html(msg);
+		$("#products").html(msg);
 	}
 	//endregion
 
