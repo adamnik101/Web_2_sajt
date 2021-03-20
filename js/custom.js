@@ -62,11 +62,11 @@ $(document).ready(() =>
 	if(location.indexOf("index") !== -1 || location == "/gamehut/")
 	{
 		getData('allGames', displayHomeSlider);
-		displayCountdown();
 		getData('allGames', displayAllSections);
 		getData('comingSoon', displayComingSoon);
-		removePng();
+		displayCountdown();
 		getData('allGames', displayTimerFeature);
+		removePng();
 	}
 	else if(location.indexOf("single") !== -1)
 	{
@@ -74,11 +74,8 @@ $(document).ready(() =>
 	}
 	else if(location.indexOf("shop") !== -1)
 	{
-		let promise = new Promise( (resolve, reject) => { // preko promise-a jer mi je izbacivalo da je promenljiva allGames undefined kad pokusam da ispisem broj igrica za odredjenu kategoriju
-			return resolve(getData('allGames', displayStoreFirst));
-		})
-		promise.then((data) => {
-			//console.log(data) ispisuje sve igrice, potrebne za filtriranje unutar funkcije displayCheckbox za broj igrica po kategorijama! ! ! !
+		getData('allGames', displayStoreFirst)
+		.then( (data) => {
 			try{
 				getCategories(displayCheckbox, "categoryChb", categories, "categories");
 				getCategories(displayCheckbox, "mode", modes, "modes");
@@ -87,7 +84,6 @@ $(document).ready(() =>
 			catch (e){
 				console.error(e.message);
 			}
-
 		})
 		getData('comingSoon', displayComingSoon);
 		filterResponsive();
