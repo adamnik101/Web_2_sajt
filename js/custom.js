@@ -78,6 +78,9 @@ $(document).ready(() =>
 		.then( (data) => {
 			//console.log(data) ispisuje sve igrice potrebne za ispisivanje filtera
 			try{
+				if(!data.length){
+					throw 'Can not retrieve data.'
+				}
 				getCategories(displayCheckbox, "categoryChb", categories, "categories");
 				getCategories(displayCheckbox, "mode", modes, "modes");
 				getCategories(displayCheckbox, "otherFilter", otherFilters, "otherFilters");
